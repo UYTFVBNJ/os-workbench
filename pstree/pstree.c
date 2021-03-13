@@ -65,8 +65,8 @@ void get_procinfo() {
       sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
              &procs[proc_pid].ppid);
 
-      printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
-             procs[proc_pid].name);
+      // printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
+            //  procs[proc_pid].name);
 
       if (procs[proc_pid].ppid > 0) {
         edges[procs[proc_pid].ppid] =
