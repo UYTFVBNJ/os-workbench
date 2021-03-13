@@ -7,7 +7,7 @@ struct option long_options[] = {
   {"numeric-sort", no_argument, 0, 'n'},
   {"version",      no_argument, 0, 'V'},
   {0,              0,           0,  0 }
-}
+};
 
 int main(int argc, char* argv[]) {
   bool flag_p = false, flag_n = false, flag_V = false;
