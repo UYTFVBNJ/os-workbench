@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
       printf("%s\n", dir->d_name);
       char filename[256];
 
-      int ret = snprintf(filename, 256, "/proc/%s/stst", dir->d_name);
+      int ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
       assert(ret >= 0);
 
       printf("%s\n", filename);
