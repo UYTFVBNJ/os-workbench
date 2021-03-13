@@ -27,7 +27,7 @@ struct Edge {
 } edges[N];
 
 struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
-  Edge *edge = (Edge *)malloc(sizeof(Edge));
+  struct Edge *edge = (struct Edge *)malloc(sizeof(Edge));
   assert(edge);
   edge->v = v;
   edge->nxt = nxt;
@@ -55,7 +55,7 @@ void get_procinfo() {
       ret = fread(buf, 1, 64, fd);
       assert(ret == 64);
 
-      int tmp_int, proc_pid, ;
+      int tmp_int, proc_pid;
       char proc_state;
 
       sscanf("%d", buf, proc_pid);
@@ -63,7 +63,7 @@ void get_procinfo() {
              procs[proc_pid].ppid);
 
       if (proc_ppid != -1) {
-        edges[proc_ppid] = new_edge(&procs[proc_pid], edges[proc_ppid]);
+        edges[procs[proc_pid].ppid] = new_edge(&procs[proc_pid], edges[proc_ppid]);
       }
 
       close(fd);
@@ -73,7 +73,7 @@ void get_procinfo() {
 void print_tree(int u, int dep) {
   for (int i = 0; i < dep; i++) printf("\t");
   printf("%s ", procs[u].name);
-  for (edge *e = edges[u]; e != NULL; e = e->nxt)
+  for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
     print_tree(e->v->pid, dep + 1);
 }
 
