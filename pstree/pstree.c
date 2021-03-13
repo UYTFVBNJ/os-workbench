@@ -42,13 +42,13 @@ void get_procinfo() {
   struct dirent *dir;
   while ((dir = readdir(d)) != NULL)
     if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
-      printf("%s\n", dir->d_name);
+      // printf("%s\n", dir->d_name);
       char filename[256];
       int ret;
       ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
       assert(ret >= 0);
 
-      printf("%s\n", filename);
+      printf("%s:\n", filename);
       FILE *fd = fopen(filename, "r");
       assert(fd);
 
@@ -63,6 +63,8 @@ void get_procinfo() {
       sscanf("%d %s %c %d %d", buf, NULL, procs[proc_pid].name, &proc_state,
              procs[proc_pid].ppid);
 
+      printf("%d %d %s %s \n", proc_pid, procs[proc_pid].ppid, buf, procs[proc_pid].name);
+
       if (procs[proc_pid].ppid != -1) {
         edges[procs[proc_pid].ppid] =
             new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
@@ -74,7 +76,7 @@ void get_procinfo() {
 
 void print_tree(int u, int dep) {
   for (int i = 0; i < dep; i++) printf("\t");
-  printf("%s ", procs[u].name);
+  printf("%s\n", procs[u].name);
   for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
     print_tree(e->v->pid, dep + 1);
 }
