@@ -77,9 +77,9 @@ void get_procinfo() {
 }
 
 void print_tree(int u, int dep) {
-  for (int i = 0; i < 10000000; i++);
+  // for (int i = 0; i < 10000000; i++);
   printf("%d:\n", u);
-  for (int i = 0; i < dep; i++) printf(" ");
+  for (int i = 0; i < dep; i++) printf("\t");
   printf("%s\n", procs[u].name);
   for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
     print_tree(e->v->pid, dep + 1);
