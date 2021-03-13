@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 
 #define N 1000000
@@ -23,8 +24,8 @@ struct Proc {
 
 struct Edge {
   struct Proc v;
-  struct edge *nxt;
-} edges[N];
+  struct Edge *nxt;
+} *edges[N];
 
 struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
   struct Edge *edge = (struct Edge *)malloc(sizeof(Edge));
@@ -62,11 +63,12 @@ void get_procinfo() {
       sscanf("%d %s %c %d %d", buf, NULL, procs[proc_pid].name, &proc_state,
              procs[proc_pid].ppid);
 
-      if (proc_ppid != -1) {
-        edges[procs[proc_pid].ppid] = new_edge(&procs[proc_pid], edges[proc_ppid]);
+      if (procs[proc_pid].ppid != -1) {
+        edges[procs[proc_pid].ppid] =
+            new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
       }
 
-      close(fd);
+      fclose(fd);
     }
 }
 
