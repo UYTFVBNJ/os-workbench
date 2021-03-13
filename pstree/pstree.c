@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
   while ((opt = getopt_long(argc, argv, "pnV", long_options, 0)) != -1) {
     switch (opt) {
       case 'p':
-        printf("p\n");
+        printf("p %d\n", flag_n);
         break;
       case 'n':
         printf("n\n");
