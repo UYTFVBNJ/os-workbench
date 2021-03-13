@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
       printf("%s\n", dir->d_name);
       snprintf(filename, 256, "/proc/%s/stst", dir->d_name);
       printf("%s\n", filename);
-      FILE fd = fopen(filename, "r");
+      FILE *fd = fopen(filename, "r");
       assert(fd);
     }
 
