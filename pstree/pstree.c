@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <dirent.h>
 
 int flag_p = 0, flag_n = 0, flag_V = 0;
 
