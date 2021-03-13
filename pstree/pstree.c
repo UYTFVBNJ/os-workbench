@@ -66,7 +66,7 @@ void get_procinfo() {
       printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
              procs[proc_pid].name);
 
-      if (procs[proc_pid].ppid != -1) {
+      if (procs[proc_pid].ppid > 0) {
         edges[procs[proc_pid].ppid] =
             new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
       }
@@ -76,6 +76,7 @@ void get_procinfo() {
 }
 
 void print_tree(int u, int dep) {
+  printf("%d:\n", u);
   for (int i = 0; i < dep; i++) printf(" ");
   printf("%s\n", procs[u].name);
   for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
@@ -119,7 +120,7 @@ int main(int argc, char *argv[]) {
 
   get_procinfo();
 
-  // print_tree(1, 0);
+  print_tree(1, 0);
 
   return 0;
 }
