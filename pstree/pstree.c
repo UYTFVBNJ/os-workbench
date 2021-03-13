@@ -56,7 +56,7 @@ void get_procinfo() {
       ret = fread(buf, 1, 64, fd);
       assert(ret == 64);
 
-      int tmp_int, proc_pid;
+      int tmp_int, proc_pid = -1;
       char proc_state;
 
       sscanf("%d", buf, proc_pid);
