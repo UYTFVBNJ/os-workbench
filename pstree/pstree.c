@@ -76,7 +76,7 @@ void get_procinfo() {
 }
 
 void print_tree(int u, int dep) {
-  sleep(1000);
+  for (int i = 0; i < 10000000; i++);
   printf("%d:\n", u);
   for (int i = 0; i < dep; i++) printf(" ");
   printf("%s\n", procs[u].name);
