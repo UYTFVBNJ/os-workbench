@@ -60,6 +60,7 @@ void get_procinfo() {
       char proc_state;
 
       sscanf(buf, "%d", &proc_pid);
+      procs[proc_pid].pid = proc_pid;
       sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
              &procs[proc_pid].ppid);
 
