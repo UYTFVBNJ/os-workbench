@@ -35,6 +35,7 @@ struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
   return edge;
 }
 
+int cnt = 0;
 void get_procinfo() {
   DIR *d = opendir("/proc");
   assert(d);
@@ -73,12 +74,14 @@ void get_procinfo() {
       }
 
       fclose(fd);
+      cnt ++;
     }
 }
 
 void print_tree(int u, int dep) {
   // for (int i = 0; i < 10000000; i++);
-  printf("%d:\n", u);
+  // printf("%d:\n", u);
+  cnt ++;
   for (int i = 0; i < dep; i++) printf("\t");
   printf("%s\n", procs[u].name);
   for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
@@ -120,9 +123,12 @@ int main(int argc, char *argv[]) {
 
   printf("flags: %d %d %d\n", flag_p, flag_n, flag_V);
 
+  cnt = 0;
   get_procinfo();
-
+  printf("%d\n", cnt);
+  cnt = 0;
   print_tree(1, 0);
+  printf("%d\n", cnt);
 
   return 0;
 }
