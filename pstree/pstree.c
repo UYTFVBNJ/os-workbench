@@ -23,12 +23,12 @@ struct Proc {
 } procs[N];
 
 struct Edge {
-  struct Proc v;
+  struct Proc *v;
   struct Edge *nxt;
 } *edges[N];
 
 struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
-  struct Edge *edge = (struct Edge *)malloc(sizeof(Edge));
+  struct Edge *edge = (struct Edge *)malloc(sizeof(struct Edge));
   assert(edge);
   edge->v = v;
   edge->nxt = nxt;
