@@ -49,8 +49,12 @@ int main(int argc, char *argv[]) {
   struct dirent *dir;
   while ((dir = readdir(d)) != NULL)
     if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
+      char filename[256];
       printf("%s\n", dir->d_name);
-      // FILE fd = fopen("/proc/")
+      snprintf(filename, 256, "/proc/%s/stst", dir->d_name);
+      printf("%s\n", filename);
+      FILE fd = fopen(filename, "r");
+      assert(fd);
     }
 
   return 0;
