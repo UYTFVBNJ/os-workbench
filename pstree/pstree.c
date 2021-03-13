@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <stdbool.h>
+
 
 struct option long_options[] = {
   {"show-pids",    no_argument, 0, 'p'},
