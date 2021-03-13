@@ -5,9 +5,9 @@
 int flag_p = 0, flag_n = 0, flag_V = 0;
 
 int main(int argc, char* argv[]) {
-  static struct option long_options[] = {{"show-pids", no_argument, 0, 'p'},
-                                         {"numeric-sort", no_argument, 0, 'n'},
-                                         {"version", no_argument, 0, 'V'},
+  static struct option long_options[] = {{"show-pids", no_argument, &flag_p, 'p'},
+                                         {"numeric-sort", no_argument, &flag_n, 'n'},
+                                         {"version", no_argument, &flag_V, 'V'},
                                          {0, 0, 0, 0}};
 
   int opt;
