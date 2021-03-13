@@ -25,7 +25,7 @@ struct Proc {
 struct Edge {
   struct Proc *v;
   struct Edge *nxt;
-} *edges[N];
+} * edges[N];
 
 struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
   struct Edge *edge = (struct Edge *)malloc(sizeof(struct Edge));
@@ -60,10 +60,11 @@ void get_procinfo() {
       char proc_state;
 
       sscanf(buf, "%d", &proc_pid);
-      sscanf(buf, "%d %s %c %d %d", &tmp_int, procs[proc_pid].name, &proc_state,
+      sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
              &procs[proc_pid].ppid);
 
-      printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf, procs[proc_pid].name);
+      printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
+             procs[proc_pid].name);
 
       if (procs[proc_pid].ppid != -1) {
         edges[procs[proc_pid].ppid] =
