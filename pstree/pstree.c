@@ -2,7 +2,9 @@
 #include <dirent.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <sys/types.h>
 
+#define N 1000000
 int flag_p = 0, flag_n = 0, flag_V = 0;
 
 int is_num(char *str) {
@@ -10,6 +12,69 @@ int is_num(char *str) {
     if (str[i] < '0' || str[i] > '9') return 0;
 
   return 1;
+}
+
+struct Proc {
+  pid_t pid;
+  pid_t ppid;
+  char name[256];
+  // struct edge *edges;
+} procs[N];
+
+struct Edge {
+  struct Proc v;
+  struct edge *nxt;
+} edges[N];
+
+struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
+  Edge *edge = (Edge *)malloc(sizeof(Edge));
+  assert(edge);
+  edge->v = v;
+  edge->nxt = nxt;
+  return edge;
+}
+
+void get_procinfo() {
+  DIR *d = opendir("/proc");
+  assert(d);
+
+  struct dirent *dir;
+  while ((dir = readdir(d)) != NULL)
+    if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
+      printf("%s\n", dir->d_name);
+      char filename[256];
+      int ret;
+      ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
+      assert(ret >= 0);
+
+      printf("%s\n", filename);
+      FILE *fd = fopen(filename, "r");
+      assert(fd);
+
+      char buf[64];
+      ret = fread(buf, 1, 64, fd);
+      assert(ret == 64);
+
+      int tmp_int, proc_pid, ;
+      char proc_state;
+
+      sscanf("%d", buf, proc_pid);
+      sscanf("%d %s %c %d %d", buf, NULL, procs[proc_pid].name, &proc_state,
+             procs[proc_pid].ppid);
+
+      if (proc_ppid != -1) {
+        edges[proc_ppid] = new_edge(&procs[proc_pid], edges[proc_ppid]);
+      }
+
+      close(fd);
+    }
+}
+
+void print_tree(int u, int dep) {
+  for (int i = 0; i < dep; i++) printf("\t");
+  printf("%s ", procs[u].name);
+  for (edge *e = edges[u]; e != NULL; e = e->nxt)
+    print_tree(e->v->pid, dep + 1);
 }
 
 int main(int argc, char *argv[]) {
@@ -34,6 +99,10 @@ int main(int argc, char *argv[]) {
       case 'V':
         flag_V = 1;
         printf("V\n");
+
+        //
+
+        return 0;
         break;
 
       default:
@@ -43,22 +112,9 @@ int main(int argc, char *argv[]) {
 
   printf("flags: %d %d %d\n", flag_p, flag_n, flag_V);
 
-  DIR *d = opendir("/proc");
-  assert(d);
+  get_procinfo();
 
-  struct dirent *dir;
-  while ((dir = readdir(d)) != NULL)
-    if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
-      printf("%s\n", dir->d_name);
-      char filename[256];
-
-      int ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
-      assert(ret >= 0);
-
-      printf("%s\n", filename);
-      FILE *fd = fopen(filename, "r");
-      assert(fd);
-    }
+  print_tree(1, 0);
 
   return 0;
 }
