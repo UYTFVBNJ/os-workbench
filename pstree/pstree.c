@@ -116,7 +116,7 @@ void input(int argc, char *argv[]) {
 
         //
 
-        halt();
+        exit(0);
         break;
 
       default:
