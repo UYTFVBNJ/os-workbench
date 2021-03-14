@@ -6,7 +6,7 @@
 #include <sys/types.h>
 
 #define N 1000000
-int flag_p = 0, flag_n = 0, flag_V = 0;
+int flag_p = 1, flag_n = 1, flag_V = 0;
 
 int is_num(char *str) {
   for (int i = 0; str[i] != '\0'; i++)
@@ -49,7 +49,7 @@ void get_procinfo() {
       ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
       assert(ret >= 0);
 
-      // printf("%s:\n", filename);
+       printf("%s:\n", filename);
       
       FILE *fd = fopen(filename, "r");
       assert(fd);
@@ -66,8 +66,8 @@ void get_procinfo() {
       sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
              &procs[proc_pid].ppid);
 
-      // printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
-            //  procs[proc_pid].name);
+       printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
+              procs[proc_pid].name);
 
       if (procs[proc_pid].ppid > 0) {
         edges[procs[proc_pid].ppid] =
@@ -77,6 +77,8 @@ void get_procinfo() {
       fclose(fd);
       cnt ++;
     }
+
+  closedir(d);
 }
 
 void print_tree(int u, int dep) {
@@ -85,10 +87,37 @@ void print_tree(int u, int dep) {
   cnt ++;
 
   for (int i = 0; i < dep; i++) printf("\t");
-  printf("%s\n", procs[u].name);
 
-  for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
-    print_tree(e->v->pid, dep + 1);
+  printf("%s", procs[u].name);
+
+  if (flag_p) {
+    printf("(%d)\n", procs[u].pid);
+  } else {
+    printf("\n");
+  }
+
+  if (flag_n) {
+    while (edges[u] != NULL) {
+      struct Edge *ee =edges[u];
+      for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
+        if (e->v->pid < ee->v->pid) ee = e;
+
+      print_tree(ee->v->pid, dep + 1);
+
+      if (ee == edges[u]) {
+        edges[u] = ee->nxt;
+      } else
+      for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
+        if (e->nxt == ee) {
+          e->nxt = ee->nxt;
+          free(ee);
+          break;
+        }
+    }
+  } else {
+    for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
+      print_tree(e->v->pid, dep + 1);
+  }
 }
 
 void input(int argc, char *argv[]) {
