@@ -69,10 +69,8 @@ void get_procinfo() {
        printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
               procs[proc_pid].name);
 
-      if (procs[proc_pid].ppid > 0) {
-        edges[procs[proc_pid].ppid] =
-            new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
-      }
+      edges[procs[proc_pid].ppid] =
+          new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
 
       fclose(fd);
       cnt ++;
@@ -163,7 +161,7 @@ int main(int argc, char *argv[]) {
   get_procinfo();
   printf("%d\n", cnt);
   cnt = 0;
-  print_tree(1, 0);
+  print_tree(0, 0);
   printf("%d\n", cnt);
 
   return 0;
