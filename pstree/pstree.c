@@ -83,7 +83,7 @@ void print_tree(int u, int dep) {
   // for (int i = 0; i < 10000000; i++);
   // printf("%d:\n", u);
   cnt ++;
-  
+
   for (int i = 0; i < dep; i++) printf("\t");
   printf("%s\n", procs[u].name);
 
@@ -116,7 +116,7 @@ void input(int argc, char *argv[]) {
 
         //
 
-        return 0;
+        halt();
         break;
 
       default:
