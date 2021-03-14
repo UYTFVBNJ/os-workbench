@@ -49,7 +49,8 @@ void get_procinfo() {
       ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
       assert(ret >= 0);
 
-      printf("%s:\n", filename);
+      // printf("%s:\n", filename);
+      
       FILE *fd = fopen(filename, "r");
       assert(fd);
 
@@ -82,13 +83,15 @@ void print_tree(int u, int dep) {
   // for (int i = 0; i < 10000000; i++);
   // printf("%d:\n", u);
   cnt ++;
+  
   for (int i = 0; i < dep; i++) printf("\t");
   printf("%s\n", procs[u].name);
+
   for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
     print_tree(e->v->pid, dep + 1);
 }
 
-int main(int argc, char *argv[]) {
+void input(int argc, char *argv[]) {
   static struct option long_options[] = {
       {"show-pids", no_argument, NULL, 'p'},
       {"numeric-sort", no_argument, NULL, 'n'},
@@ -120,6 +123,10 @@ int main(int argc, char *argv[]) {
         break;
     }
   }
+}
+
+int main(int argc, char *argv[]) {
+  input(argc, argv);
 
   printf("flags: %d %d %d\n", flag_p, flag_n, flag_V);
 
