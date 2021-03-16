@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 
 #define N 1000000
@@ -50,23 +51,22 @@ void get_thread_info(char *filename, pid_t *main_pid) {
 
   sscanf(buf, "%d", &proc_pid);
   procs[proc_pid].pid = proc_pid;
-  
+
   char name_buf[256];
-  sscanf(buf, "%d %s %c %d", &tmp, name_buf, &proc_state,
-         &proc_ppid);
+  sscanf(buf, "%d %s %c %d", &tmp, name_buf, &proc_state, &proc_ppid);
 
   name_buf[strlen(name_buf) - 1] = '\0';
-  
+
   sscanf(name_buf + 1, "%s", procs[proc_pid].name);
 
   if (*main_pid == 0) {
     procs[proc_pid].ppid = proc_ppid;
     *main_pid = proc_pid;
-  }
-  else
+  } else
     procs[proc_pid].ppid = *main_pid;
 
-  printf("%d %d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, *main_pid, buf, procs[proc_pid].name);
+  printf("%d %d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, *main_pid,
+         buf, procs[proc_pid].name);
 
   edges[procs[proc_pid].ppid] =
       new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
@@ -96,7 +96,7 @@ void get_proc_info() {
       struct dirent *t_dir;
 
       pid_t main_pid = 0;
-      
+
       while ((t_dir = readdir(t_d)) != NULL)
         if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
           ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
