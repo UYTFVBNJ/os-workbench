@@ -58,7 +58,7 @@ void get_thread_info(char *filename, pid_t *main_pid) {
   else
     procs[proc_pid].ppid = *main_pid;
 
-  printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf, procs[proc_pid].name);
+  printf("%d %d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, *main_pid, buf, procs[proc_pid].name);
 
   edges[procs[proc_pid].ppid] =
       new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
