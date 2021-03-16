@@ -50,7 +50,7 @@ void get_thread_info(char *filename, pid_t * main_pid) {
 
   sscanf(buf, "%d", &proc_pid);
   procs[proc_pid].pid = proc_pid;
-  sscanf(buf, "%d %s %c %d", NULL, procs[proc_pid].name, &proc_state,
+  sscanf(buf, "%d %s %c %d", (int*)NULL, procs[proc_pid].name, &proc_state,
          &proc_ppid);
 
   // printf("%d %d\n %s\n %s \n", proc_pid, proc_ppid, buf,
