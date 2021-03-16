@@ -90,7 +90,7 @@ void get_proc_info() {
           printf("task: %s\n", pathname);
           assert(ret >= 0);
 
-          // get_thread_info(pathname);
+          get_thread_info(pathname);
         }
 
       closedir(t_d);
