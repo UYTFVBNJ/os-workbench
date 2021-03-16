@@ -37,8 +37,7 @@ struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
 
 int cnt = 0;
 
-void get_thread_info(char * filename) {
-
+void get_thread_info(char *filename) {
   FILE *fd = fopen(filename, "r");
   assert(fd);
 
@@ -58,11 +57,11 @@ void get_thread_info(char * filename) {
          procs[proc_pid].name);
 
   edges[procs[proc_pid].ppid] =
-          new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
+      new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
 
   fclose(fd);
 
-  cnt ++;
+  cnt++;
 }
 
 void get_proc_info() {
@@ -78,19 +77,20 @@ void get_proc_info() {
       int ret = snprintf(pathname, 256, "/proc/%s/task", dir->d_name);
       assert(ret >= 0);
 
-      DIR * t_d = opendir(pathname);
+      DIR *t_d = opendir(pathname);
       assert(t_d);
 
       struct dirent *t_dir;
 
       while ((t_dir = readdir(t_d)) != NULL)
-        if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
-        ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name, t_dir->d_name);
-        printf("%s\n", pathname);
-        assert(ret >= 0);
+        if (t_dir->d_type == DT_REG && is_num(t_dir->d_name)) {
+          ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
+                         t_dir->d_name);
+          printf("%s\n", pathname);
+          assert(ret >= 0);
 
-        get_thread_info(pathname);
-      }
+          get_thread_info(pathname);
+        }
 
       closedir(t_d);
     }
@@ -101,7 +101,7 @@ void get_proc_info() {
 void print_tree(int u, int dep) {
   // for (int i = 0; i < 10000000; i++);
   // printf("%d:\n", u);
-  cnt ++;
+  cnt++;
 
   for (int i = 0; i < dep; i++) printf("\t");
 
@@ -115,7 +115,7 @@ void print_tree(int u, int dep) {
 
   if (flag_n) {
     while (edges[u] != NULL) {
-      struct Edge *ee =edges[u];
+      struct Edge *ee = edges[u];
       for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
         if (e->v->pid < ee->v->pid) ee = e;
 
@@ -124,12 +124,12 @@ void print_tree(int u, int dep) {
       if (ee == edges[u]) {
         edges[u] = ee->nxt;
       } else
-      for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
-        if (e->nxt == ee) {
-          e->nxt = ee->nxt;
-          free(ee);
-          break;
-        }
+        for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
+          if (e->nxt == ee) {
+            e->nxt = ee->nxt;
+            free(ee);
+            break;
+          }
     }
   } else {
     for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
