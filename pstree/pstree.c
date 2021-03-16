@@ -37,7 +37,7 @@ struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
 
 int cnt = 0;
 
-void get_thread_info(char *filename) {
+void get_thread_info(char *filename, pid_t * main_pid) {
   FILE *fd = fopen(filename, "r");
   assert(fd);
 
@@ -45,16 +45,19 @@ void get_thread_info(char *filename) {
   int ret = fread(buf, 1, 64, fd);
   assert(ret == 64);
 
-  int tmp_int, proc_pid = -1;
+  pid_t proc_pid = -1, proc_ppid = -1;
   char proc_state;
 
   sscanf(buf, "%d", &proc_pid);
   procs[proc_pid].pid = proc_pid;
-  sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
-         &procs[proc_pid].ppid);
+  sscanf(buf, "%d %s %c %d", NULL, procs[proc_pid].name, &proc_state,
+         &proc_ppid);
 
-  printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
-         procs[proc_pid].name);
+  // printf("%d %d\n %s\n %s \n", proc_pid, proc_ppid, buf,
+        //  procs[proc_pid].name);
+
+  if (*main_pid == 0) procs[proc_pid].ppid = proc_ppid; 
+  else procs[proc_pid].ppid = *main_pid;
 
   edges[procs[proc_pid].ppid] =
       new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
@@ -83,6 +86,18 @@ void get_proc_info() {
 
       struct dirent *t_dir;
 
+      pid_t main_pid = 0;
+      while ((t_dir = readdir(t_d)) != NULL && main_pid == 0) {
+        if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
+          ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
+                         t_dir->d_name);
+          printf("task: %s\n", pathname);
+          assert(ret >= 0);
+
+          get_thread_info(pathname, &main_pid);
+        }
+      }
+
       while ((t_dir = readdir(t_d)) != NULL)
         if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
           ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
@@ -90,7 +105,7 @@ void get_proc_info() {
           printf("task: %s\n", pathname);
           assert(ret >= 0);
 
-          get_thread_info(pathname);
+          get_thread_info(pathname, &main_pid);
         }
 
       closedir(t_d);
