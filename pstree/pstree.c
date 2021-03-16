@@ -44,7 +44,7 @@ void get_thread_info(char *filename, pid_t *main_pid) {
 
   char buf[256];
   int ret = fread(buf, 1, 256, fd);
-  assert(ret == 256);
+  assert(ret < 256);
 
   pid_t tmp, proc_pid = -1, proc_ppid = -1;
   char proc_state;
