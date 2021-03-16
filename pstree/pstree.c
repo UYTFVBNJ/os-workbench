@@ -36,7 +36,36 @@ struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
 }
 
 int cnt = 0;
-void get_procinfo() {
+
+void get_thread_info(char * filename) {
+
+  FILE *fd = fopen(filename, "r");
+  assert(fd);
+
+  char buf[64];
+  int ret = fread(buf, 1, 64, fd);
+  assert(ret == 64);
+
+  int tmp_int, proc_pid = -1;
+  char proc_state;
+
+  sscanf(buf, "%d", &proc_pid);
+  procs[proc_pid].pid = proc_pid;
+  sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
+         &procs[proc_pid].ppid);
+
+  printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
+         procs[proc_pid].name);
+
+  edges[procs[proc_pid].ppid] =
+          new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
+
+  fclose(fd);
+
+  cnt ++;
+}
+
+void get_proc_info() {
   DIR *d = opendir("/proc");
   assert(d);
 
@@ -44,36 +73,24 @@ void get_procinfo() {
   while ((dir = readdir(d)) != NULL)
     if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
       // printf("%s\n", dir->d_name);
-      char filename[256];
-      int ret;
-      ret = snprintf(filename, 256, "/proc/%s/stat", dir->d_name);
+      char pathname[256];
+
+      int ret = snprintf(pathname, 256, "/proc/%s/task", dir->d_name);
       assert(ret >= 0);
 
-       printf("%s:\n", filename);
-      
-      FILE *fd = fopen(filename, "r");
-      assert(fd);
+      DIR * t_d = opendir(pathname);
+      assert(t_d);
 
-      char buf[64];
-      ret = fread(buf, 1, 64, fd);
-      assert(ret == 64);
+      struct dirent *t_dir;
 
-      int tmp_int, proc_pid = -1;
-      char proc_state;
+      while ((t_dir = readdir(t_d)) != NULL) {
+        ret = snprintf(pathname, 256, "/proc/%s/task/%s", dir->d_name, t_dir->d_name);
+        assert(ret >= 0);
 
-      sscanf(buf, "%d", &proc_pid);
-      procs[proc_pid].pid = proc_pid;
-      sscanf(buf, "%d %s %c %d", &tmp_int, procs[proc_pid].name, &proc_state,
-             &procs[proc_pid].ppid);
+        get_thread_info(pathname);
+      }
 
-       printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
-              procs[proc_pid].name);
-
-      edges[procs[proc_pid].ppid] =
-          new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
-
-      fclose(fd);
-      cnt ++;
+      closedir(t_d);
     }
 
   closedir(d);
@@ -158,10 +175,10 @@ int main(int argc, char *argv[]) {
   printf("flags: %d %d %d\n", flag_p, flag_n, flag_V);
 
   cnt = 0;
-  get_procinfo();
+  get_proc_info();
   printf("%d\n", cnt);
   cnt = 0;
-  print_tree(0, 0);
+  print_tree(1, 0);
   printf("%d\n", cnt);
 
   return 0;
