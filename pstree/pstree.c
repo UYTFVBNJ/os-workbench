@@ -53,8 +53,10 @@ void get_thread_info(char *filename, pid_t *main_pid) {
   sscanf(buf, "%d %s %c %d", &tmp, procs[proc_pid].name, &proc_state,
          &proc_ppid);
 
-  if (*main_pid == 0)
+  if (*main_pid == 0) {
     procs[proc_pid].ppid = proc_ppid;
+    *main_pid = proc_pid;
+  }
   else
     procs[proc_pid].ppid = *main_pid;
 
