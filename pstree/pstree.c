@@ -75,6 +75,7 @@ void get_proc_info() {
       char pathname[256];
 
       int ret = snprintf(pathname, 256, "/proc/%s/task", dir->d_name);
+      printf("proc: %s\n", pathname);
       assert(ret >= 0);
 
       DIR *t_d = opendir(pathname);
@@ -86,7 +87,7 @@ void get_proc_info() {
         if (t_dir->d_type == DT_REG && is_num(t_dir->d_name)) {
           ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
                          t_dir->d_name);
-          printf("%s\n", pathname);
+          printf("task: %s\n", pathname);
           assert(ret >= 0);
 
           get_thread_info(pathname);
