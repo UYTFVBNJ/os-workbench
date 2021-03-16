@@ -85,6 +85,7 @@ void get_proc_info() {
 
       while ((t_dir = readdir(t_d)) != NULL) {
         ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name, t_dir->d_name);
+        printf("%s\n", pathname);
         assert(ret >= 0);
 
         get_thread_info(pathname);
