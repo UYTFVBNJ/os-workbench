@@ -45,12 +45,12 @@ void get_thread_info(char *filename, pid_t * main_pid) {
   int ret = fread(buf, 1, 64, fd);
   assert(ret == 64);
 
-  pid_t proc_pid = -1, proc_ppid = -1;
+  pid_t tmp, proc_pid = -1, proc_ppid = -1;
   char proc_state;
 
   sscanf(buf, "%d", &proc_pid);
   procs[proc_pid].pid = proc_pid;
-  sscanf(buf, "%d %s %c %d", (int*)NULL, procs[proc_pid].name, &proc_state,
+  sscanf(buf, "%d %s %c %d", &tmp, procs[proc_pid].name, &proc_state,
          &proc_ppid);
 
   // printf("%d %d\n %s\n %s \n", proc_pid, proc_ppid, buf,
