@@ -84,13 +84,13 @@ void get_proc_info() {
       struct dirent *t_dir;
 
       while ((t_dir = readdir(t_d)) != NULL)
-        if (t_dir->d_type == DT_REG && is_num(t_dir->d_name)) {
+        if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
           ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
                          t_dir->d_name);
           printf("task: %s\n", pathname);
           assert(ret >= 0);
 
-          get_thread_info(pathname);
+          // get_thread_info(pathname);
         }
 
       closedir(t_d);
