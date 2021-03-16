@@ -41,17 +41,23 @@ void get_thread_info(char *filename, pid_t *main_pid) {
   FILE *fd = fopen(filename, "r");
   assert(fd);
 
-  char buf[64];
-  int ret = fread(buf, 1, 64, fd);
-  assert(ret == 64);
+  char buf[256];
+  int ret = fread(buf, 1, 256, fd);
+  assert(ret == 256);
 
   pid_t tmp, proc_pid = -1, proc_ppid = -1;
   char proc_state;
 
   sscanf(buf, "%d", &proc_pid);
   procs[proc_pid].pid = proc_pid;
-  sscanf(buf, "%d %s %c %d", &tmp, procs[proc_pid].name, &proc_state,
+  
+  char name_buf[256];
+  sscanf(buf, "%d %s %c %d", &tmp, name_buf, &proc_state,
          &proc_ppid);
+
+  name_buf[strlen(name_buf) - 1] = '\0';
+  
+  sscanf(name_buf + 1, "%s", procs[proc_pid].name);
 
   if (*main_pid == 0) {
     procs[proc_pid].ppid = proc_ppid;
@@ -90,18 +96,7 @@ void get_proc_info() {
       struct dirent *t_dir;
 
       pid_t main_pid = 0;
-      /*
-      while ((t_dir = readdir(t_d)) != NULL && main_pid == 0) {
-        if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
-          ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
-                         t_dir->d_name);
-          printf("task: %s\n", pathname);
-          assert(ret >= 0);
-
-          get_thread_info(pathname, &main_pid);
-        }
-      }
-      */
+      
       while ((t_dir = readdir(t_d)) != NULL)
         if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
           ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
