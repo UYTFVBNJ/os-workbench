@@ -43,8 +43,8 @@ void get_thread_info(char *filename, pid_t *main_pid) {
   assert(fd);
 
   char buf[256];
-  int ret = fread(buf, 1, 256, fd);
-  assert(ret < 256);
+  int ret = fread(buf, 1, 64, fd);
+  assert(ret == 64);
 
   pid_t tmp, proc_pid = -1, proc_ppid = -1;
   char proc_state;
@@ -55,13 +55,14 @@ void get_thread_info(char *filename, pid_t *main_pid) {
   char name_buf[256];
   sscanf(buf, "%d %s %c %d", &tmp, name_buf, &proc_state, &proc_ppid);
 
-  printf("%s\n", name_buf);
+  // printf("%s\n", name_buf);
   name_buf[strlen(name_buf) - 1] = '\0';
 
-  printf("%s\n", name_buf);
+  // printf("%s\n", name_buf);
   sscanf(name_buf + 1, "%s", procs[proc_pid].name);
 
-  printf("%s\n", procs[proc_pid].name);
+  // printf("%s\n", procs[proc_pid].name);
+
   if (*main_pid == 0) {
     procs[proc_pid].ppid = proc_ppid;
     *main_pid = proc_pid;
