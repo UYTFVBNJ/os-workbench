@@ -83,7 +83,8 @@ void get_proc_info() {
 
       struct dirent *t_dir;
 
-      while ((t_dir = readdir(t_d)) != NULL) {
+      while ((t_dir = readdir(t_d)) != NULL)
+        if (dir->d_type == DT_DIR && is_num(dir->d_name)) {
         ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name, t_dir->d_name);
         printf("%s\n", pathname);
         assert(ret >= 0);
