@@ -15,3 +15,13 @@ void print_key() {
     puts("\n");
   }
 }
+
+int readkey() {
+  AM_INPUT_KEYBRD_T event = { .keycode = AM_KEY_NONE };
+  ioe_read(AM_INPUT_KEYBRD, &event);
+  if (event.keydown) {
+    return event.keycode;
+  }
+  return AM_KEY_NONE;
+}
+
