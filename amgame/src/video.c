@@ -38,12 +38,7 @@ void obj_draw(Obj * obj) {
 }
 
 bool is_draw_rect(int obj_w, int obj_h, int idx) {
-  int x = idx / obj_w, y = idx % obj_h;
-  
   return 1;
-  if (x > obj_h) return 1;
-  if (y > obj_w) return 1;
-  return 0;
 }
 
 bool is_draw_circ(int obj_w, int obj_h, int idx) {
