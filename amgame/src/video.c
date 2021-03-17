@@ -32,3 +32,15 @@ void splash() {
     }
   }
 }
+
+void splash_c(uint32_t color) {
+  init();
+  for (int x = 0; x * SIDE <= w; x ++) {
+    for (int y = 0; y * SIDE <= h; y++) {
+      if ((x & 1) ^ (y & 1)) {
+        draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, color); // white
+      }
+    }
+  }
+}
+
