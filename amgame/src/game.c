@@ -40,9 +40,9 @@ void game_init() {
   ball = obj_creat(OBJ_BALL, 50, 50, 20, 20, 0xffffff, is_draw_rect);
   ball->spd_v = -10;
   
-  board = obj_creat(OBJ_BOARD, 100, 50, 40, 20, 0xffffff, is_draw_rect);
+  board = obj_creat(OBJ_BOARD, 50, 100, 40, 20, 0xffffff, is_draw_rect);
 
-  obj_creat(OBJ_BRICK, 20, 50, 40, 20, 0xffffff, is_draw_rect);
+  obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect);
 
   screen_init();
 }
