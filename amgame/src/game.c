@@ -6,6 +6,7 @@ enum { OBJ_BOARD, OBJ_BALL, OBJ_BRICK };
 
 Obj *objs[10];
 int objs_num = 0;
+static Obj *ball, *board;
 
 Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
                bool (*is_draw)(int, int, int)) {
@@ -16,6 +17,9 @@ Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
   objs[objs_num]->upd = true;
 
   objs[objs_num]->type = type;
+
+  objs[objs_num]->spd_v = 0;
+  objs[objs_num]->spd_h = 0;
 
   objs[objs_num]->x = x;
   objs[objs_num]->y = y;
@@ -33,7 +37,13 @@ Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
 }
 
 void game_init() {
-  obj_creat(OBJ_BOARD, 50, 50, 40, 20, 0xffffff, is_draw_rect);
+  ball = obj_creat(OBJ_BALL, 50, 50, 20, 20, 0xffffff, is_draw_rect);
+  ball->spd_v = -10;
+  
+  board = obj_creat(OBJ_BOARD, 100, 50, 40, 20, 0xffffff, is_draw_rect);
+
+  obj_creat(OBJ_BRICK, 20, 50, 40, 20, 0xffffff, is_draw_rect);
+
   screen_init();
 }
 

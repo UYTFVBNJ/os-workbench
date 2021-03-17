@@ -10,11 +10,11 @@ typedef uint32_t Color;
 struct Object {
   bool upd;
   int type;
+  int spd_v, spd_h;
   int x, y;
   int w, h;
   Color color;
   bool (*is_draw)(int, int, int);
-  int spd_v, spd_h;
 };
 typedef struct Object Obj;
 
