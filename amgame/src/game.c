@@ -48,7 +48,7 @@ void game_init() {
 }
 
 void game_loop() {
-  while (1);
+  while (1) printf("%d\n", readtime);
 /*
   Time next_frame = 0;
   while (1) {
