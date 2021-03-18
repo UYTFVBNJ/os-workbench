@@ -126,7 +126,7 @@ void game_loop() {
 
     printf("%d\n", i++);
     game_progress();  // 处理一帧游戏逻辑，更新物体的位置等
-    next_frame += 1000 / FPS;  // 计算下一帧的时间
+    // next_frame += 1000 / FPS;  // 计算下一帧的时间
   }
   // */
 }
