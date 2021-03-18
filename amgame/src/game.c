@@ -102,10 +102,12 @@ void game_progress() {
         // game_collision_detection_handler(objs[i]);
       // }
 
+  int k = 0;
   for (int i = 0; i < objs_num; i++) if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
     obj_move(objs[i]);
     printf("%d %d\n", i, objs_num);
   }
+  printf("%d %d\n", k, objs_num);
 }
 
 void game_loop() {
