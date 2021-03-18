@@ -119,7 +119,7 @@ void game_loop() {
   Time time;
   while (1) {
     while ((time = uptime()) < next_frame)
-    printf("%d\n", i++);  // 等待一帧的到来
+    printf("%lld\n", time);  // 等待一帧的到来
     // Key key;
     // while ((key = readkey()) != AM_KEY_NONE) {
       // kbd_event(key);  // 处理键盘事件
