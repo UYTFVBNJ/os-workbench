@@ -108,9 +108,9 @@ void game_progress() {
 }
 
 void game_loop() {
-  // printf("qwq\n");
+  printf("qwq\n");
   while (1);
-  // printf("qwq\n");
+  printf("qwq\n");
   /*
   Time next_frame = 0;
   while (1) {
