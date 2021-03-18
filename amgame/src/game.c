@@ -116,7 +116,7 @@ void game_loop() {
   // printf("qwq\n");
   // /*
   Time next_frame = 0;
-  while (1) {
+  // while (1) {
     while (uptime() < next_frame)
       ;  // 等待一帧的到来
     Key key;
@@ -126,7 +126,7 @@ void game_loop() {
 
     game_progress();  // 处理一帧游戏逻辑，更新物体的位置等
     next_frame += 1000 / FPS;  // 计算下一帧的时间
-  }
+  // }
   // */
 }
 
