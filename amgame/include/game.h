@@ -24,7 +24,7 @@ bool is_draw_rect(int, int, int);
 bool is_draw_circ(int, int, int);
 
 void obj_draw(Obj const * obj);
-void obj_hide(Obj const * obj);
+// void obj_hide(Obj const * obj);
 
 void screen_init();
 
