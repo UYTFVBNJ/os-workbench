@@ -62,6 +62,6 @@ void screen_update() {
 
 void screen_init() {
   init();
-  screen_update();
+  // screen_update();
 }
 
