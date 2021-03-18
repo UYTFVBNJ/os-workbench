@@ -64,9 +64,7 @@ void game_init() {
 
   obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect);
 
-  printf("qwq\n");
   screen_init();
-  printf("qwq\n");
 }
 
 void kbd_event(Key key) {
@@ -110,9 +108,9 @@ void game_progress() {
 }
 
 void game_loop() {
-  printf("qwq\n");
+  // printf("qwq\n");
   while (1);
-  printf("qwq\n");
+  // printf("qwq\n");
   Time next_frame = 0;
   while (1) {
     while (uptime() < next_frame)
