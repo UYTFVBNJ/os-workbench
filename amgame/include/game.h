@@ -36,4 +36,4 @@ static inline void puts(const char *s) {
 Key readkey();
 
 /* time */
-Time readtime();
+Time uptime();
