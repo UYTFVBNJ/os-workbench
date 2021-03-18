@@ -102,12 +102,10 @@ void game_progress() {
         // game_collision_detection_handler(objs[i]);
       // }
 
-  int k = 1;
   for (int i = 0; i < objs_num; i++) if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
     obj_move(objs[i]);
     printf("%d %d\n", i, objs_num);
   }
-  printf("%d %d\n", k, objs_num);
 }
 
 void game_loop() {
@@ -116,7 +114,7 @@ void game_loop() {
   // printf("qwq\n");
   // /*
   Time next_frame = 0;
-  // while (1) {
+  while (1) {
     while (uptime() < next_frame)
       ;  // 等待一帧的到来
     Key key;
@@ -126,7 +124,7 @@ void game_loop() {
 
     game_progress();  // 处理一帧游戏逻辑，更新物体的位置等
     next_frame += 1000 / FPS;  // 计算下一帧的时间
-  // }
+  }
   // */
 }
 
