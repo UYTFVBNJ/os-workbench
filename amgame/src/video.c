@@ -37,6 +37,10 @@ void obj_draw(Obj * obj) {
   draw(obj->x, obj->y, obj->w, obj->h, obj->color, obj->is_draw);
 }
 
+void obj_hide(Obj * obj) {
+  draw(obj->x, obj->y, obj->w, obj->h, 0x000000, obj->is_draw);
+}
+
 bool is_draw_rect(int obj_w, int obj_h, int idx) {
   return 1;
 }
@@ -48,16 +52,16 @@ bool is_draw_circ(int obj_w, int obj_h, int idx) {
 }
 
 /* The screen family */
-void screen_init() {
-  init();
-  screen_update();
-}
-
 void screen_update() {
   for (int i = 0; i < objs_num; i++)
     if (objs[i]->upd) {
       obj_draw(objs[i]);
       objs[i]->upd = false;
     }
+}
+
+void screen_init() {
+  init();
+  screen_update();
 }
 

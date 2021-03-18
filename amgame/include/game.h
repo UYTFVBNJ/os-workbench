@@ -24,8 +24,10 @@ void obj_draw(Obj *);
 bool is_draw_rect(int, int, int);
 bool is_draw_circ(int, int, int);
 
+void obj_draw(Obj * obj);
+void obj_hide(Obj * obj);
+
 void screen_init();
-void screen_update();
 
 /* keyboard */
 void print_key();
