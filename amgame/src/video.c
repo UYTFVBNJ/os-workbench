@@ -33,11 +33,11 @@ static void draw(int x, int y, int w, int h, Color color,
   ioe_write(AM_GPU_FBDRAW, &event);
 }
 
-void obj_draw(Obj * obj) {
+void obj_draw(Obj const * obj) {
   draw(obj->x, obj->y, obj->w, obj->h, obj->color, obj->is_draw);
 }
 
-void obj_hide(Obj * obj) {
+void obj_hide(Obj const * obj) {
   draw(obj->x, obj->y, obj->w, obj->h, 0x000000, obj->is_draw);
 }
 
