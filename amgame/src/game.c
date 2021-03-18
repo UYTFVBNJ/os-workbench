@@ -113,6 +113,7 @@ void game_loop() {
   // while (1);
   // printf("qwq\n");
   // /*
+  int i = 0;
   Time next_frame = 0;
   while (1) {
     while (uptime() < next_frame)
@@ -122,6 +123,7 @@ void game_loop() {
       kbd_event(key);  // 处理键盘事件
     }
 
+    printf("%d %d\n", i++, objs_num);
     game_progress();  // 处理一帧游戏逻辑，更新物体的位置等
     next_frame += 1000 / FPS;  // 计算下一帧的时间
   }
