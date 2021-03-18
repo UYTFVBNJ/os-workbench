@@ -66,6 +66,7 @@ void game_init() {
 
   printf("qwq\n");
   screen_init();
+  printf("qwq\n");
 }
 
 void kbd_event(Key key) {
