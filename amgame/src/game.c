@@ -64,6 +64,7 @@ void game_init() {
 
   obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect);
 
+  printf("qwq\n");
   screen_init();
 }
 
