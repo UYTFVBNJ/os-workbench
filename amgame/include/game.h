@@ -4,7 +4,7 @@
 #include <klib.h>
 
 typedef int Key;
-typedef uint32_t Time;
+typedef uint64_t Time;
 typedef uint32_t Color;
 
 struct Object {
