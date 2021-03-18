@@ -95,16 +95,16 @@ void game_collision_detection_handler(Obj *a) {
 
 void game_progress() {
   /* ball vs. board & brick*/
-  for (int i = 0; i < objs_num; i++)
-    if (objs[i] != ball)
-      if (game_collision_detection(ball, objs[i])) {
-        game_collision_detection_handler(ball);
-        game_collision_detection_handler(objs[i]);
-      }
+  // for (int i = 0; i < objs_num; i++)
+    // if (objs[i] != ball)
+      // if (game_collision_detection(ball, objs[i])) {
+        // game_collision_detection_handler(ball);
+        // game_collision_detection_handler(objs[i]);
+      // }
 
   for (int i = 0; i < objs_num; i++) if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
     obj_move(objs[i]);
-    printf("%d\n", i);
+    printf("%d %d\n", i, objs_num);
   }
 }
 
