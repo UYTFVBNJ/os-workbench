@@ -47,7 +47,7 @@ void obj_remove(int idx) {
   objs_num--;
 }
 
-void obj_move(Obj * obj) {
+void obj_move(Obj const * obj) {
   // obj_hide(obj);
 
   // obj->x += obj->spd_h;
