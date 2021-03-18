@@ -48,12 +48,12 @@ void obj_remove(int idx) {
 }
 
 void obj_move(Obj * obj) {
-  obj_hide(obj);
+  // obj_hide(obj);
 
-  obj->x += obj->spd_h;
-  obj->y += obj->spd_v;
+  // obj->x += obj->spd_h;
+  // obj->y += obj->spd_v;
 
-  obj_draw(obj);
+  // obj_draw(obj);
 }
 
 void game_init() {
