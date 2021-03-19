@@ -47,13 +47,13 @@ void obj_remove(int idx) {
   objs_num--;
 }
 
-void obj_move(Obj const * obj) {
-  // obj_hide(obj);
+void obj_move(Obj *obj) {
+  obj_hide(obj);
 
-  // obj->x += obj->spd_h;
-  // obj->y += obj->spd_v;
+  obj->x += obj->spd_h;
+  obj->y += obj->spd_v;
 
-  // obj_draw(obj);
+  obj_draw(obj);
 }
 
 void game_init() {
@@ -96,40 +96,32 @@ void game_collision_detection_handler(Obj *a) {
 void game_progress() {
   /* ball vs. board & brick*/
   // for (int i = 0; i < objs_num; i++)
-    // if (objs[i] != ball)
-      // if (game_collision_detection(ball, objs[i])) {
-        // game_collision_detection_handler(ball);
-        // game_collision_detection_handler(objs[i]);
-      // }
+  // if (objs[i] != ball)
+  // if (game_collision_detection(ball, objs[i])) {
+  // game_collision_detection_handler(ball);
+  // game_collision_detection_handler(objs[i]);
+  // }
 
-  for (int i = 0; i < objs_num; i++) {
-  // if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
-    obj_move(objs[i]);
-    printf("%d %d\n", i, objs_num);
-  }
+  for (int i = 0; i < objs_num; i++)
+    if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
+      obj_move(objs[i]);
+      printf("%d %d\n", i, objs_num);
+    }
 }
 
 void game_loop() {
-  // printf("qwq\n");
-  // while (1);
-  // printf("qwq\n");
-  // /*
-  int i = 0;
   Time next_frame = 0;
-  Time time;
   while (1) {
-    while ((time = uptime()) < next_frame)
-    printf("%lld\n", time);  // 等待一帧的到来
-    // Key key;
-    // while ((key = readkey()) != AM_KEY_NONE) {
-      // kbd_event(key);  // 处理键盘事件
-    // }
+    while (uptime() < next_frame)
+      ;  // 等待一帧的到来
+    Key key;
+    while ((key = readkey()) != AM_KEY_NONE) {
+      kbd_event(key);  // 处理键盘事件
+    }
 
-    printf("%d\n", i++);
     game_progress();  // 处理一帧游戏逻辑，更新物体的位置等
-    // next_frame += 1000 / FPS;  // 计算下一帧的时间
+    next_frame += 1000 / FPS;  // 计算下一帧的时间
   }
-  // */
 }
 
 // Operating system is a C program!
