@@ -197,10 +197,10 @@ int main(int argc, char *argv[]) {
 
   cnt = 0;
   get_proc_info();
-  printf("%d\n", cnt);
+  // printf("%d\n", cnt);
   cnt = 0;
   print_tree(1, 0);
-  printf("%d\n", cnt);
+  // printf("%d\n", cnt);
 
   return 0;
 }
