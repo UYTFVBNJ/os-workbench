@@ -7,7 +7,7 @@
 #include <sys/types.h>
 
 #define N 1000000
-int flag_p = 1, flag_n = 1, flag_V = 0;
+int flag_p = 0, flag_n = 0, flag_V = 0;
 
 int is_num(char *str) {
   for (int i = 0; str[i] != '\0'; i++)
@@ -179,7 +179,7 @@ void input(int argc, char *argv[]) {
         flag_V = 1;
         printf("V\n");
 
-        //
+        fputs("yeah~", stderr);
 
         exit(0);
         break;
