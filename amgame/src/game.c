@@ -58,7 +58,7 @@ void obj_move(Obj *obj) {
 
 void game_init() {
   ball = obj_creat(OBJ_BALL, 50, 50, 20, 20, 0xffffff, is_draw_rect);
-  ball->spd_v = -10;
+  ball->spd_v = 1;
 
   board = obj_creat(OBJ_BOARD, 50, 100, 40, 20, 0xffffff, is_draw_rect);
 
@@ -84,23 +84,23 @@ void kbd_event(Key key) {
   }
 }
 
-bool game_collision_detection(Obj *a, Obj *b) {
+bool game_collision_detector(Obj *a, Obj *b) {
   // TODO
   return 0;
 }
 
-void game_collision_detection_handler(Obj *a) {
+void game_collision_handler(Obj *a) {
   // TODO
 }
 
 void game_progress() {
   /* ball vs. board & brick*/
-  // for (int i = 0; i < objs_num; i++)
-  // if (objs[i] != ball)
-  // if (game_collision_detection(ball, objs[i])) {
-  // game_collision_detection_handler(ball);
-  // game_collision_detection_handler(objs[i]);
-  // }
+  for (int i = 0; i < objs_num; i++)
+    if (objs[i] != ball)
+      if (game_collision_detector(ball, objs[i])) {
+        game_collision_handler(ball);
+        game_collision_handler(objs[i]);
+      }
 
   for (int i = 0; i < objs_num; i++)
     if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
