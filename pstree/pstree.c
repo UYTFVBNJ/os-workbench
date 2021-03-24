@@ -130,8 +130,24 @@ void print_tree(int u, int dep) {
           }
     }
   } else {
-    for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
-      print_tree(e->v->pid, dep + 1);
+    while (edges[u] != NULL) {
+      struct Edge *ee = edges[u];
+      for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
+        if (strcmp(e->v->name, ee->v->name) > 0) ee = e;
+
+
+      print_tree(ee->v->pid, dep + 1);
+
+      if (ee == edges[u]) {
+        edges[u] = ee->nxt;
+      } else
+        for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
+          if (e->nxt == ee) {
+            e->nxt = ee->nxt;
+            free(ee);
+            break;
+          }
+    }
   }
 }
 
