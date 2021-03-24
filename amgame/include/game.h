@@ -27,6 +27,7 @@ void obj_draw(Obj const * obj);
 void obj_hide(Obj const * obj);
 
 void screen_init();
+void screen_update();
 
 /* keyboard */
 void print_key();
