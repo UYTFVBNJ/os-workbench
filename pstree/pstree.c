@@ -68,7 +68,7 @@ void get_thread_info(char *filename, pid_t *main_pid) {
     *main_pid = proc_pid;
   } else {
     procs[proc_pid].ppid = *main_pid;
-    procs[proc_pid].name = 
+    // procs[proc_pid].name = 
   }
 
   printf("%d %d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, *main_pid,
