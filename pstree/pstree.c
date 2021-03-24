@@ -38,13 +38,13 @@ struct Edge *new_edge(struct Proc *v, struct Edge *nxt) {
 
 int cnt = 0;
 
-void get_thread_info(char *filename, pid_t *main_pid) {
+void get_thread_info(char *filename) {
   FILE *fd = fopen(filename, "r");
   assert(fd);
 
   char buf[256];
-  int ret = fread(buf, 1, 64, fd);
-  assert(ret == 64);
+  int ret = fread(buf, 1, 256, fd);
+  assert(ret > 0);
 
   pid_t tmp, proc_pid = -1, proc_ppid = -1;
   char proc_state;
@@ -63,16 +63,10 @@ void get_thread_info(char *filename, pid_t *main_pid) {
 
   // printf("%s\n", procs[proc_pid].name);
 
-  if (*main_pid == 0) {
-    procs[proc_pid].ppid = proc_ppid;
-    *main_pid = proc_pid;
-  } else {
-    procs[proc_pid].ppid = *main_pid;
-    // procs[proc_pid].name = 
-  }
+  procs[proc_pid].ppid = proc_ppid;
 
-  printf("%d %d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, *main_pid,
-         buf, procs[proc_pid].name);
+  printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
+         procs[proc_pid].name);
 
   edges[procs[proc_pid].ppid] =
       new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
@@ -92,28 +86,11 @@ void get_proc_info() {
       // printf("%s\n", dir->d_name);
       char pathname[256];
 
-      int ret = snprintf(pathname, 256, "/proc/%s/task", dir->d_name);
+      int ret = snprintf(pathname, 256, "/proc/%s/stat", dir->d_name);
       // printf("proc: %s\n", pathname);
       assert(ret >= 0);
 
-      DIR *t_d = opendir(pathname);
-      assert(t_d);
-
-      struct dirent *t_dir;
-
-      pid_t main_pid = 0;
-
-      while ((t_dir = readdir(t_d)) != NULL)
-        if (t_dir->d_type == DT_DIR && is_num(t_dir->d_name)) {
-          ret = snprintf(pathname, 256, "/proc/%s/task/%s/stat", dir->d_name,
-                         t_dir->d_name);
-          // printf("task: %s\n", pathname);
-          assert(ret >= 0);
-
-          get_thread_info(pathname, &main_pid);
-        }
-
-      closedir(t_d);
+      get_thread_info(pathname);
     }
 
   closedir(d);
@@ -179,15 +156,17 @@ void input(int argc, char *argv[]) {
 
       case 'V':
         flag_V = 1;
-        printf("V\n");
+        // printf("V\n");
 
-        fputs("pstree (PSmisc) UNKNOWN\n\
+        fputs(
+            "pstree (PSmisc) UNKNOWN\n\
 Copyright (C) 1993-2019 Werner Almesberger and Craig Small\n\
 \n\
 PSmisc comes with ABSOLUTELY NO WARRANTY.\n\
 This is free software, and you are welcome to redistribute it under\n\
 the terms of the GNU General Public License.\n\
-", stderr);
+",
+            stderr);
 
         exit(0);
         break;
