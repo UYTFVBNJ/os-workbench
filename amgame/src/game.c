@@ -55,7 +55,7 @@ void game_collision_handler() {
     ball->v_x = -ball->v_x;
   }
   
-  if (ball->x >= 400) {
+  if (ball->x + ball->w + ball->v_x >= 400) {
     ball->v_x = -ball->v_x;
   }
 
@@ -63,7 +63,7 @@ void game_collision_handler() {
     ball->v_y = -ball->v_y;
   }
   
-  if (ball->y >= 300) {
+  if (ball->y + ball->h + ball->v_y >= 300) {
     game_over();
   }
 
@@ -71,7 +71,7 @@ void game_collision_handler() {
     board->v_x = 0;
   }
   
-  if (board->x >= 400) {
+  if (board->x + board->w + board->v_x>= 400) {
     board->v_x = 0;
   }
   
