@@ -65,8 +65,8 @@ void get_thread_info(char *filename) {
 
   procs[proc_pid].ppid = proc_ppid;
 
-  printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
-         procs[proc_pid].name);
+  // printf("%d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, buf,
+        //  procs[proc_pid].name);
 
   edges[procs[proc_pid].ppid] =
       new_edge(&procs[proc_pid], edges[procs[proc_pid].ppid]);
@@ -163,11 +163,11 @@ void input(int argc, char *argv[]) {
     switch (opt) {
       case 'p':
         flag_p = 1;
-        printf("p\n");
+        // printf("p\n");
         break;
       case 'n':
         flag_n = 1;
-        printf("n\n");
+        // printf("n\n");
         break;
 
       case 'V':
@@ -196,7 +196,7 @@ the terms of the GNU General Public License.\n\
 int main(int argc, char *argv[]) {
   input(argc, argv);
 
-  printf("flags: %d %d %d\n", flag_p, flag_n, flag_V);
+  // printf("flags: %d %d %d\n", flag_p, flag_n, flag_V);
 
   cnt = 0;
   get_proc_info();
