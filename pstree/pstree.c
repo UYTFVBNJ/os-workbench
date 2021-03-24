@@ -133,7 +133,7 @@ void print_tree(int u, int dep) {
     while (edges[u] != NULL) {
       struct Edge *ee = edges[u];
       for (struct Edge *e = edges[u]; e != NULL; e = e->nxt)
-        if (strcmp(e->v->name, ee->v->name) > 0) ee = e;
+        if (strcmp(e->v->name, ee->v->name) < 0) ee = e;
 
 
       print_tree(ee->v->pid, dep + 1);
