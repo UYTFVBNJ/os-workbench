@@ -181,11 +181,11 @@ void input(int argc, char *argv[]) {
         flag_V = 1;
         printf("V\n");
 
-        fputs("pstree (PSmisc) UNKNOWN\
-Copyright (C) 1993-2019 Werner Almesberger and Craig Small\
-PSmisc comes with ABSOLUTELY NO WARRANTY.\
-This is free software, and you are welcome to redistribute it under\
-the terms of the GNU General Public License.\
+        fputs("pstree (PSmisc) UNKNOWN\n\
+Copyright (C) 1993-2019 Werner Almesberger and Craig Small\n\
+PSmisc comes with ABSOLUTELY NO WARRANTY.\n\
+This is free software, and you are welcome to redistribute it under\n\
+the terms of the GNU General Public License.\n\
 ", stderr);
 
         exit(0);
