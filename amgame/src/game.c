@@ -2,7 +2,6 @@
 
 const Time FPS = 30;
 
-enum { OBJ_BOARD, OBJ_BALL, OBJ_BRICK };
 
 Obj *objs[OBJS_MAX_NUM];
 int objs_num = 0;
@@ -19,13 +18,17 @@ void game_init() {
   screen_init();
 }
 
+void game_win() {}
+
+void game_over() {}
+
 void kbd_event(Key key) {
   switch (key) {
     case AM_KEY_LEFT:
-      board->v_y -= 2;
+      board->v_x -= 1;
       break;
     case AM_KEY_RIGHT:
-      board->v_y += 2;
+      board->v_x += 1;
       break;
     case AM_KEY_ESCAPE:
       halt(0);
@@ -42,9 +45,36 @@ void game_collision_handler() {
   for (int i = 0; i < objs_num; i++)
     if (objs[i] != ball)
       if ((ret = obj_collision_detector(ball, objs[i])) > 0) {
-        ball->collision_handler(ball, ret);
-        objs[i]->collision_handler(objs[i], (ret + 2) % 4);
+        ball->collision_handler(ball, ret, objs[i]->type);
+        objs[i]->collision_handler(objs[i], (ret + 2) % 4, ball->type);
       }
+
+  /* wall vs. ball & board */
+  
+  if (ball->x + ball->v_x <= 0) {
+    ball->v_x = -ball->v_x;
+  }
+  
+  if (ball->x >= 400) {
+    ball->v_x = -ball->v_x;
+  }
+
+  if (ball->y <= 0) {
+    ball->v_y = -ball->v_y;
+  }
+  
+  if (ball->y >= 300) {
+    game_over();
+  }
+
+  if (board->x + board->v_x <= 0) {
+    board->v_x = 0;
+  }
+  
+  if (board->x >= 400) {
+    board->v_x = 0;
+  }
+  
 }
 
 void game_movement_handler() {

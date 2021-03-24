@@ -8,7 +8,7 @@ extern int objs_num;
 
 Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
 
-               bool (*is_draw)(int, int, int), void (*collision_handler)()) {
+               bool (*is_draw)(int, int, int), void (*collision_handler)(void *, int, int)) {
   if (objs_num == sizeof(objs) / sizeof(Obj *)) return NULL;
 
   objs[objs_num] = (Obj *)malloc(sizeof(Obj));
@@ -63,9 +63,9 @@ void obj_move(Obj *obj) {
   // TODO
 }
 
-void board_collision_handler(Obj *obj, int side) {}
+void board_collision_handler(Obj *obj, int side, int type) {}
 
-void ball_collision_handler(Obj *obj, int side) {
+void ball_collision_handler(Obj *obj, int side, int type) {
   switch (side) {
     case 1:
     case 3:
@@ -80,7 +80,7 @@ void ball_collision_handler(Obj *obj, int side) {
   }
 }
 
-void brick_collision_handler(Obj *obj, int side) { obj_remove(obj); }
+void brick_collision_handler(Obj *obj, int side, int type) { obj_remove(obj); }
 
 bool line_collision_detector(int a_x0, int a_x1, int a_y, int b_x0, int b_x1,
                              int b_y, int av_x, int av_y) {

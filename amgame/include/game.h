@@ -8,6 +8,8 @@ typedef uint64_t Time;
 typedef uint32_t Color;
 
 /* object */
+enum { OBJ_BOARD, OBJ_BALL, OBJ_BRICK };
+
 #define OBJS_MAX_NUM 10
 #define OBJS_MAP_SCALE (1 << 20)
 
@@ -20,7 +22,7 @@ struct Object {
   int w, h;
   Color color;
   bool (*is_draw)(int, int, int);
-  void (*collision_handler)();
+  void (*collision_handler)(void *, int, int);
 };
 typedef struct Object Obj;
 
@@ -52,8 +54,8 @@ Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
 
 void obj_move(Obj *obj);
 
-void board_collision_handler(Obj *obj, int side);
-void ball_collision_handler(Obj *obj, int side);
-void brick_collision_handler(Obj *obj, int side);
+void board_collision_handler(Obj *obj, int side, int type);
+void ball_collision_handler(Obj *obj, int side, int type);
+void brick_collision_handler(Obj *obj, int side, int type);
 
 int obj_collision_detector(Obj const *a, Obj const *b);
