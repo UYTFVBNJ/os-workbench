@@ -66,8 +66,10 @@ void get_thread_info(char *filename, pid_t *main_pid) {
   if (*main_pid == 0) {
     procs[proc_pid].ppid = proc_ppid;
     *main_pid = proc_pid;
-  } else
+  } else {
     procs[proc_pid].ppid = *main_pid;
+    procs[proc_pid].name = 
+  }
 
   printf("%d %d %d\n %s\n %s \n", proc_pid, procs[proc_pid].ppid, *main_pid,
          buf, procs[proc_pid].name);
@@ -179,7 +181,12 @@ void input(int argc, char *argv[]) {
         flag_V = 1;
         printf("V\n");
 
-        fputs("yeah~", stderr);
+        fputs("pstree (PSmisc) UNKNOWN\
+Copyright (C) 1993-2019 Werner Almesberger and Craig Small\
+PSmisc comes with ABSOLUTELY NO WARRANTY.\
+This is free software, and you are welcome to redistribute it under\
+the terms of the GNU General Public License.\
+", stderr);
 
         exit(0);
         break;
