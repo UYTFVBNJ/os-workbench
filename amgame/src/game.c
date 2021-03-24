@@ -9,7 +9,7 @@ int objs_num = 0;
 static Obj *ball, *board;
 
 void game_init() {
-  ball = obj_creat(OBJ_BALL, 100, 50, 20, 20, 0xffffff, is_draw_rect, ball_collision_handler);
+  ball = obj_creat(OBJ_BALL, 50, 50, 20, 20, 0xffffff, is_draw_rect, ball_collision_handler);
   ball->v_y = 1;
 
   board = obj_creat(OBJ_BOARD, 50, 100, 40, 20, 0xffffff, is_draw_rect, board_collision_handler);
