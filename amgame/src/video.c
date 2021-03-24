@@ -1,7 +1,7 @@
 #include <game.h>
 
+extern Obj *objs[OBJS_MAX_NUM];
 extern int objs_num;
-extern Obj *objs[];
 
 #define SIDE 16
 static int w, h;
@@ -33,20 +33,18 @@ static void draw(int x, int y, int w, int h, Color color,
   ioe_write(AM_GPU_FBDRAW, &event);
 }
 
-void obj_draw(Obj const * obj) {
+void obj_draw(Obj const *obj) {
   draw(obj->x, obj->y, obj->w, obj->h, obj->color, obj->is_draw);
 }
 
-void obj_hide(Obj const * obj) {
+void obj_hide(Obj const *obj) {
   draw(obj->x, obj->y, obj->w, obj->h, 0x000000, obj->is_draw);
 }
 
-bool is_draw_rect(int obj_w, int obj_h, int idx) {
-  return 1;
-}
+bool is_draw_rect(int obj_w, int obj_h, int idx) { return 1; }
 
 bool is_draw_circ(int obj_w, int obj_h, int idx) {
-  // int x = idx / 
+  // int x = idx /
   // int r = min(obj_w, obj_h) / 2;
   return 1;
 }
@@ -54,10 +52,10 @@ bool is_draw_circ(int obj_w, int obj_h, int idx) {
 /* The screen family */
 void screen_update() {
   for (int i = 0; i < objs_num; i++)
-    if (objs[i]->upd) {
-      obj_draw(objs[i]);
-      objs[i]->upd = false;
-    }
+    // if (objs[i]->upd) {
+    obj_draw(objs[i]);
+  // objs[i]->upd = false;
+  // }
 }
 
 void screen_init() {
@@ -65,4 +63,3 @@ void screen_init() {
   printf("screen size: %d %d\n", w, h);
   screen_update();
 }
-

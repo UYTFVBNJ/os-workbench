@@ -4,66 +4,17 @@ const Time FPS = 30;
 
 enum { OBJ_BOARD, OBJ_BALL, OBJ_BRICK };
 
-Obj *objs[10];
+Obj *objs[OBJS_MAX_NUM];
 int objs_num = 0;
 static Obj *ball, *board;
 
-Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
-               bool (*is_draw)(int, int, int)) {
-  if (objs_num == sizeof(objs) / sizeof(Obj *)) return NULL;
-
-  objs[objs_num] = (Obj *)malloc(sizeof(Obj));
-
-  objs[objs_num]->upd = true;
-
-  objs[objs_num]->type = type;
-
-  objs[objs_num]->spd_v = 0;
-  objs[objs_num]->spd_h = 0;
-
-  objs[objs_num]->x = x;
-  objs[objs_num]->y = y;
-
-  objs[objs_num]->w = w;
-  objs[objs_num]->h = h;
-
-  objs[objs_num]->color = color;
-
-  objs[objs_num]->is_draw = is_draw;
-
-  objs_num++;
-
-  return objs[objs_num - 1];
-}
-
-void obj_remove(int idx) {
-  free(objs[idx]);
-
-  for (int i = idx; i < objs_num; i++) {
-    objs[i] = objs[i + 1];
-  }
-  // last iteration objs[pre_objs_num - 1] = NULL;
-
-  objs_num--;
-}
-
-void obj_move(Obj *obj) {
-  obj_hide(obj);
-
-  obj->x += obj->spd_h;
-  obj->y += obj->spd_v;
-
-
-  // TODO
-}
-
 void game_init() {
-  ball = obj_creat(OBJ_BALL, 50, 50, 20, 20, 0xffffff, is_draw_rect);
-  ball->spd_v = 1;
+  ball = obj_creat(OBJ_BALL, 50, 50, 20, 20, 0xffffff, is_draw_rect, ball_collision_handler);
+  ball->v_y = 1;
 
-  board = obj_creat(OBJ_BOARD, 50, 100, 40, 20, 0xffffff, is_draw_rect);
+  board = obj_creat(OBJ_BOARD, 50, 100, 40, 20, 0xffffff, is_draw_rect, board_collision_handler);
 
-  obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect);
+  obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
   screen_init();
 }
@@ -71,10 +22,10 @@ void game_init() {
 void kbd_event(Key key) {
   switch (key) {
     case AM_KEY_LEFT:
-      board->spd_h -= 2;
+      board->v_y -= 2;
       break;
     case AM_KEY_RIGHT:
-      board->spd_h += 2;
+      board->v_y += 2;
       break;
     case AM_KEY_ESCAPE:
       halt(0);
@@ -85,36 +36,28 @@ void kbd_event(Key key) {
   }
 }
 
-bool obj_collision_detector(Obj *a, Obj *b) {
-  // TODO
-  return 0;
-}
-
-void obj_collision_handler(Obj *a) {
-  // TODO
-}
-
 void game_collision_handler() {
   /* ball vs. board & brick*/
+  int ret;
   for (int i = 0; i < objs_num; i++)
     if (objs[i] != ball)
-      if (obj_collision_detector(ball, objs[i])) {
-        obj_collision_handler(ball);
-        obj_collision_handler(objs[i]);
+      if ((ret = obj_collision_detector(ball, objs[i])) > 0) {
+        ball->collision_handler(ball, ret);
+        objs[i]->collision_handler(objs[i], (ret + 2) % 4);
       }
 }
 
 void game_movement_handler() {
   for (int i = 0; i < objs_num; i++)
-    if (objs[i]->spd_h != 0 || objs[i]->spd_v != 0) {
+    if (objs[i]->v_x != 0 || objs[i]->v_y != 0) {
       obj_move(objs[i]);
       printf("%d %d\n", i, objs_num);
     }
 }
 
 void game_progress() {
-  game_movement_handler();
   game_collision_handler();
+  game_movement_handler();
 
   screen_update();
 }
@@ -137,20 +80,6 @@ void game_loop() {
 // Operating system is a C program!
 int main(const char *args) {
   ioe_init();
-
-  /*
-  puts("mainargs = \"");
-  puts(args);  // make run mainargs=xxx
-  puts("\"\n");
-
-  // uint32_t i = 0;
-  // while (1) splash_c(i++);
-
-  puts("Press any key to see its key code...\n");
-  while (1) {
-    print_key();
-  }
-  */
 
   /* begin */
   game_init();
