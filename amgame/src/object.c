@@ -67,12 +67,12 @@ void board_collision_handler(Obj *obj, int side) {}
 
 void ball_collision_handler(Obj *obj, int side) {
   switch (side) {
-    case 0:
-    case 2:
-      obj->v_y = -obj->v_y;
-      break;
     case 1:
     case 3:
+      obj->v_y = -obj->v_y;
+      break;
+    case 2:
+    case 4:
       obj->v_x = -obj->v_x;
       break;
     default:
