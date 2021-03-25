@@ -93,9 +93,10 @@ bool line_collision_detector(int a_x0, int a_x1, int a_y, int b_x0, int b_x1,
   b_y *= OBJS_MAP_SCALE;
 
   if (av_y == 0) return 0;
-  
+
   int t = (b_y - a_y) / av_y;
 
+  printf("%d\n", t);
   if (t < 0) return 0;
 
   a_x0 += t * av_x;
@@ -103,7 +104,6 @@ bool line_collision_detector(int a_x0, int a_x1, int a_y, int b_x0, int b_x1,
 
   if (a_x1 < b_x0 || b_x1 < a_x0) return 0;
 
-  printf("%d\n", t);
   if (t > OBJS_MAP_SCALE) return 0;
 
   return 1;
@@ -117,8 +117,8 @@ int obj_collision_detector(Obj const *a, Obj const *b) {
   int av_x = a->v_x, av_y = a->v_y;
 
   for (int i = 0; i < 4; i++) {
-    if (line_collision_detector(P(A, i), S(A, i), A[i], P(B, i + 2),
-                                S(B, i + 2), B[(i + 2) % 4], av_x, av_y))
+    if (line_collision_detector(P(A, i), S(A, i), A[i], S(B, i + 2),
+                                P(B, i + 2), B[(i + 2) % 4], av_x, av_y))
       return i + 1;
     
     // swap(av_x, av_y);
