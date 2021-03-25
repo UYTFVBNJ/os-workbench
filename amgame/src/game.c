@@ -65,7 +65,7 @@ void game_collision_handler() {
   /* ball vs. board & brick*/
   int ret;
   for (int i = 0; i < objs_num; i++)
-    if (objs[i] != ball)
+    if (objs[i] != ball && objs[i] != board)
       if ((ret = obj_collision_detector(ball, objs[i])) > 0) {
         ball->collision_handler(ball, ret, objs[i]->type);
         objs[i]->collision_handler(objs[i], (ret + 2) % 4, ball->type);
@@ -74,6 +74,11 @@ void game_collision_handler() {
         }
       }
 
+  if ((ret = obj_collision_detector(board, ball)) > 0) {
+    ball->collision_handler(ball, ret, board->type);
+    board->collision_handler(board, (ret + 2) % 4, ball->type);
+    ball->v_x += board->v_x;
+  }
   /* wall vs. ball & board */
   
   if (ball->x + ball->v_x <= 0) {
