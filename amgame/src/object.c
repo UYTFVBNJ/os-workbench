@@ -96,7 +96,7 @@ bool line_collision_detector(int a_x0, int a_x1, int a_y, int b_x0, int b_x1,
 
   int t = (b_y - a_y) / av_y;
 
-  printf("%d\n", t);
+  printf("%d %d %d %d %d %d %d\n", a_x0, a_x1, a_y, b_x0, b_x1, b_y, t);
   if (t < 0) return 0;
 
   a_x0 += t * av_x;
