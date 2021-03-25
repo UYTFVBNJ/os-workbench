@@ -22,14 +22,14 @@ void game_init() {
 
   board = obj_creat(OBJ_BOARD, 50, 290, 40, 10, 0xffffff, is_draw_rect, board_collision_handler);
 
-  obj_creat(OBJ_BRICK, 10, 5, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 55, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 105, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 155, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 205, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 255, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 305, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 50, 355, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 5,   10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 55,  10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 105, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 155, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 205, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 255, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 305, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 355, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
   screen_update();
 }
