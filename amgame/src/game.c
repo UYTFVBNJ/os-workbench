@@ -17,7 +17,7 @@ void game_init() {
 
   game_continue = 1;
 
-  ball = obj_creat(OBJ_BALL, 195, 150, 10, 10, 0xffffff, is_draw_rect, ball_collision_handler);
+  ball = obj_creat(OBJ_BALL, 195, 160, 10, 10, 0xffffff, is_draw_rect, ball_collision_handler);
   ball->v_y = 1;
 
   board = obj_creat(OBJ_BOARD, 250, 290, 40, 10, 0xffffff, is_draw_rect, board_collision_handler);
