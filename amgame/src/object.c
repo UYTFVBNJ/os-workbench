@@ -8,7 +8,8 @@ extern int objs_num;
 
 Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
 
-               bool (*is_draw)(int, int, int), void (*collision_handler)(void *, int, int)) {
+               bool (*is_draw)(int, int, int),
+               void (*collision_handler)(void *, int, int)) {
   if (objs_num == sizeof(objs) / sizeof(Obj *)) return NULL;
 
   objs[objs_num] = (Obj *)malloc(sizeof(Obj));
@@ -96,7 +97,9 @@ bool line_collision_detector(int a_x0, int a_x1, int a_y, int b_x0, int b_x1,
 
   int t = (b_y - a_y) / av_y;
 
-  printf("%d %d %d %d %d %d %d\n", a_x0 / OBJS_MAP_SCALE, a_x1 / OBJS_MAP_SCALE, a_y / OBJS_MAP_SCALE, b_x0 / OBJS_MAP_SCALE, b_x1 / OBJS_MAP_SCALE, b_y / OBJS_MAP_SCALE, t / OBJS_MAP_SCALE);
+  printf("%d %d %d %d %d %d %d\n", a_x0 / OBJS_MAP_SCALE, a_x1 / OBJS_MAP_SCALE,
+         a_y / OBJS_MAP_SCALE, b_x0 / OBJS_MAP_SCALE, b_x1 / OBJS_MAP_SCALE,
+         b_y / OBJS_MAP_SCALE, t / OBJS_MAP_SCALE);
   if (t < 0) return 0;
 
   a_x0 += t * av_x;
@@ -116,15 +119,21 @@ int obj_collision_detector(Obj const *a, Obj const *b) {
   int B[] = {b->y, b->x + b->w, b->y + b->h, b->x};
   int av_x = a->v_x, av_y = a->v_y;
 
-  for (int i = 0; i < 4; i++) {
-    if (line_collision_detector(P(A, i), S(A, i), A[i], S(B, i + 2),
-                                P(B, i + 2), B[(i + 2) % 4], av_x, av_y))
-      return i + 1;
-    
-    // swap(av_x, av_y);
-    int tmp = av_x;
-    av_x = av_y;
-    av_y = tmp;
-  }
+  if (line_collision_detector(P(A, 0), S(A, 0), A[0], S(B, 0 + 2), P(B, 0 + 2),
+                              B[(0 + 2) % 4], av_x, -av_y))
+    return 0 + 1;
+
+  if (line_collision_detector(P(A, 1), S(A, 1), A[1], S(B, 1 + 2), P(B, 1 + 2),
+                              B[(1 + 2) % 4], av_y, av_x))
+    return 1 + 1;
+
+  if (line_collision_detector(S(A, 2), P(A, 2), A[2], P(B, 2 + 2), S(B, 2 + 2),
+                              B[(2 + 2) % 4], av_x, av_y))
+    return 2 + 1;
+
+  if (line_collision_detector(S(A, 3), P(A, 3), A[3], P(B, 3 + 2), S(B, 3 + 2),
+                              B[(3 + 2) % 4], av_y, -av_x))
+    return 3 + 1;
+
   return 0;
 }
