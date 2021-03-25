@@ -17,10 +17,10 @@ void game_init() {
 
   game_continue = 1;
 
-  ball = obj_creat(OBJ_BALL, 50, 250, 10, 10, 0xffffff, is_draw_rect, ball_collision_handler);
-  ball->v_y = 1;
+  ball = obj_creat(OBJ_BALL, 200, 290, 10, 10, 0xffffff, is_draw_rect, ball_collision_handler);
+  ball->v_x = 1;
 
-  board = obj_creat(OBJ_BOARD, 50, 290, 40, 10, 0xffffff, is_draw_rect, board_collision_handler);
+  board = obj_creat(OBJ_BOARD, 250, 290, 40, 10, 0xffffff, is_draw_rect, board_collision_handler);
 
   obj_creat(OBJ_BRICK, 5,   10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
   obj_creat(OBJ_BRICK, 55,  10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
