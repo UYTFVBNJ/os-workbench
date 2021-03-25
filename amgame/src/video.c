@@ -61,5 +61,4 @@ void screen_update() {
 void screen_init() {
   init();
   printf("screen size: %d %d\n", w, h);
-  screen_update();
 }

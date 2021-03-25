@@ -24,7 +24,7 @@ void game_init() {
 
   // obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
-  screen_init();
+  screen_update();
 }
 
 void game_win() {
@@ -130,6 +130,8 @@ void game_loop() {
 // Operating system is a C program!
 int main(const char *args) {
   ioe_init();
+
+  screen_init();
 
   /* begin */
   while (1) {
