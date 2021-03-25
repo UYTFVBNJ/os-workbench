@@ -12,6 +12,8 @@ void game_init() {
   while (objs_num--) {
     obj_remove(objs[objs_num]);
   }
+  
+  objs_num = 0;
 
   game_continue = 1;
 
