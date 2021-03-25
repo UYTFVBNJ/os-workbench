@@ -116,7 +116,7 @@ int obj_collision_detector(Obj const *a, Obj const *b) {
 
   for (int i = 0; i < 4; i++) {
     if (line_collision_detector(P(A, i), S(A, i), A[i], P(B, i + 2),
-                                S(B, i + 2), B[(i + 2) % 4], a->v_x, a->v_y))
+                                S(B, i + 2), B[(i + 2) % 4], av_x, av_y))
       return i + 1;
     
     // swap(av_x, av_y);
