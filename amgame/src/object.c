@@ -119,18 +119,21 @@ int obj_collision_detector(Obj const *a, Obj const *b) {
   int B[] = {b->y, b->x + b->w, b->y + b->h, b->x};
   int av_x = a->v_x, av_y = a->v_y;
 
+  printf("0\n");
   if (line_collision_detector(P(A, 0), S(A, 0), A[0], S(B, 0 + 2), P(B, 0 + 2),
                               B[(0 + 2) % 4], av_x, -av_y))
     return 0 + 1;
-
+  printf("1\n");
   if (line_collision_detector(P(A, 1), S(A, 1), A[1], S(B, 1 + 2), P(B, 1 + 2),
                               B[(1 + 2) % 4], av_y, av_x))
     return 1 + 1;
 
+  printf("2\n");
   if (line_collision_detector(S(A, 2), P(A, 2), A[2], P(B, 2 + 2), S(B, 2 + 2),
                               B[(2 + 2) % 4], av_x, av_y))
     return 2 + 1;
 
+  printf("3\n");
   if (line_collision_detector(S(A, 3), P(A, 3), A[3], P(B, 3 + 2), S(B, 3 + 2),
                               B[(3 + 2) % 4], av_y, -av_x))
     return 3 + 1;
