@@ -100,7 +100,7 @@ void game_movement_handler() {
   for (int i = 0; i < objs_num; i++)
     if (objs[i]->v_x != 0 || objs[i]->v_y != 0) {
       obj_move(objs[i]);
-      printf("%d %d\n", i, objs_num);
+      // printf("%d %d\n", i, objs_num);
     }
 }
 
