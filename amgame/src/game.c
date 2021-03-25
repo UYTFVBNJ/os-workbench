@@ -18,7 +18,7 @@ void game_init() {
   game_continue = 1;
 
   ball = obj_creat(OBJ_BALL, 200, 285, 10, 10, 0xffffff, is_draw_rect, ball_collision_handler);
-  ball->v_x = 1;
+  ball->v_y = 1;
 
   board = obj_creat(OBJ_BOARD, 250, 290, 40, 10, 0xffffff, is_draw_rect, board_collision_handler);
 
@@ -40,23 +40,23 @@ void game_init() {
   obj_creat(OBJ_BRICK, 305, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
   obj_creat(OBJ_BRICK, 355, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
-  obj_creat(OBJ_BRICK, 5,   80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 55,  80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 105, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 155, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 205, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 255, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 305, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 355, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 5,   90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 55,  90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 105, 90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 155, 90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 205, 90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 255, 90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 305, 90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 355, 90, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
-  obj_creat(OBJ_BRICK, 5,   110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 55,  110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 105, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 155, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 205, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 255, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 305, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
-  obj_creat(OBJ_BRICK, 355, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 5,   130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 55,  130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 105, 130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 155, 130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 205, 130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 255, 130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 305, 130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 355, 130, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
 
 
