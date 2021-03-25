@@ -92,6 +92,8 @@ bool line_collision_detector(int a_x0, int a_x1, int a_y, int b_x0, int b_x1,
   b_x1 *= OBJS_MAP_SCALE;
   b_y *= OBJS_MAP_SCALE;
 
+  if (av_y == 0) return 0;
+  
   int t = (b_y - a_y) / av_y;
 
   if (t < 0) return 0;
