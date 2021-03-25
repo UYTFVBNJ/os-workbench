@@ -2,12 +2,15 @@
 
 const Time FPS = 30;
 
+bool game_continue = 0;
 
 Obj *objs[OBJS_MAX_NUM];
 int objs_num = 0;
 static Obj *ball, *board;
 
 void game_init() {
+  game_continue = 1;
+
   ball = obj_creat(OBJ_BALL, 200, 50, 20, 20, 0xffffff, is_draw_rect, ball_collision_handler);
   ball->v_y = 1;
 
@@ -18,7 +21,9 @@ void game_init() {
   screen_init();
 }
 
-void game_win() {}
+void game_win() {
+  game_continue = 0;
+}
 
 void game_over() {}
 
@@ -94,7 +99,7 @@ void game_progress() {
 
 void game_loop() {
   Time next_frame = 0;
-  while (1) {
+  while (game_continue) {
     while (uptime() < next_frame)
       ;  // 等待一帧的到来
     Key key;
@@ -104,6 +109,7 @@ void game_loop() {
 
     game_progress();  // 处理一帧游戏逻辑，更新物体的位置等
     next_frame += 1000 / FPS;  // 计算下一帧的时间
+    if (uptime() > next_frame) printf("timeout\n");
   }
 }
 
@@ -112,8 +118,10 @@ int main(const char *args) {
   ioe_init();
 
   /* begin */
-  game_init();
-  game_loop();
+  while (1) {
+    game_init();
+    game_loop();
+  }
 
   return 0;
 }
