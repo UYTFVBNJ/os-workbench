@@ -9,6 +9,10 @@ int objs_num = 0;
 static Obj *ball, *board;
 
 void game_init() {
+  while (objs_num--) {
+    obj_remove(objs[objs_num]);
+  }
+
   game_continue = 1;
 
   ball = obj_creat(OBJ_BALL, 200, 50, 20, 20, 0xffffff, is_draw_rect, ball_collision_handler);
@@ -16,16 +20,20 @@ void game_init() {
 
   board = obj_creat(OBJ_BOARD, 50, 280, 40, 20, 0xffffff, is_draw_rect, board_collision_handler);
 
-  // obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 50, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
   screen_init();
 }
 
 void game_win() {
   game_continue = 0;
+  puts("game_win");
 }
 
-void game_over() {}
+void game_over() {
+  game_continue = 0;
+  puts("game_over");
+}
 
 void kbd_event(Key key) {
   switch (key) {

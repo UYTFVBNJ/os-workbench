@@ -53,6 +53,7 @@ Obj *obj_creat(int type, int x, int y, int w, int h, Color color,
                bool (*is_draw)(int, int, int), void (*collision_handler)());
 
 void obj_move(Obj *obj);
+void obj_remove(Obj *obj);
 
 void board_collision_handler(Obj *obj, int side, int type);
 void ball_collision_handler(Obj *obj, int side, int type);
