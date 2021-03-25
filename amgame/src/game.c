@@ -31,6 +31,35 @@ void game_init() {
   obj_creat(OBJ_BRICK, 305, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
   obj_creat(OBJ_BRICK, 355, 10, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
 
+  obj_creat(OBJ_BRICK, 5,   50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 55,  50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 105, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 155, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 205, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 255, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 305, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 355, 50, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+
+  obj_creat(OBJ_BRICK, 5,   80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 55,  80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 105, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 155, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 205, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 255, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 305, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 355, 80, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+
+  obj_creat(OBJ_BRICK, 5,   110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 55,  110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 105, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 155, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 205, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 255, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 305, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+  obj_creat(OBJ_BRICK, 355, 110, 40, 20, 0xffffff, is_draw_rect, brick_collision_handler);
+
+
+
   screen_update();
 }
 
@@ -74,11 +103,6 @@ void game_collision_handler() {
         }
       }
 
-  if ((ret = obj_collision_detector(board, ball)) > 0) {
-    ball->collision_handler(ball, ret, board->type);
-    board->collision_handler(board, (ret + 2) % 4, ball->type);
-    ball->v_x += board->v_x;
-  }
   /* wall vs. ball & board */
   
   if (ball->x + ball->v_x <= 0) {
