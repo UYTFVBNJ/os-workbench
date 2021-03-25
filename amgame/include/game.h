@@ -11,7 +11,7 @@ typedef uint32_t Color;
 enum { OBJ_BOARD, OBJ_BALL, OBJ_BRICK };
 
 #define OBJS_MAX_NUM 40
-#define OBJS_MAP_SCALE (1 << 20)
+#define OBJS_MAP_SCALE (100)
 
 struct Object {
   // bool upd;
