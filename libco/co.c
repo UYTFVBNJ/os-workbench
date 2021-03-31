@@ -124,7 +124,7 @@ void co_yield() {  // can switch to itself
     co *co = co_sheduler();
     switch (co->status) {
       case CO_NEW:
-        stack_switch_call(co->stack + STACK_SIZE, co_base, (void *)co);
+        stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
         break;
 
       case CO_RUNNING:
