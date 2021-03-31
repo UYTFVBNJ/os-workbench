@@ -66,7 +66,7 @@ static __attribute__((constructor)) void co_current_main() {
 
 // co_constructor
 co *co_start(const char *name, void (*func)(void *), void *arg) {
-  co *p = (co *)malloc(sizeof(co));
+  co *p = (co *)aligned_alloc(16, sizeof(co));
   assert(p != NULL);
 
   p->name = name;
