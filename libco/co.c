@@ -52,7 +52,7 @@ static void co_base(co *co) {
   longjmp(co->waiter->context, 1);
 }
 
-static __attribute__((constructor)) void co_current_main() {
+__attribute__((constructor)) void co_current_main() {
   co_pool[0] = co_start("main", NULL, NULL);
   co_pool[0]->status = CO_RUNNING;
   printf("co_current: %p\n", co_current);
