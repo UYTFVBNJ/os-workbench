@@ -1,6 +1,7 @@
 #include "co.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 
 static inline void stack_switch_call(void *sp, void *entry,
@@ -52,7 +53,7 @@ static void co_base(co *co) {
 }
 
 static __attribute__((constructor)) void co_current_main() {
-  co_pool[0] = co_start("main", main, NULL);
+  co_pool[0] = co_start("main", NULL, NULL);
   co_pool[0]->status = CO_RUNNING;
   printf("co_current: %p\n", co_current);
   co_pool[0]->waiter = NULL;
@@ -95,6 +96,7 @@ void co_wait(co *co) {
 
   switch (co->status) {
     case CO_NEW:
+      ;
       int ret = setjmp(co_current->context);
       if (ret == 0) stack_switch_call(co->stack + STACK_SIZE, co_base, co);
       co_destroyer(co);
@@ -122,7 +124,7 @@ void co_yield() {  // can switch to itself
     co *co = co_sheduler();
     switch (co->status) {
       case CO_NEW:
-        stack_switch_call(co->stack + STACK_SIZE, co_base, co);
+        stack_switch_call(co->stack + STACK_SIZE, co_base, (void *)co);
         break;
 
       case CO_RUNNING:
