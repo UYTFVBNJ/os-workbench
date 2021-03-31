@@ -1,3 +1,6 @@
+#include <setjmp.h>
+#include <stdint.h>
+
 struct co* co_start(const char *name, void (*func)(void *), void *arg);
 void co_yield();
 void co_wait(struct co *co);
@@ -13,7 +16,7 @@ enum co_status{
 #define CO_POOL_SIZE 128
 
 struct co {
-  char *name;
+  const char *name;
   void (*func)(void *); // co_start 指定的入口地址和参数
   void *arg;
 
