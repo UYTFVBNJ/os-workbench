@@ -35,7 +35,9 @@ static void test_1() {
     printf("flag\n");
 
     co_wait(thd1);
+    printf("flag\n");
     co_wait(thd2);
+    printf("flag\n");
 
 //    printf("\n");
 }
