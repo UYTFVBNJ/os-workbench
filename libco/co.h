@@ -12,7 +12,7 @@ enum co_status{
   CO_DEAD,    // 已经结束，但还未释放资源
 };
 
-#define STACK_SIZE 4096
+#define STACK_SIZE 4096 * 1024
 #define CO_POOL_SIZE 128
 
 struct co {
