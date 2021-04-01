@@ -4,7 +4,6 @@
 #include <string.h>
 #include "co-test.h"
 
-.att_synax
 int g_count = 0;
 
 static void add_count() {
@@ -17,6 +16,7 @@ static int get_count() {
 }
 
 static void work_loop(void *arg) {
+/*
 #if __x86_64__
     uintptr_t sp;
  asm volatile(
@@ -26,7 +26,7 @@ static void work_loop(void *arg) {
   );
         printf("work_loop %p\n", sp);
 #endif
-        printf("work_loop\n");
+*/
     const char *s = (const char*)arg;
     for (int i = 0; i < 100; ++i) {
         printf("work_loop\n");
