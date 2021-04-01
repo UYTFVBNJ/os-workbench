@@ -69,7 +69,8 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
   co *p = (co *)aligned_alloc(16, sizeof(co) + 1);
   printf("%p\n", p);
   p = p + 1;
-  printf("%p %d\n", p, sizeof(co));
+  int a = sizeof(co);
+  printf("%p %d\n", p, a);
   assert(p != NULL);
 
   p->name = name;
