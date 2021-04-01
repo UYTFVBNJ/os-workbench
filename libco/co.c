@@ -35,7 +35,7 @@ static co *co_sheduler() {
 }
 
 static void co_destroyer(co *co) {
-  free(co);
+  free((char*)co - 8);
 
   int i;
   for (i = 0; i < CO_POOL_SIZE; i++)
