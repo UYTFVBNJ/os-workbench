@@ -1,10 +1,10 @@
-.att_synax
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include "co-test.h"
 
+.att_synax
 int g_count = 0;
 
 static void add_count() {
