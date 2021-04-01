@@ -100,7 +100,7 @@ void co_wait(co *co) {
       int ret = setjmp(co_current->context);
       printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
       if (ret == 0) stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
-      co_destroyer(co);
+      co_destroyer(co); // TODO should use CO_DEAD
       break;
 
     case CO_RUNNING:
