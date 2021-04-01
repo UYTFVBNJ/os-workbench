@@ -20,7 +20,7 @@ static void work_loop(void *arg) {
     uintptr_t sp;
  asm volatile(
       "movq %%rsp %0;"
-      : "r"((uintptr_t)sp)
+      : "=r"(sp)
       : 
   );
         printf("work_loop %p\n", sp);
