@@ -121,6 +121,8 @@ void co_wait(co *co) {
 }
 
 void co_yield() {  // can switch to itself
+  printf("co_yielding\n");
+
   int ret = setjmp(co_current->context);
   if (ret == 0) {
     co *co = co_sheduler();
