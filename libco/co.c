@@ -6,7 +6,7 @@
 
 static inline void stack_switch_call(void *sp, void *entry,
                                      uintptr_t arg) {  // TODO + ret addr
-  assert(sp & 8 == 8);
+  assert((int)sp & 8 == 8);
   asm volatile(
 #if __x86_64__
       "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
