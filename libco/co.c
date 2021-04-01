@@ -66,7 +66,10 @@ __attribute__((constructor)) void co_current_main() {
 
 // co_constructor
 co *co_start(const char *name, void (*func)(void *), void *arg) {
-  co *p = (co *)aligned_alloc(16, sizeof(co) + 8) + 8;
+  co *p = (co *)aligned_alloc(16, sizeof(co) + 1);
+  printf("%p\n", p);
+  p = p + 1;
+  printf("%p\n", p);
   assert(p != NULL);
 
   p->name = name;
