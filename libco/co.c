@@ -47,6 +47,7 @@ static void co_destroyer(co *co) {
 }
 
 static void co_base(co *co) {
+  co_current = co;
   co->status = CO_RUNNING;
   co->func(co->arg);
   longjmp(co->waiter->context, 1);
