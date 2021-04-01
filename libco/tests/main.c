@@ -11,6 +11,7 @@ static void add_count() {
 }
 
 static int get_count() {
+    printf("get_count\n");
     return g_count;
 }
 
