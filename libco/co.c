@@ -54,7 +54,7 @@ static void co_base(co *co) {
   co->func(co->arg);
   co->status = CO_DEAD;
   if (co->waiter != NULL) co->waiter->status = CO_RUNNING;
-  printf("co_base\n");
+  // printf("co_base\n");
   co_yield();
   // longjmp(co->waiter->context, 1);
 }
@@ -62,7 +62,7 @@ static void co_base(co *co) {
 __attribute__((constructor)) void co_current_main() {
   co_pool[0] = co_start("main", NULL, NULL);
   co_pool[0]->status = CO_RUNNING;
-  printf("co_current: %p\n", co_current);
+  // printf("co_current: %p\n", co_current);
   co_pool[0]->waiter = NULL;
   co_current = co_pool[0];
 }
@@ -73,7 +73,7 @@ __attribute__((constructor)) void co_current_main() {
 co *co_start(const char *name, void (*func)(void *), void *arg) {
   co *p = (co *)((char *)aligned_alloc(16, sizeof(co) + 16 * sizeof(char)) + 8);
   assert(p != NULL);
-  printf("%p\n", p);
+  // printf("%p\n", p);
 
   p->name = name;
   p->func = func;
@@ -96,7 +96,7 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
 }
 
 void co_wait(co *co) {
-  printf("co_wait\n");
+  // printf("co_wait\n");
   assert(co != co_pool[0]);
 
   co_current->status = CO_WAITING;
@@ -104,7 +104,7 @@ void co_wait(co *co) {
   switch (co->status) {
     case CO_NEW:;
       int ret = setjmp(co_current->context);
-      printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
+      // printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
       if (ret == 0) {
         co->waiter = co_current;
         co_current = co;
