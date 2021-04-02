@@ -159,5 +159,9 @@ int main() {
 
     printf("\n\n");
 
+    test_3();
+
+    printf("\n\n");
+    
     return 0;
 }
