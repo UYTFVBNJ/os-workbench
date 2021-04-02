@@ -125,6 +125,29 @@ static void test_2() {
     q_free(queue);
 }
 
+static void test_3() {
+
+    Queue *queue = q_new();
+
+    struct co *thd[127];
+    thd[0] = co_start("producer-1", producer, queue);
+    for (int i = 1; i < 127; i ++)
+        thd[i] = co_start("consumer-i", consumer, queue);
+
+    co_wait(thd[0]);
+
+    g_running = 0;
+
+    for (int i = 1; i < 127; i ++)
+        co_wait(thd[i]);
+
+    while (!q_is_empty(queue)) {
+        do_consume(queue);
+    }
+
+    q_free(queue);
+}
+
 int main() {
     setbuf(stdout, NULL);
 
