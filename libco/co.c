@@ -65,12 +65,11 @@ static co *co_sheduler() {
 }
 
 static void co_destroyer(co *co) {
-  free((char *)co - 8);
-
   int i;
   for (i = 0; i < CO_POOL_SIZE; i++)
     if (co_pool[i] == co) {
       co_pool[i] = NULL;
+      free((char *)co - 8);
       break;
     }
   assert(i < CO_POOL_SIZE);
