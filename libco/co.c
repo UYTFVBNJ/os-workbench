@@ -70,6 +70,7 @@ static void co_destroyer(co *co) {
     if (co_pool[i] == co) {
       co_pool[i] = NULL;
       free((char *)co - 8);
+      printf("destroy %d\n", i);
       break;
     }
   assert(i < CO_POOL_SIZE);
@@ -114,7 +115,7 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
   for (i = 0; i < CO_POOL_SIZE; i++)
     if (co_pool[i] == NULL) {
       co_pool[i] = p;
-      printf("%d\n", i);
+      printf("construct %d\n", i);
       break;
     }
   assert(i < CO_POOL_SIZE);
