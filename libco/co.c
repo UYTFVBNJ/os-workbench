@@ -11,7 +11,7 @@ enum co_status{
 };
 
 #define STACK_SIZE 4096 * 1024
-#define CO_POOL_SIZE 128
+#define CO_POOL_SIZE 129
 
 struct co {
   const char *name;
