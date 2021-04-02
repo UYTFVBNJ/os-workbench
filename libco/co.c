@@ -52,6 +52,8 @@ static void co_base(co *co) {
   co->status = CO_RUNNING;
   co->func(co->arg);
   co->status = CO_DEAD;
+  if (co->waiter != NULL)
+    co->waiter->status = CO_RUNNING;
   co_yield();
   // longjmp(co->waiter->context, 1);
 }
@@ -79,7 +81,7 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
   p->arg = arg;
 
   p->status = CO_NEW;
-  p->waiter = co_current;
+  p->waiter = NULL;
 
   // p->context = ;
 
@@ -104,7 +106,10 @@ void co_wait(co *co) {
       ;
       int ret = setjmp(co_current->context);
       printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
-      if (ret == 0) stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
+      if (ret == 0) {
+        co->waiter = co_current;
+        stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
+      }
       co_destroyer(co); 
       break;
 
@@ -120,8 +125,6 @@ void co_wait(co *co) {
     default:
       assert(0);
   }
-
-  co_current->status = CO_RUNNING;
 }
 
 void co_yield() {  // can switch to itself
