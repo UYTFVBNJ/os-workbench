@@ -98,6 +98,7 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
 }
 
 void co_wait(co *co) {
+  printf("co_wait\n");
   assert(co != co_pool[0]);
 
   co_current->status = CO_WAITING;
