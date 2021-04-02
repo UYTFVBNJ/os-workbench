@@ -115,6 +115,7 @@ void co_wait(co *co) {
 
     case CO_RUNNING:
     case CO_WAITING:
+      co->waiter = co_current;
       co_yield();
       break;
 
