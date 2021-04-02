@@ -48,7 +48,6 @@ static void co_destroyer(co *co) {
 }
 
 static void co_base(co *co) {
-  co_current = co;
   co->status = CO_RUNNING;
   co->func(co->arg);
   co->status = CO_DEAD;
@@ -110,6 +109,7 @@ void co_wait(co *co) {
       printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
       if (ret == 0) {
         co->waiter = co_current;
+        co_current = co;
         stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
       }
       co_destroyer(co); 
@@ -137,10 +137,12 @@ void co_yield() {  // can switch to itself
     co *co = co_sheduler();
     switch (co->status) {
       case CO_NEW:
+        co_current = co;
         stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
         break;
 
       case CO_RUNNING:
+        co_current = co;
         longjmp(co->context, 1);
         break;
 
