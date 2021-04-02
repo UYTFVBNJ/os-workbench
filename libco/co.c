@@ -1,8 +1,8 @@
 #include "co.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static inline void stack_switch_call(void *sp, void *entry,
                                      uintptr_t arg) {  // TODO + ret addr
@@ -23,20 +23,22 @@ static inline void stack_switch_call(void *sp, void *entry,
 co *co_current;
 co *co_pool[CO_POOL_SIZE];
 
-
 // invisible part
 
 static co *co_sheduler() {
-  for (int i = 0; i < CO_POOL_SIZE; i++)
-    if (co_pool[i] != NULL &&
-        (co_pool[i]->status == CO_NEW || co_pool[i]->status == CO_RUNNING))
-      return co_pool[i];
+  int base = rand() % CO_POOL_SIZE;
+  for (int i = 0; i < CO_POOL_SIZE; i++) {
+    int j = (base + i) % CO_POOL_SIZE;
+    if (co_pool[j] != NULL &&
+        (co_pool[j]->status == CO_NEW || co_pool[j]->status == CO_RUNNING))
+      return co_pool[j];
+  }
 
   assert(0);
 }
 
 static void co_destroyer(co *co) {
-  free((char*)co - 8);
+  free((char *)co - 8);
 
   int i;
   for (i = 0; i < CO_POOL_SIZE; i++)
@@ -51,8 +53,7 @@ static void co_base(co *co) {
   co->status = CO_RUNNING;
   co->func(co->arg);
   co->status = CO_DEAD;
-  if (co->waiter != NULL)
-    co->waiter->status = CO_RUNNING;
+  if (co->waiter != NULL) co->waiter->status = CO_RUNNING;
   printf("co_base\n");
   co_yield();
   // longjmp(co->waiter->context, 1);
@@ -65,8 +66,6 @@ __attribute__((constructor)) void co_current_main() {
   co_pool[0]->waiter = NULL;
   co_current = co_pool[0];
 }
-
-
 
 // visible part
 
@@ -103,8 +102,7 @@ void co_wait(co *co) {
   co_current->status = CO_WAITING;
 
   switch (co->status) {
-    case CO_NEW:
-      ;
+    case CO_NEW:;
       int ret = setjmp(co_current->context);
       printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
       if (ret == 0) {
@@ -112,7 +110,7 @@ void co_wait(co *co) {
         co_current = co;
         stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
       }
-      co_destroyer(co); 
+      co_destroyer(co);
       break;
 
     case CO_RUNNING:
@@ -121,7 +119,7 @@ void co_wait(co *co) {
       break;
 
     case CO_DEAD:
-      co_destroyer(co); 
+      co_destroyer(co);
       break;
 
     default:
@@ -151,4 +149,3 @@ void co_yield() {  // can switch to itself
     }
   }
 }
-
