@@ -29,8 +29,6 @@ typedef struct co co;
 #include <assert.h>
 #include <stdlib.h>
 
-#include <stdio.h>
-
 static inline void stack_switch_call(void *sp, void *entry,
                                      uintptr_t arg) {
   assert(((uintptr_t)sp & 8) == 8);
@@ -65,13 +63,13 @@ static co *co_sheduler() {
 }
 
 static void co_destroyer(co *co) {
-  printf("co_destroyer\n");
+  // printf("co_destroyer\n");
   int i;
   for (i = 0; i < CO_POOL_SIZE; i++)
     if (co_pool[i] == co) {
       co_pool[i] = NULL;
       free((char *)co - 8);
-      printf("destroy %d\n", i);
+      // printf("destroy %d\n", i);
       break;
     }
   assert(i < CO_POOL_SIZE);
@@ -116,7 +114,7 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
   for (i = 0; i < CO_POOL_SIZE; i++)
     if (co_pool[i] == NULL) {
       co_pool[i] = p;
-      printf("construct %d\n", i);
+      // printf("construct %d\n", i);
       break;
     }
   assert(i < CO_POOL_SIZE);
