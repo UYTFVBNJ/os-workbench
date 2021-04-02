@@ -65,6 +65,7 @@ static co *co_sheduler() {
 }
 
 static void co_destroyer(co *co) {
+  printf("co_destroyer\n");
   int i;
   for (i = 0; i < CO_POOL_SIZE; i++)
     if (co_pool[i] == co) {
