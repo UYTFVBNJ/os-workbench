@@ -11,7 +11,7 @@ enum co_status{
 };
 
 #define STACK_SIZE 4096 * 1024
-#define CO_POOL_SIZE 129
+#define CO_POOL_SIZE 128
 
 struct co {
   const char *name;
@@ -29,8 +29,10 @@ typedef struct co co;
 #include <assert.h>
 #include <stdlib.h>
 
+#include <stdio.h>
+
 static inline void stack_switch_call(void *sp, void *entry,
-                                     uintptr_t arg) {  // TODO + ret addr
+                                     uintptr_t arg) {
   assert(((uintptr_t)sp & 8) == 8);
   asm volatile(
 #if __x86_64__
@@ -113,6 +115,7 @@ co *co_start(const char *name, void (*func)(void *), void *arg) {
   for (i = 0; i < CO_POOL_SIZE; i++)
     if (co_pool[i] == NULL) {
       co_pool[i] = p;
+      printf("%d\n", i);
       break;
     }
   assert(i < CO_POOL_SIZE);
