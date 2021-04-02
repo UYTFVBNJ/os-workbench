@@ -54,6 +54,7 @@ static void co_base(co *co) {
   co->status = CO_DEAD;
   if (co->waiter != NULL)
     co->waiter->status = CO_RUNNING;
+  printf("co_base\n");
   co_yield();
   // longjmp(co->waiter->context, 1);
 }
