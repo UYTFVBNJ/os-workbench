@@ -51,7 +51,9 @@ static void co_base(co *co) {
   co_current = co;
   co->status = CO_RUNNING;
   co->func(co->arg);
-  longjmp(co->waiter->context, 1);
+  co->status = CO_DEAD;
+  co_yield();
+  // longjmp(co->waiter->context, 1);
 }
 
 __attribute__((constructor)) void co_current_main() {
@@ -103,7 +105,7 @@ void co_wait(co *co) {
       int ret = setjmp(co_current->context);
       printf("%p %p %p\n", co, co->stack, co->stack + STACK_SIZE);
       if (ret == 0) stack_switch_call(co->stack + STACK_SIZE, co_base, (uintptr_t)co);
-      co_destroyer(co); // TODO should use CO_DEAD
+      co_destroyer(co); 
       break;
 
     case CO_RUNNING:
@@ -112,7 +114,7 @@ void co_wait(co *co) {
       break;
 
     case CO_DEAD:
-      assert(0);
+      co_destroyer(co); 
       break;
 
     default:
