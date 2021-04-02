@@ -11,34 +11,23 @@ static void add_count() {
 }
 
 static int get_count() {
-    printf("get_count\n");
+    // printf("get_count\n");
     return g_count;
 }
 
 static void work_loop(void *arg) {
-/*
-#if __x86_64__
-    uintptr_t sp;
- asm volatile(
-      "movq %%rsp %0;"
-      : "=r"(sp)
-      : 
-  );
-        printf("work_loop %p\n", sp);
-#endif
-*/
     const char *s = (const char*)arg;
     for (int i = 0; i < 100; ++i) {
-        printf("work_loop\n");
+        // printf("work_loop\n");
         printf("%s%d  ", s, get_count());
-        printf("work_loop\n");
+        // printf("work_loop\n");
         add_count();
         co_yield();
     }
 }
 
 static void work(void *arg) {
-    printf("work\n");
+    // printf("work\n");
     work_loop(arg);
 }
 
@@ -47,12 +36,12 @@ static void test_1() {
     struct co *thd1 = co_start("thread-1", work, "X");
     struct co *thd2 = co_start("thread-2", work, "Y");
 
-    printf("flag\n");
+    // printf("flag\n");
 
     co_wait(thd1);
-    printf("flag\n");
+    // printf("flag\n");
     co_wait(thd2);
-    printf("flag\n");
+    // printf("flag\n");
 
 //    printf("\n");
 }
