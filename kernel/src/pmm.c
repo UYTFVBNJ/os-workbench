@@ -1,40 +1,40 @@
+#include <buddy.h>
 #include <pmm.h>
-/*
-void *fast_path() {
+buddy_block_t buddy_block;
 
-}
+// hash
+void *fast_path() {}
 
-void *slow_path() {
-  
-}
-*/
+// buddy
+void *slow_path() { return NULL; }
+
 // framework
-static void *kalloc(size_t size) {
-  return NULL;
-}
+static void *kalloc(size_t size) { return buddy_alloc(&buddy_block, size); }
 
-static void kfree(void *ptr) {
-}
+static void kfree(void *ptr) { buddy_free(&buddy_block, ptr); }
 
 #ifndef TEST
 // 框架代码中的 pmm_init (在 AbstractMachine 中运行)
 static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
+
+  buddy_init();
 }
 #else
 // 测试代码的 pmm_init ()
 static void pmm_init() {
-  char *ptr  = malloc(HEAP_SIZE);
+  char *ptr = malloc(HEAP_SIZE);
   heap.start = ptr;
-  heap.end   = ptr + HEAP_SIZE;
+  heap.end = ptr + HEAP_SIZE;
   printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
+
+  buddy_init();
 }
 #endif
 
 MODULE_DEF(pmm) = {
-  .init  = pmm_init,
-  .alloc = kalloc,
-  .free  = kfree,
+    .init = pmm_init,
+    .alloc = kalloc,
+    .free = kfree,
 };
-
