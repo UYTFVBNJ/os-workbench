@@ -24,7 +24,7 @@ static void pmm_init() {
 #else
 // 测试代码的 pmm_init ()
 static void pmm_init() {
-  char *ptr = malloc(HEAP_SIZE);
+  char *ptr = aligned_malloc(1 << 24, HEAP_SIZE);
   heap.start = ptr;
   heap.end = ptr + HEAP_SIZE;
   printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);

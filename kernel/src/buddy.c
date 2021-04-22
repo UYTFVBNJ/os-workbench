@@ -84,6 +84,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
 
   unlock(&block->lock);
 
+  assert(bl_nd & ((1 << sz_xft) - 1) == 0);
   return bl_nd->key;
 }
 
