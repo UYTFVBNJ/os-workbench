@@ -1,3 +1,6 @@
+#ifndef MINILIB
+#define MINILIB
+
 #include <common.h>
 #include <spinlock.h>
 
@@ -16,4 +19,11 @@ typedef struct list {
   node_t *front;
 } list_t;
 
+void list_push_front(list_t *list, node_t *node);
+void list_pop_front(list_t *list);
+
 bool is_2_power(int64_t n);
+
+int num2shift(int64_t n);
+
+#endif

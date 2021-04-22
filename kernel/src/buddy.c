@@ -1,9 +1,7 @@
 #include <buddy.h>
-#include <spinlock.h>
 
-// block->t block->
 #define addr2idx(addr) \
-  (((uintptr_t)addr - uintptr(block->mem)) >> block->UNIT_SHIFT)
+  (((uintptr_t)addr - (uintptr_t)block->mem) >> block->UNIT_SHIFT)
 
 void buddy_init(buddy_block_t *block, void *start, void *end) {
   // assign parameters
@@ -55,13 +53,13 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
 
-  buddy_alloc(block->DS_SIZE);
+  buddy_alloc(block, block->DS_SIZE);
 }
 
 void *buddy_alloc(buddy_block_t *block, size_t size) {
   int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
 
-  spinlock(&block->lock);
+  lock(&block->lock);
 
   int i;
   for (i = sz_xft; i <= block->TOTAL_SHIFT; i++) {
@@ -76,7 +74,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
     list_pop_front(&block->bl_lst[i]);
 
     list_push_front(&block->bl_lst[i - 1],
-                    &block->bl_arr[addr2idx(bl_nd->key));
+                    &block->bl_arr[addr2idx(bl_nd->key)]);
     list_push_front(&block->bl_lst[i - 1], bl_nd);
   }
 
@@ -84,13 +82,13 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   block->fr_arr[addr2idx(bl_nd->key)] = sz_xft;
   list_pop_front(&block->bl_lst[sz_xft]);
 
-  spinunlock(&block->lock);
+  unlock(&block->lock);
 
   return bl_nd->key;
 }
 
-void *buddy_free(buddy_block_t *block, void *ptr) {
-  spinlock(&block->lock);
+void buddy_free(buddy_block_t *block, void *ptr) {
+  lock(&block->lock);
 
   int idx = addr2idx(ptr);
   int sz_xft = block->fr_arr[idx];
@@ -101,5 +99,5 @@ void *buddy_free(buddy_block_t *block, void *ptr) {
     ;  // take O(n) time. abort.
   assert(bl_nd != NULL);
 
-  spinunlock(&block->lock);
+  unlock(&block->lock);
 }

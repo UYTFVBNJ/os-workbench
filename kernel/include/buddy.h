@@ -1,4 +1,4 @@
-#include <common.h>
+// #include <common.h>
 #include <minilib.h>
 #include <spinlock.h>
 
@@ -15,3 +15,7 @@ typedef struct {
   size_t UNIT_SHIFT, UNIT_SIZE, UNIT_NUM;
   size_t DS_NUM, DS_SIZE, DS_UNIT_NUM;
 } buddy_block_t;
+
+void buddy_init(buddy_block_t *block, void *start, void *end);
+void *buddy_alloc(buddy_block_t *block, size_t size);
+void buddy_free(buddy_block_t *block, void *ptr);

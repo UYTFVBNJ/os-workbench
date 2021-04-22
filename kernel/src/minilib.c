@@ -2,17 +2,17 @@
 
 // list_t
 void list_push_front(list_t *list, node_t *node) {
-  spinlock(&list->lock);
+  lock(&list->lock);
 
   node->pre = NULL;
   node->nxt = list->front;
   list->front = node;
 
-  spinunlock(&list->lock);
+  unlock(&list->lock);
 }
 
 void list_pop_front(list_t *list) {
-  spinlock(&list->lock);
+  lock(&list->lock);
 
   assert(list->front != NULL);
 
@@ -20,7 +20,7 @@ void list_pop_front(list_t *list) {
 
   list->front = list->front->nxt;
 
-  spinunlock(&list->lock);
+  unlock(&list->lock);
 }
 
 bool is_2_power(int64_t n) {

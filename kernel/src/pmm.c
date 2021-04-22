@@ -3,7 +3,7 @@
 buddy_block_t buddy_block;
 
 // hash
-void *fast_path() {}
+void *fast_path() { return NULL; }
 
 // buddy
 void *slow_path() { return NULL; }
@@ -19,7 +19,7 @@ static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
 
-  buddy_init();
+  buddy_init(&buddy_block, heap.start, heap.end);
 }
 #else
 // 测试代码的 pmm_init ()
@@ -29,7 +29,7 @@ static void pmm_init() {
   heap.end = ptr + HEAP_SIZE;
   printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
 
-  buddy_init();
+  buddy_init(&buddy_block, heap.start, heap.end);
 }
 #endif
 
