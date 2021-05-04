@@ -16,7 +16,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   block->UNIT_SIZE = (1 << block->UNIT_SHIFT);  // 4 KiB
   block->UNIT_NUM = (block->TOTAL_SIZE / block->UNIT_SIZE);
 
-  block->DS_NUM = (block->DS_SIZE / block->UNIT_SIZE);
+  block->DS_NUM = (block->TOTAL_SIZE / block->UNIT_SIZE);
   block->DS_SIZE = block->DS_NUM *
                    (sizeof(node_t) + sizeof(size_t));  // at least 4K * sizeof
   block->DS_UNIT_NUM = ((block->DS_SIZE - 1) / block->UNIT_SIZE) + 1;  // ceil
@@ -29,7 +29,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   assert(((uintptr_t)block->mem & 0xffffff) == 0);  // should align to 16MiB
 
 #ifdef TEST
-  printf("buddy: \n ");
+  printf("buddy: \n");
   Log(block->TOTAL_SIZE);
 
   printf("\n");
