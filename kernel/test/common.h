@@ -1,4 +1,9 @@
-#include <kernel.h>
-#include <klib.h>
-#include <klib-macros.h>
+#ifndef COMMON
+#define COMMON
 
+#include <assert.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#endif
