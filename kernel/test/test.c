@@ -34,9 +34,9 @@ struct malloc_op *random_op() {
 }
 
 void alloc_check(struct malloc_op *op) {
-  pritnf("acquied %d bytes\n", op->sz);
+  printf("acquied %d bytes\n", op->sz);
   void *addr = pmm->alloc(op->sz);
-  pritnf("got %p \n", addr);
+  printf("got %p \n", addr);
   for (size_t i = 0; i < op->sz; i++) {
     assert(*(char *)addr != USED);
     *(char *)addr = USED;
