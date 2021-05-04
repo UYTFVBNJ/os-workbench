@@ -70,5 +70,5 @@ int main() {
   printf("TESTING\n");
 #endif
 
-  mpe_init(stress_test);
+  stress_test;
 }
