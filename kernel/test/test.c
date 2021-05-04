@@ -47,10 +47,10 @@ void alloc_check(struct malloc_op *op) {
 }
 
 void free_check(struct malloc_op *op) {
-  pritnf("free mem at %p\n", op->addr);
+  printf("free mem at %p\n", op->addr);
   pmm->free(op->addr);
   op->type = OP_NONE;
-  pritnf("$d bytes freed\n", op->sz);
+  printf("$d bytes freed\n", op->sz);
 }
 
 void stress_test() {
