@@ -1,8 +1,6 @@
 #include <common.h>
 #include <spinlock.h>
 
-void atomic_xchg(int *lock, int a);
-
 void lock(spinlock_t *lk) {
   //   iset(false); // TODO
   int cnt = 0;
