@@ -22,6 +22,8 @@ static void pmm_init() {
   buddy_init(&buddy_block, heap.start, heap.end);
 }
 #else
+Area heap;
+
 // 测试代码的 pmm_init ()
 static void pmm_init() {
   char *ptr = aligned_alloc(1 << 24, HEAP_SIZE);
