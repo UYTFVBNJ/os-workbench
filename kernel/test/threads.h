@@ -43,17 +43,18 @@ static inline void create(void *fn) {
 static inline void join(void (*fn)()) { join_fn = fn; }
 
 // ========== Synchronization ==========
-/*
 #include <stdint.h>
 
-intptr_t atomic_xchg(volatile intptr_t *addr,
-                               intptr_t newval) {
+intptr_t atomic_xchg(volatile intptr_t *addr, intptr_t newval) {
   // swap(*addr, newval);
   intptr_t result;
-  asm volatile ("lock xchg %0, %1":
-    "+m"(*addr), "=a"(result) : "1"(newval) : "cc");
+  asm volatile("lock xchg %0, %1"
+               : "+m"(*addr), "=a"(result)
+               : "1"(newval)
+               : "cc");
   return result;
 }
+/*
 
 intptr_t locked = 0;
 
