@@ -7,7 +7,7 @@
 #define min(a, b) (a < b ? a : b)
 #define max(a, b) (a > b ? a : b)
 
-#define Log(num) printf(#num ": %d\n", num);
+#define Log(num) printf("  %s: %d\n", #num, num);
 
 typedef struct node {
   void *key;
