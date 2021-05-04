@@ -1,8 +1,7 @@
 #ifndef COMMON
 #define COMMON
 
-#include <kernel.h>
-#include <klib-macros.h>
-#include <klib.h>
+#include <assert.h>
+#include <stddef.h>
 
 #endif
