@@ -6,10 +6,8 @@
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 struct malloc_op {
   enum ops type;
-  union {
-    size_t sz;
-    void *addr;
-  };
+  size_t sz;
+  void *addr;
 };
 
 struct malloc_op op_arr[N];
@@ -21,6 +19,7 @@ struct malloc_op *random_op() {
     for (i = 0; i < op_arr_cnt && op_arr[i].type != OP_NONE; i++)
       ;
     if (i == op_arr_cnt) op_arr_cnt++;
+    assert(op_arr_cnt <= N);
     op_arr[i] = (struct malloc_op){.type = OP_ALLOC, .sz = 32};
     return &op_arr[i];
   } else {
@@ -35,7 +34,9 @@ struct malloc_op *random_op() {
 }
 
 void alloc_check(struct malloc_op *op) {
+  pritnf("acquied %d bytes\n", op->sz);
   void *addr = pmm->alloc(op->sz);
+  pritnf("got %p \n", addr);
   for (size_t i = 0; i < op->sz; i++) {
     assert(*(char *)addr != USED);
     *(char *)addr = USED;
@@ -45,7 +46,12 @@ void alloc_check(struct malloc_op *op) {
   op->addr = addr;
 }
 
-void free_check(struct malloc_op *op) { pmm->free(op->addr); }
+void free_check(struct malloc_op *op) {
+  pritnf("free mem at %p\n", op->addr);
+  pmm->free(op->addr);
+  op->type = OP_NONE;
+  pritnf("$d bytes freed\n", op->sz);
+}
 
 void stress_test() {
   while (1) {
