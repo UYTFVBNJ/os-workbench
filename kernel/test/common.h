@@ -2,7 +2,8 @@
 #define COMMON
 
 //
-#define HEAP_SIZE (1 << 24)
+#define HEAP_XFT 24
+#define HEAP_SIZE (1 << HEAP_XFT)
 
 //
 #include <kernel.h>

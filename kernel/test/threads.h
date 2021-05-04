@@ -48,6 +48,16 @@ static inline void join(void (*fn)()) { join_fn = fn; }
 // ========== Synchronization ==========
 #include <stdint.h>
 
+static inline int atom_xchg(int *addr, int newval) {
+  int result;
+  asm volatile("lock xchg %0, %1"
+               : "+m"(*addr), "=a"(result)
+               : "1"(newval)
+               : "cc", "memory");
+  return result;
+}
+
+/*
 intptr_t atomic_xchg(volatile intptr_t *addr, intptr_t newval) {
   // swap(*addr, newval);
   intptr_t result;
@@ -57,7 +67,6 @@ intptr_t atomic_xchg(volatile intptr_t *addr, intptr_t newval) {
                : "cc");
   return result;
 }
-/*
 
 intptr_t locked = 0;
 
