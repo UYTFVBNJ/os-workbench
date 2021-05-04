@@ -1,5 +1,6 @@
 #include <common.h>
 #include <spinlock.h>
+#include <threads.h>
 
 void lock(spinlock_t *lk) {
   //   iset(false); // TODO
