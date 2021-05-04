@@ -2,6 +2,9 @@
 #define COMMON
 
 //
+#define HEAP_SIZE (1 << 24)
+
+//
 #include <kernel.h>
 #include <threads.h>
 
