@@ -64,7 +64,7 @@ void stress_test() {
 }
 
 int main() {
-  os->init();
+  pmm->init();
 
 #ifdef TEST
   printf("TESTING\n");
