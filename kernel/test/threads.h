@@ -1,7 +1,7 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include <assert.h>
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct thread {
   int id;
@@ -33,19 +33,17 @@ static inline void *entry_all(void *arg) {
 static inline void create(void *fn) {
   struct thread *cur = (struct thread *)malloc(sizeof(struct thread));
   assert(cur);
-  cur->id    = threads ? threads->id + 1 : 1;
-  cur->next  = threads;
+  cur->id = threads ? threads->id + 1 : 1;
+  cur->next = threads;
   cur->entry = (void (*)(int))fn;
-  threads    = cur;
+  threads = cur;
   pthread_create(&cur->thread, NULL, entry_all, cur);
 }
 
-static inline void join(void (*fn)()) {
-  join_fn = fn;
-}
+static inline void join(void (*fn)()) { join_fn = fn; }
 
 // ========== Synchronization ==========
-
+/*
 #include <stdint.h>
 
 intptr_t atomic_xchg(volatile intptr_t *addr,
@@ -71,7 +69,7 @@ static inline void lock() {
 static inline void unlock() {
   atomic_xchg(&locked, 0);
 }
-
+*/
 #include <semaphore.h>
 
 #define P sem_wait
