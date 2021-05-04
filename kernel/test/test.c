@@ -2,8 +2,6 @@
 #define USED 0x23
 
 #define N 1000
-#define HEAP_XFT 14
-#define HEAP_SIZE (1 << HEAP_XFT)
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 struct malloc_op {
