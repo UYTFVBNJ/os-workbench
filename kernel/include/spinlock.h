@@ -1,6 +1,8 @@
 #ifndef SPINLOCK
 #define SPINLOCK
 
+#ifndef TEST
+
 typedef struct {
   int locked;
 
@@ -14,5 +16,7 @@ typedef struct {
 
 void lock(spinlock_t *lk);
 void unlock(spinlock_t *lk);
+
+#endif
 
 #endif
