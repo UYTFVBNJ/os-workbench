@@ -39,7 +39,7 @@ struct malloc_op *random_op() {
 void alloc_check(struct malloc_op *op) {
   void *addr = pmm->alloc(op->sz);
   for (size_t i = 0; i < op->sz; i++) {
-    asser(*(char *)addr != USED);
+    assert(*(char *)addr != USED);
     *(char *)addr = USED;
   }
 
