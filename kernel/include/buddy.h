@@ -3,13 +3,19 @@
 #include <spinlock.h>
 
 typedef struct {
+  char sz_xft;
+  char belong;
+  int idx;
+} buddy_unit_ds_t;
+
+typedef struct {
   spinlock_t lock;
 
   uint8_t *mem;
   list_t bl_lst[32];
 
   node_t *bl_arr;
-  size_t *fr_arr;
+  buddy_unit_ds_t *ds_arr;
 
   size_t TOTAL_SIZE, TOTAL_SHIFT;
   size_t UNIT_SHIFT, UNIT_SIZE, UNIT_NUM;

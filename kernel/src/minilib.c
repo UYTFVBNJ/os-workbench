@@ -1,26 +1,23 @@
 #include <minilib.h>
 
 // list_t
-void list_push_front(list_t *list, node_t *node) {
-  lock(&list->lock);
+// TODO lock outside
+bool list_empty(list_t *list) { return list->nil.nxt == list->nil.pre; }
 
-  node->pre = NULL;
-  node->nxt = list->front;
-  list->front = node;
-
-  unlock(&list->lock);
+void list_insert(list_t *list, node_t *node) {
+  node->nxt = list->nil.nxt;
+  list->nil.nxt->pre = node;
+  list->nil.nxt = node;
+  node->pre = &list->nil;
 }
 
-void list_pop_front(list_t *list) {
-  lock(&list->lock);
+void list_insert_at(list_t *list, node_t *node1, node_t *node2) {
+  // TODO
+}
 
-  assert(list->front != NULL);
-
-  if (list->front->nxt != NULL) list->front->nxt->pre = NULL;
-
-  list->front = list->front->nxt;
-
-  unlock(&list->lock);
+void list_delete(list_t *list, node_t *node) {
+  node->pre->nxt = node->nxt;
+  node->nxt->pre = node->pre;
 }
 
 bool is_2_power(int64_t n) {

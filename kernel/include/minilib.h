@@ -16,11 +16,13 @@ typedef struct node {
 
 typedef struct list {
   spinlock_t lock;
-  node_t *front;
+  node_t nil;
 } list_t;
 
-void list_push_front(list_t *list, node_t *node);
-void list_pop_front(list_t *list);
+bool list_empty(list_t *list);
+void list_insert(list_t *list, node_t *node);
+void list_insert_at(list_t *list, node_t *node1, node_t *node2);
+void list_delete(list_t *list, node_t *node);
 
 bool is_2_power(int64_t n);
 
