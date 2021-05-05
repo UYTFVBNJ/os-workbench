@@ -2,7 +2,7 @@
 
 // list_t
 // TODO lock outside
-bool list_empty(list_t *list) { return list->nil.nxt == list->nil.pre; }
+bool list_empty(list_t *list) { return list->nil.nxt == &list->nil; }
 
 void list_insert(list_t *list, node_t *node) {
   node->nxt = list->nil.nxt;
