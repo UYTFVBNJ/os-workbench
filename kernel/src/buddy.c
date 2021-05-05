@@ -124,6 +124,8 @@ void buddy_free(buddy_block_t *block, void *ptr) {
   for (bl_nd = block->bl_lst[sz_xft].front; bl_nd != NULL && bl_nd != ptr;
        bl_nd = bl_nd->nxt)
     ;  // take O(n) time. abort.
+
+  // check existence
   assert(bl_nd != NULL);
 
   unlock(&block->lock);
