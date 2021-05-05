@@ -115,11 +115,12 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   unlock(&block->lock);
 
   // check alignment
-  assert(((intptr_t)bl_nd->key & ((1 << sz_xft) - 1)) == 0);
+  assert(((uintptr_t)idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx) &
+          ((1 << sz_xft) - 1)) == 0);
 
 #ifdef TEST
   if (!initialing) {
-    uint32_t *addr = bl_nd->key;
+    uint32_t *addr = idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
     for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
       assert(*(uint32_t *)chk_ptr != USED(sz_xft));
       *(uint32_t *)chk_ptr = USED(sz_xft);
@@ -127,7 +128,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   }
 #endif
 
-  return bl_nd->key;
+  return idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
 }
 
 void buddy_free(buddy_block_t *block, void *ptr) {
