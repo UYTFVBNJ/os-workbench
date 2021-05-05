@@ -42,7 +42,7 @@ void alloc_check(struct malloc_op *op) {
 }
 
 void free_check(struct malloc_op *op) {
-  printf("freeing mem of $d bytes at %p\n", op->sz, op->addr);
+  printf("freeing mem of %d bytes at %p\n", op->sz, op->addr);
   pmm->free(op->addr);
   op->type = OP_NONE;
   printf("%d bytes freed at %p\n", op->sz, op->addr);
