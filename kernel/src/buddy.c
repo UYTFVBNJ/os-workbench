@@ -50,6 +50,9 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   Log(block->DS_UNIT_NUM);
 #endif
 
+  for (int i = 0; i <= block->TOTAL_SHIFT; i++)
+    block->bl_lst[i].nil.nxt = block->bl_lst[i].nil.pre = &block->bl_lst[i].nil;
+
   list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
   ((buddy_unit_ds_t *)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
 
