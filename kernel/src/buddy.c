@@ -51,7 +51,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
 #endif
 
   list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
-  (buddy_unit_ds_t *)((block->bl_arr)[0].key)->belong = block->TOTAL_SHIFT;
+  ((buddy_unit_ds_t *)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
 
   for (int i = 0; i < block->DS_NUM; i++) {
     block->bl_arr[i] =
@@ -87,7 +87,8 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   for (; i > sz_xft; i--) {
     node_t *bl_nd = block->bl_lst[i].nil.nxt;
     node_t *bl_nd_buddy =
-        &block->bl_arr[buddy_idx((buddy_unit_ds_t *)(bl_nd->key)->idx, i - 1)];
+        &block
+             ->bl_arr[buddy_idx(((buddy_unit_ds_t *)(bl_nd->key))->idx, i - 1)];
 
     list_delete(&block->bl_lst[i], bl_nd);
 
@@ -96,12 +97,12 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
     list_insert(&block->bl_lst[i - 1], bl_nd);
 
     // (buddy_unit_ds_t *)(bl_nd->key)->belong = i - 1;
-    (buddy_unit_ds_t *)(bl_nd_buddy->key)->belong = i - 1;
+    ((buddy_unit_ds_t *)(bl_nd_buddy->key))->belong = i - 1;
   }
 
   node_t *bl_nd = block->bl_lst[sz_xft].nil.nxt;
-  (buddy_unit_ds_t *)(bl_nd->key)->sz_xft = sz_xft;
-  (buddy_unit_ds_t *)(bl_nd->key)->belong = -1;
+  ((buddy_unit_ds_t *)(bl_nd->key))->sz_xft = sz_xft;
+  ((buddy_unit_ds_t *)(bl_nd->key))->belong = -1;
   list_delete(&block->bl_lst[sz_xft], bl_nd);
 
   unlock(&block->lock);
