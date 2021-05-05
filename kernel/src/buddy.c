@@ -75,7 +75,8 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
     list_pop_front(&block->bl_lst[i]);
 
     list_push_front(&block->bl_lst[i - 1],
-                    &block->bl_arr[addr2idx(bl_nd->key)]);
+                    &block->bl_arr[addr2idx(bl_nd->key) +
+                                   (1 << (i - 1 - block->UNIT_SHIFT))]);
     list_push_front(&block->bl_lst[i - 1], bl_nd);
   }
 
