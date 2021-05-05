@@ -1,5 +1,5 @@
 #include <common.h>
-#define USED (uint_32_t)0x66662333
+#define USED 0x66662333
 #define ALLOC_SIZE (1 << 12)
 #define N 1000
 
