@@ -90,7 +90,8 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
 
   unlock(&block->lock);
 
-  assert(((intptr_t)bl_nd & ((1 << sz_xft) - 1)) == 0);
+  // check alignment
+  assert(((intptr_t)bl_nd->key & ((1 << sz_xft) - 1)) == 0);
 
 #ifdef TEST
   if (!initialing) {
