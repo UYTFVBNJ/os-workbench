@@ -74,5 +74,5 @@ int main() {
   printf("TESTING\n");
 #endif
 
-  stress_test;
+  stress_test();
 }
