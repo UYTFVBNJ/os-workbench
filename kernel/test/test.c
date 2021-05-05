@@ -1,5 +1,4 @@
 #include <common.h>
-#define USED 0x66662333
 #define ALLOC_SIZE (1 << 12)
 #define N 1000
 
@@ -34,24 +33,19 @@ struct malloc_op *random_op() {
 }
 
 void alloc_check(struct malloc_op *op) {
-  printf("acquied %d bytes\n", op->sz);
+  printf("acquiring %d bytes\n", op->sz);
   void *addr = pmm->alloc(op->sz);
   printf("got %p \n", addr);
-
-  for (uint32_t *i = addr; i < addr + op->sz; i++) {
-    assert(*(uint32_t *)i != USED);
-    *(uint32_t *)i = USED;
-  }
 
   op->type = OP_FREE;
   op->addr = addr;
 }
 
 void free_check(struct malloc_op *op) {
-  printf("free mem at %p\n", op->addr);
+  printf("freeing mem at %p\n", op->addr);
   pmm->free(op->addr);
   op->type = OP_NONE;
-  printf("$d bytes freed\n", op->sz);
+  printf("%d bytes freed\n", op->sz);
 }
 
 void stress_test() {

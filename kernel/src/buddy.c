@@ -86,6 +86,15 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   unlock(&block->lock);
 
   assert(((intptr_t)bl_nd & ((1 << sz_xft) - 1)) == 0);
+
+#ifdef TEST
+  uint32_t *addr = bl_nd->key;
+  for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
+    assert(*(uint32_t *)chk_ptr != USED(sz_xft));
+    *(uint32_t *)chk_ptr = USED(sz_xft);
+  }
+#endif
+
   return bl_nd->key;
 }
 
@@ -94,6 +103,14 @@ void buddy_free(buddy_block_t *block, void *ptr) {
 
   int idx = addr2idx(ptr);
   int sz_xft = block->fr_arr[idx];
+
+#ifdef TEST
+  uint32_t *addr = ptr;
+  for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
+    assert(*(uint32_t *)chk_ptr == USED(sz_xft));
+    *(uint32_t *)chk_ptr = 0;
+  }
+#endif
 
   node_t *bl_nd;
   for (bl_nd = block->bl_lst[sz_xft].front; bl_nd != NULL && bl_nd != ptr;
