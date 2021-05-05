@@ -50,12 +50,6 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   Log(block->DS_UNIT_NUM);
 #endif
 
-  for (int i = 0; i <= block->TOTAL_SHIFT; i++)
-    block->bl_lst[i].nil.nxt = block->bl_lst[i].nil.pre = &block->bl_lst[i].nil;
-
-  list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
-  ((buddy_unit_ds_t *)(block->ds_arr[0].key))->belong = block->TOTAL_SHIFT;
-
   for (int i = 0; i < block->DS_NUM; i++) {
     block->bl_arr[i] =
         (node_t){.key = block->ds_arr + i, .pre = NULL, .nxt = NULL};
@@ -63,6 +57,13 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
     block->ds_arr[i].belong = -1;
     block->ds_arr[i].idx = i;
   }
+
+  for (int i = 0; i <= block->TOTAL_SHIFT; i++)
+    block->bl_lst[i].nil.nxt = block->bl_lst[i].nil.pre = &block->bl_lst[i].nil;
+
+  list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
+  ((buddy_unit_ds_t *)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
+
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
 
