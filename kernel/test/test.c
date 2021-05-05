@@ -13,7 +13,7 @@ struct malloc_op op_arr[N];
 int op_arr_cnt = 0;
 
 struct malloc_op *random_op() {
-  if (rand() % 3) {
+  if (rand() % 2) {
     int i;
     for (i = 0; i < op_arr_cnt && op_arr[i].type != OP_NONE; i++)
       ;
