@@ -1,5 +1,5 @@
 #include <common.h>
-#define USED 0x23
+#define USED (uint_32_t)0x66662333
 #define ALLOC_SIZE (1 << 12)
 #define N 1000
 
@@ -38,8 +38,8 @@ void alloc_check(struct malloc_op *op) {
   void *addr = pmm->alloc(op->sz);
   printf("got %p \n", addr);
   for (size_t i = 0; i < op->sz; i++) {
-    assert(*(char *)addr != USED);
-    *(char *)addr = USED;
+    assert(*(uint32_t *)addr != USED);
+    *(uint32_t *)addr = USED;
   }
 
   op->type = OP_FREE;
