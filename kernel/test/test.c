@@ -1,6 +1,6 @@
 #include <common.h>
 #define ALLOC_SIZE (1 << 12)
-#define N 1000
+#define N ((1 << 12) - 32)
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 struct malloc_op {
