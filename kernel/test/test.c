@@ -37,9 +37,10 @@ void alloc_check(struct malloc_op *op) {
   printf("acquied %d bytes\n", op->sz);
   void *addr = pmm->alloc(op->sz);
   printf("got %p \n", addr);
-  for (size_t i = 0; i < op->sz; i++) {
-    assert(*(uint32_t *)addr != USED);
-    *(uint32_t *)addr = USED;
+
+  for (uint32_t *i = addr; i < addr + op->sz; i++) {
+    assert(*(uint32_t *)i != USED);
+    *(uint32_t *)i = USED;
   }
 
   op->type = OP_FREE;
