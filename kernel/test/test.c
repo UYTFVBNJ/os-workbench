@@ -1,6 +1,6 @@
 #include <common.h>
 #define USED 0x23
-
+#define ALLOC_SIZE (1 << 12)
 #define N 1000
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
@@ -20,7 +20,7 @@ struct malloc_op *random_op() {
       ;
     if (i == op_arr_cnt) op_arr_cnt++;
     assert(op_arr_cnt <= N);
-    op_arr[i] = (struct malloc_op){.type = OP_ALLOC, .sz = 32};
+    op_arr[i] = (struct malloc_op){.type = OP_ALLOC, .sz = ALLOC_SIZE};
     return &op_arr[i];
   } else {
     int i;

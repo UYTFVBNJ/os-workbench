@@ -16,7 +16,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   block->UNIT_SIZE = (1 << block->UNIT_SHIFT);  // 4 KiB
   block->UNIT_NUM = (block->TOTAL_SIZE / block->UNIT_SIZE);
 
-  block->DS_NUM = (block->TOTAL_SIZE / block->UNIT_SIZE);
+  block->DS_NUM = block->UNIT_NUM;
   block->DS_SIZE = block->DS_NUM *
                    (sizeof(node_t) + sizeof(size_t));  // at least 4K * sizeof
   block->DS_UNIT_NUM = ((block->DS_SIZE - 1) / block->UNIT_SIZE) + 1;  // ceil
@@ -58,6 +58,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
 
 void *buddy_alloc(buddy_block_t *block, size_t size) {
   int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
+  assert(sz_xft >= block->UNIT_SHIFT);
 
   lock(&block->lock);
 
