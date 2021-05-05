@@ -122,7 +122,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   if (!initialing) {
     uint32_t *addr = idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
     for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
-      if (*(uint32_t *)chk_ptr != USED(sz_xft)) printf("%p\n", chk_ptr);
+      if (*(uint32_t *)chk_ptr == USED(sz_xft)) printf("%p\n", chk_ptr);
       assert(*(uint32_t *)chk_ptr != USED(sz_xft));
       *(uint32_t *)chk_ptr = USED(sz_xft);
     }
