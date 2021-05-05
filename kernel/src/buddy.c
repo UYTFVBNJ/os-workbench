@@ -141,7 +141,8 @@ void buddy_free(buddy_block_t *block, void *ptr) {
 
 #ifdef TEST
   uint32_t *addr = ptr;
-  for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
+  for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << (sz_xft - 2));
+       chk_ptr++) {
     if (*(uint32_t *)chk_ptr != USED(sz_xft)) printf("%p\n", chk_ptr);
     assert(*(uint32_t *)chk_ptr == USED(sz_xft));
     *(uint32_t *)chk_ptr = 0;
