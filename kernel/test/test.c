@@ -9,9 +9,6 @@ struct malloc_op {
   void *addr;
 };
 
-struct malloc_op op_arr[N];
-int op_arr_cnt = 0;
-
 struct malloc_op *random_op() {
   if (rand() % 2) {
     int i;
@@ -49,6 +46,9 @@ void free_check(struct malloc_op *op) {
 }
 
 void stress_test() {
+  struct malloc_op op_arr[N];
+  int op_arr_cnt = 0;
+
   while (1) {
     struct malloc_op *op = random_op();
     switch (op->type) {

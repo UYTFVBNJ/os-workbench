@@ -112,6 +112,8 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   ((buddy_unit_ds_t *)(bl_nd->key))->belong = -1;
   list_delete(&block->bl_lst[sz_xft], bl_nd);
 
+  void *ret = idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
+
   unlock(&block->lock);
 
   // check alignment
@@ -130,7 +132,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   }
 #endif
 
-  return idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
+  return ret;
 }
 
 void buddy_free(buddy_block_t *block, void *ptr) {
