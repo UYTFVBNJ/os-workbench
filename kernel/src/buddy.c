@@ -68,7 +68,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   // block->UNIT_SHIFT;
 
   initialing = 1;
-  buddy_alloc(block, block->DS_SIZE);
+  assert(buddy_alloc(block, block->DS_SIZE) == block->mem);
   initialing = 0;
 }
 
@@ -86,7 +86,10 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   }
 
   // no enough space
-  if (i > block->TOTAL_SHIFT) return NULL;
+  if (i > block->TOTAL_SHIFT) {
+    unlock(&block->lock);
+    return NULL;
+  }
 
   for (; i > sz_xft; i--) {
     node_t *bl_nd = block->bl_lst[i].nil.nxt;
