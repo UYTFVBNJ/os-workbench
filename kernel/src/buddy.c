@@ -3,6 +3,8 @@
 #define addr2idx(addr) \
   (((uintptr_t)addr - (uintptr_t)block->mem) >> block->UNIT_SHIFT)
 
+static bool initialing;
+
 void buddy_init(buddy_block_t *block, void *start, void *end) {
   // assign parameters
 
@@ -53,7 +55,9 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
 
+  initialing = 1;
   buddy_alloc(block, block->DS_SIZE);
+  initialing = 0;
 }
 
 void *buddy_alloc(buddy_block_t *block, size_t size) {
@@ -89,10 +93,12 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   assert(((intptr_t)bl_nd & ((1 << sz_xft) - 1)) == 0);
 
 #ifdef TEST
-  uint32_t *addr = bl_nd->key;
-  for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
-    assert(*(uint32_t *)chk_ptr != USED(sz_xft));
-    *(uint32_t *)chk_ptr = USED(sz_xft);
+  if (!initialing) {
+    uint32_t *addr = bl_nd->key;
+    for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << sz_xft); chk_ptr++) {
+      assert(*(uint32_t *)chk_ptr != USED(sz_xft));
+      *(uint32_t *)chk_ptr = USED(sz_xft);
+    }
   }
 #endif
 
