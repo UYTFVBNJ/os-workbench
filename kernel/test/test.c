@@ -70,7 +70,7 @@ void stress_test() {
     random_op(&op);
 
     switch (op.type) {
-      case OP_ALLOC:
+      case OP_ALLOC:;
         void *addr = alloc_check(&op);
         op_insert(OP_FREE, op.size, addr);
         break;
