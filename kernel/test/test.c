@@ -7,6 +7,8 @@
 #define N 100
 #define SMP 4
 
+#define OUTPUT
+
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
 struct malloc_op {
@@ -56,16 +58,24 @@ void random_op(struct malloc_op *op) {
 }
 
 void *alloc_check(struct malloc_op *op) {
+#ifdef OUTPUT
   printf("acquiring %d bytes\n", op->size);
+#endif
   void *addr = pmm->alloc(op->size);
+#ifdef OUTPUT
   printf("got %p \n", addr);
+#endif
   return addr;
 }
 
 void free_check(struct malloc_op *op) {
+#ifdef OUTPUT
   printf("freeing mem of %d bytes at %p\n", op->size, op->addr);
+#endif
   pmm->free(op->addr);
+#ifdef OUTPUT
   printf("%d bytes freed at %p\n", op->size, op->addr);
+#endif
 }
 
 void stress_test() {
