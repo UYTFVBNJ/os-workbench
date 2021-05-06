@@ -2,7 +2,8 @@
 #include <spinlock.h>
 #include <threads.h>
 
-#define ALLOC_SIZE (1 << 12)
+// #define ALLOC_SIZE (1 << 12)
+#define ALLOC_SIZE (1 << 5)
 // #define N ((1 << (HEAP_XFT - 12)) - 100)
 #define N 100
 #define SMP 4
