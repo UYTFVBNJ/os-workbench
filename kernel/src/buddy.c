@@ -48,6 +48,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   Log(block->DS_NUM);
   Log(block->DS_SIZE);
   Log(block->DS_UNIT_NUM);
+  printf("%lf\n", (double)block->DS_UNIT_NUM / block->UNIT_NUM);
 #endif
 
   for (int i = 0; i < block->DS_NUM; i++) {
