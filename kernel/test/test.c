@@ -67,6 +67,8 @@ void free_check(struct malloc_op *op) {
 }
 
 void stress_test() {
+  printf("STRESS_TEST\n");
+
   while (1) {
     struct malloc_op op;
     random_op(&op);
