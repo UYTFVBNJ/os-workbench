@@ -1,5 +1,6 @@
 #include <common.h>
 #include <spinlock.h>
+#include <threads.h>
 
 #define ALLOC_SIZE (1 << 12)
 #define N ((1 << 12) - 32)
