@@ -4,7 +4,7 @@
 
 #define ALLOC_SIZE (1 << 12)
 // #define N ((1 << (HEAP_XFT - 12)) - 100)
-// #define N 100
+#define N 100
 #define SMP 4
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
