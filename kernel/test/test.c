@@ -4,6 +4,7 @@
 
 #define ALLOC_SIZE (1 << 12)
 #define N ((1 << 12) - 32)
+#define SMP 4
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
@@ -86,10 +87,10 @@ int main() {
   pmm->init();
 
 #ifdef TEST
-  printf("TESTING\n");
+  printf("TESTING:\nsmp = %d\n", SMP);
 #endif
 
-  for (int i = 0; i < 4; i++) create(stress_test);
+  for (int i = 0; i < SMP; i++) create(stress_test);
 
   join(NULL);
 
