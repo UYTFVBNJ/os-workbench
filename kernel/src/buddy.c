@@ -74,7 +74,8 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
 
 void *buddy_alloc(buddy_block_t *block, size_t size) {
   int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
-  assert(sz_xft >= block->UNIT_SHIFT);
+  if (sz_xft < block->UNIT_SHIFT) sz_xft = block->UNIT_SHIFT;
+  // assert(sz_xft >= block->UNIT_SHIFT);
 
   lock(&block->lock);
 
