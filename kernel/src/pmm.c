@@ -2,21 +2,21 @@
 #include <pmm.h>
 #include <slab.h>
 buddy_block_t buddy_block;
-slab_block_t slabs[MAX_SMP][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
+// slab_block_t slabs[MAX_SMP][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
 
 // framework
 static void *kalloc(size_t size) {
-  if (size <= SLAB_UNIT_MAX_SIZE)
-    return slab_alloc(size);
-  else
-    return buddy_alloc(&buddy_block, size);
+  // if (size <= SLAB_UNIT_MAX_SIZE)
+  // return slab_alloc(size);
+  // else
+  return buddy_alloc(&buddy_block, size);
 }
 
 static void kfree(void *ptr) {
-  if ((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1) != 0)
-    slab_free(ptr);
-  else
-    buddy_free(&buddy_block, ptr);
+  // if ((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1) != 0)
+  // slab_free(ptr);
+  // else
+  buddy_free(&buddy_block, ptr);
 }
 
 #ifndef TEST
