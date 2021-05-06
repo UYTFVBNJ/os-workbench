@@ -58,6 +58,7 @@ void *alloc_check(struct malloc_op *op) {
   printf("acquiring %d bytes\n", op->size);
   void *addr = pmm->alloc(op->size);
   printf("got %p \n", addr);
+  return addr;
 }
 
 void free_check(struct malloc_op *op) {
