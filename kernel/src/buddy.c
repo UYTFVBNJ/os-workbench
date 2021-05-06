@@ -18,7 +18,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   // assert(block->TOTAL_SIZE >= 1 << 24);
   block->TOTAL_SHIFT = num2shift(block->TOTAL_SIZE);
 
-  block->UNIT_SHIFT = 12;                       // 4 KiB
+  block->UNIT_SHIFT = BUDDY_UNIT_SHIFT;         // 4 KiB
   block->UNIT_SIZE = (1 << block->UNIT_SHIFT);  // 4 KiB
   block->UNIT_NUM = (block->TOTAL_SIZE / block->UNIT_SIZE);
 
@@ -74,6 +74,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
 
 void *buddy_alloc(buddy_block_t *block, size_t size) {
   int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
+  // TODO
   if (sz_xft < block->UNIT_SHIFT) sz_xft = block->UNIT_SHIFT;
   // assert(sz_xft >= block->UNIT_SHIFT);
 
