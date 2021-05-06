@@ -32,7 +32,7 @@ void op_insert(enum ops type, size_t size, void *addr) {
 }
 
 void random_op(struct malloc_op *op) {
-  if (rand() % 2) {
+  if (rand() % 3) {
     // OP_ALLOC
     *op = (struct malloc_op){.type = OP_ALLOC, .size = ALLOC_SIZE};
   } else {
@@ -77,7 +77,7 @@ void stress_test() {
     switch (op.type) {
       case OP_ALLOC:;
         void *addr = alloc_check(&op);
-        op_insert(OP_FREE, op.size, addr);
+        if (addr != NULL) op_insert(OP_FREE, op.size, addr);
         break;
       case OP_FREE:
         free_check(&op);
