@@ -29,7 +29,7 @@ slab_block_t *slab_find_available(int sz_xft) {
     if (*slab == NULL) {
       *slab = buddy_alloc(SLAB_TOTAL_SIZE);
       assert(*slab != NULL);
-      slab_init(slab, sz_xft);
+      slab_init(*slab, sz_xft);
       return *slab;
     } else if ((*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor) {
       return *slab;

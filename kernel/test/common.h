@@ -14,6 +14,7 @@
 
 //
 #include <kernel.h>
+#include <threads.h>
 
 //
 #include <assert.h>

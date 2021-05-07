@@ -1,4 +1,6 @@
+#include <buddy.h>
 #include <common.h>
+#include <minilib.h>
 #include <pmm.h>
 
 #define SLAB_MAX_NUM 5
