@@ -3,6 +3,8 @@
 #define max_load_factor 0.8
 #define max_probe 2 * (1.0 / (1.0 - max_load_factor))
 
+extern buddy_block_t buddy_block;
+
 slab_block_t *slabs[MAX_SMP][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
 
 void slab_init(slab_block_t *block, int unit_xft) {
@@ -27,7 +29,7 @@ slab_block_t *slab_find_available(int sz_xft) {
     slab_block_t **slab = &slabs[cpu_current()][sz_xft][i];
 
     if (*slab == NULL) {
-      *slab = buddy_alloc(SLAB_TOTAL_SIZE);
+      *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
       assert(*slab != NULL);
       slab_init(*slab, sz_xft);
       return *slab;
@@ -62,5 +64,5 @@ void slab_free(slab_block_t *block, void *ptr) {
       false;
   block->invalid_num--;
 
-  if (block->invalid_num == 0) buddy_free(block);
+  if (block->invalid_num == 0) buddy_free(&buddy_block, block);
 }
