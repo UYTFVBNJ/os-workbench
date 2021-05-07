@@ -1,7 +1,9 @@
 #include <buddy.h>
 #include <pmm.h>
 #include <slab.h>
-buddy_block_t buddy_block[MAX_CPU];
+
+#define BUDDY_BLOCK_NUM 4
+buddy_block_t buddy_block[BUDDY_BLOCK_NUM];
 
 // framework
 static void *kalloc(size_t size) {
@@ -9,14 +11,14 @@ static void *kalloc(size_t size) {
   // void *ret = slab_alloc(size);
   // if (ret != NULL) return ret;
   // }
-  return buddy_alloc(&buddy_block[cpu_current() % 2], size);
+  return buddy_alloc(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], size);
 }
 
 static void kfree(void *ptr) {
   // if ((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1) != 0)
   // slab_free(ptr);
   // else
-  buddy_free(&buddy_block[cpu_current() % 2], ptr);
+  buddy_free(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], ptr);
 }
 
 #ifndef TEST
@@ -27,8 +29,12 @@ static void pmm_init() {
 
   // buddy_init(&buddy_block, heap.start, heap.end);
 
-  buddy_init(&buddy_block[0], heap.start, heap.start + pmsize / 2);
-  buddy_init(&buddy_block[1], heap.start + pmsize / 2, heap.end);
+  size_t sz_pblock = pmsize / BUDDY_BLOCK_NUM;
+  void *addr = heap.start;
+  for (int i = 0; i < BUDDY_BLOCK_NUM; i++) {
+    buddy_init(&buddy_block[i], addr, addr + sz_pblock);
+    addr += sz_pblock;
+  }
 }
 #else
 Area heap;
@@ -41,10 +47,13 @@ static void pmm_init() {
   printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
 
   // buddy_init(&buddy_block, heap.start, heap.end);
-  // for (int i = 0; i < 2; i ++)
 
-  buddy_init(&buddy_block[0], heap.start, heap.start + HEAP_SIZE / 2);
-  buddy_init(&buddy_block[1], heap.start + HEAP_SIZE / 2, heap.end);
+  size_t sz_pblock = HEAP_SIZE / BUDDY_BLOCK_NUM;
+  void *addr = heap.start;
+  for (int i = 0; i < BUDDY_BLOCK_NUM; i++) {
+    buddy_init(&buddy_block[i], addr, addr + sz_pblock);
+    addr += sz_pblock;
+  }
 }
 #endif
 
