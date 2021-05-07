@@ -30,6 +30,7 @@ slab_block_t *slab_find_available(int sz_xft) {
     slab_block_t **slab = &slabs[cpu_current()][sz_xft][i];
 
     if (*slab == NULL) {
+      printf("acuiring new SLAB from BUDDY %d\n", i);
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
       assert(*slab != NULL);
       slab_init(*slab, sz_xft);
