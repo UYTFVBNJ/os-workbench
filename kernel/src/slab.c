@@ -20,7 +20,6 @@ void slab_init(slab_block_t *block, int unit_xft) {
   block->cpu = cpu_current();
 
   block->mem = end - (block->UNIT_NUM << block->UNIT_SHIFT);
-  *(slab_block_t **)start = block;
   block->valid = start + sizeof(slab_block_t);
 
   memset(block->valid, 0, sizeof(bool) * block->UNIT_NUM);
