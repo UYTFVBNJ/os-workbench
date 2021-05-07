@@ -10,6 +10,8 @@
 
 // #define OUTPUT
 
+int cpu_current() { return pthread_self(); }
+
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
 struct malloc_op {
