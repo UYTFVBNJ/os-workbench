@@ -126,6 +126,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
 
 #ifdef TEST
   if (!initialing) {
+    /*
     uint32_t *addr = idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
     for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << (sz_xft - 2));
          chk_ptr++) {
@@ -133,6 +134,8 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
       assert(*(uint32_t *)chk_ptr != USED(sz_xft));
       *(uint32_t *)chk_ptr = USED(sz_xft);
     }
+    */
+    pmm_test_print(ret, 1 << sz_xft, sz_xft);
   }
 #endif
 
@@ -146,13 +149,16 @@ void buddy_free(buddy_block_t *block, void *ptr) {
   int sz_xft = block->ds_arr[idx].sz_xft;
 
 #ifdef TEST
-  uint32_t *addr = ptr;
-  for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << (sz_xft - 2));
-       chk_ptr++) {
-    if (*(uint32_t *)chk_ptr != USED(sz_xft)) printf("%p\n", chk_ptr);
-    assert(*(uint32_t *)chk_ptr == USED(sz_xft));
-    *(uint32_t *)chk_ptr = 0;
-  }
+  /*
+    uint32_t *addr = ptr;
+    for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << (sz_xft - 2));
+         chk_ptr++) {
+      if (*(uint32_t *)chk_ptr != USED(sz_xft)) printf("%p\n", chk_ptr);
+      assert(*(uint32_t *)chk_ptr == USED(sz_xft));
+      *(uint32_t *)chk_ptr = 0;
+    }
+  */
+  pmm_test_check(ptr, 1 << sz_xft, sz_xft);
 #endif
 
   block->ds_arr[idx].sz_xft = -1;

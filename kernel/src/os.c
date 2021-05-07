@@ -8,6 +8,9 @@ static void os_run() {
   for (const char *s = "Hello World from CPU #*\n"; *s; s++) {
     putch(*s == '*' ? '0' + cpu_current() : *s);
   }
+
+  pmm->test();
+
   while (1)
     ;
 }

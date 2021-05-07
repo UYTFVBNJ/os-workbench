@@ -21,8 +21,6 @@ static void kfree(void *ptr) {
   buddy_free(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], ptr);
 }
 
-#ifndef TEST
-// 框架代码中的 pmm_init (在 AbstractMachine 中运行)
 static void pmm_init() {
   uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
   printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
@@ -36,19 +34,15 @@ static void pmm_init() {
     addr += sz_pblock;
   }
 }
-#else
-Area heap;
 
-// 测试代码的 pmm_init ()
-static void pmm_init() {
-  char *ptr = aligned_alloc(1 << 24, HEAP_SIZE);
-  heap.start = ptr;
-  heap.end = ptr + HEAP_SIZE;
-  printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
+#ifdef TEST
+static void pmm_test() {
+  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
+  printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
 
   // buddy_init(&buddy_block, heap.start, heap.end);
 
-  size_t sz_pblock = HEAP_SIZE / BUDDY_BLOCK_NUM;
+  size_t sz_pblock = pmsize / BUDDY_BLOCK_NUM;
   void *addr = heap.start;
   for (int i = 0; i < BUDDY_BLOCK_NUM; i++) {
     buddy_init(&buddy_block[i], addr, addr + sz_pblock);
@@ -61,4 +55,7 @@ MODULE_DEF(pmm) = {
     .init = pmm_init,
     .alloc = kalloc,
     .free = kfree,
+#ifdef TEST
+    .test = pmm_test,
+#endif
 };
