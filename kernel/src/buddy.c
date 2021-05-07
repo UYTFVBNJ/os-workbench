@@ -37,6 +37,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
 
 #ifdef TEST
   printf("buddy: \n");
+  printf("[%p, %p]: \n", start, end);
   Log(block->TOTAL_SIZE);
 
   printf("\n");
