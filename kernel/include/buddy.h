@@ -1,3 +1,6 @@
+#ifndef BUDDY
+#define BUDDY
+
 #include <minilib.h>
 #include <pmm.h>
 #include <spinlock.h>
@@ -25,3 +28,5 @@ typedef struct {
 void buddy_init(buddy_block_t *block, void *start, void *end);
 void *buddy_alloc(buddy_block_t *block, size_t size);
 void buddy_free(buddy_block_t *block, void *ptr);
+
+#endif
