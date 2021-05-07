@@ -8,6 +8,8 @@
 #define N ((1 << (HEAP_XFT - 12)) - 100)
 // #define N 100
 
+#define RATE 2
+
 // #define OUTPUT
 
 spinlock_t cnt_lk;
@@ -39,7 +41,7 @@ static void op_insert(enum ops type, size_t size, void *addr) {
 }
 
 static void random_op(struct malloc_op *op) {
-  if (rand() % 3) {
+  if (rand() % RATE) {
     // OP_ALLOC
     *op = (struct malloc_op){.type = OP_ALLOC, .size = ALLOC_SIZE};
   } else {
