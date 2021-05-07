@@ -53,12 +53,15 @@ void *slab_alloc(size_t size) {
         block->valid[block->pos] = true;
         block->invalid_num++;
 
+        void *ret = block->mem + ((block->pos) << block->UNIT_SHIFT);
+        block->pos = (block->pos + 1) % block->UNIT_NUM;
+
 #ifdef TEST
         // pmm_test_paint(block->mem + (block->pos << block->UNIT_SHIFT),
         //  1 << sz_xft, sz_xft);
 #endif
 
-        return block->mem + ((block->pos++) << block->UNIT_SHIFT);
+        return ret;
       }
   }
 
