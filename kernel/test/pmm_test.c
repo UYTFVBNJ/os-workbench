@@ -121,7 +121,7 @@ static void stress_test() {
 
     lock(&cnt_lk);
     cnt++;
-    if (cnt % 1000000 == 0) printf("cnt: %d\n", cnt);
+    if (cnt % 10000 == 0) printf("cnt: %d\n", cnt);
     unlock(&cnt_lk);
   }
 }
