@@ -2,7 +2,7 @@
 #include <pmm.h>
 #include <slab.h>
 
-#define BUDDY_BLOCK_NUM 4
+#define BUDDY_BLOCK_NUM 1
 buddy_block_t buddy_block[BUDDY_BLOCK_NUM];
 
 // framework

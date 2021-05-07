@@ -8,7 +8,7 @@
 // #define N 100
 #define SMP 4
 
-// #define OUTPUT
+#define OUTPUT
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
