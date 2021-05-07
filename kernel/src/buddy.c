@@ -135,7 +135,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
       *(uint32_t *)chk_ptr = USED(sz_xft);
     }
     */
-    pmm_test_paint(ret, 1 << sz_xft, sz_xft);
+    // pmm_test_paint(ret, 1 << sz_xft, sz_xft);
   }
 #endif
 
@@ -158,7 +158,7 @@ void buddy_free(buddy_block_t *block, void *ptr) {
       *(uint32_t *)chk_ptr = 0;
     }
   */
-  pmm_test_check(ptr, 1 << sz_xft, sz_xft);
+  // pmm_test_check(ptr, 1 << sz_xft, sz_xft);
 #endif
 
   block->ds_arr[idx].sz_xft = -1;

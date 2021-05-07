@@ -53,8 +53,8 @@ void *slab_alloc(size_t size) {
         block->invalid_num++;
 
 #ifdef TEST
-        pmm_test_paint(block->mem + (block->pos << block->UNIT_SHIFT),
-                       1 << sz_xft, sz_xft);
+        // pmm_test_paint(block->mem + (block->pos << block->UNIT_SHIFT),
+        //  1 << sz_xft, sz_xft);
 #endif
 
         return block->mem + (block->pos << block->UNIT_SHIFT);
@@ -73,7 +73,7 @@ void slab_free(void *ptr) {
   block->invalid_num--;
 
 #ifdef TEST
-  pmm_test_check(ptr, block->UNIT_SIZE, block->UNIT_SHIFT);
+  // pmm_test_check(ptr, block->UNIT_SIZE, block->UNIT_SHIFT);
 #endif
 
   if (block->invalid_num == 0) buddy_free(&buddy_block, block);

@@ -65,6 +65,7 @@ static void *alloc_check(struct malloc_op *op) {
 #ifdef OUTPUT
   printf("got %p \n", addr);
 #endif
+  pmm_test_paint(addr, op->size, op->size);
   return addr;
 }
 
@@ -75,6 +76,7 @@ static void free_check(struct malloc_op *op) {
   pmm->free(op->addr);
 #ifdef OUTPUT
   printf("%d bytes freed at %p\n", op->size, op->addr);
+  pmm_test_paint(op->addr, op->size, op->size);
 #endif
 }
 
