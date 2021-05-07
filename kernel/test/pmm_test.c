@@ -8,7 +8,7 @@
 #define N ((1 << (HEAP_XFT - 12)) - 100)
 // #define N 100
 
-// #define OUTPUT
+#define OUTPUT
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 

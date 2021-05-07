@@ -57,11 +57,6 @@ void *slab_alloc(size_t size) {
         void *ret = block->mem + ((block->pos) << block->UNIT_SHIFT);
         block->pos = (block->pos + 1) % block->UNIT_NUM;
 
-#ifdef TEST
-        // pmm_test_paint(block->mem + (block->pos << block->UNIT_SHIFT),
-        //  1 << sz_xft, sz_xft);
-#endif
-
         return ret;
       }
   }
@@ -75,11 +70,7 @@ void slab_free(void *ptr) {
   assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
   block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >> block->UNIT_SHIFT] =
       false;
+
   block->invalid_num--;
-
-#ifdef TEST
-  // pmm_test_check(ptr, block->UNIT_SIZE, block->UNIT_SHIFT);
-#endif
-
   if (block->invalid_num == 0) buddy_free(&buddy_block, block);
 }
