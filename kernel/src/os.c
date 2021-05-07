@@ -7,7 +7,7 @@ static void os_run() {
     putch(*s == '*' ? '0' + cpu_current() : *s);
   }
 
-#ifdef TEST1
+#ifdef TEST
   pmm->test();
 #endif
 
