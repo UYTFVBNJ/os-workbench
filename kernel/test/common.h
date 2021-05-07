@@ -10,7 +10,7 @@
 #define USED(num) (0x66660000 | num)
 
 //
-#define MAX_SMP 8
+#define MAX_CPU 8
 
 //
 #include <kernel.h>

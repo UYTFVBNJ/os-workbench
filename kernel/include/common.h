@@ -5,6 +5,6 @@
 #include <klib-macros.h>
 #include <klib.h>
 
-#define MAX_SMP 8
+#define MAX_CPU 8
 
 #endif

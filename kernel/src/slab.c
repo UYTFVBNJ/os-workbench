@@ -5,7 +5,7 @@
 
 extern buddy_block_t buddy_block;
 
-slab_block_t *slabs[MAX_SMP][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
+slab_block_t *slabs[MAX_CPU][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
 
 void slab_init(slab_block_t *block, int unit_xft) {
   void *start = block, *end = start + SLAB_TOTAL_SIZE;
