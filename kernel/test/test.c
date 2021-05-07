@@ -80,7 +80,7 @@ void free_check(struct malloc_op *op) {
 }
 
 void stress_test() {
-  printf("STRESS_TEST\n");
+  printf("STRESS_TEST of id %d\n", cpu_current());
 
   while (1) {
     struct malloc_op op;
