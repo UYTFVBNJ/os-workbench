@@ -2,8 +2,7 @@
 #include <pmm.h>
 #include <slab.h>
 
-#define BUDDY_BLOCK_NUM 1
-buddy_block_t buddy_block[BUDDY_BLOCK_NUM];
+buddy_block_t buddy_block;
 
 // framework
 static void *kalloc(size_t size) {
@@ -11,14 +10,15 @@ static void *kalloc(size_t size) {
     void *ret = slab_alloc(size);
     if (ret != NULL) return ret;
   }
-  return buddy_alloc(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], size);
+  return buddy_alloc(&buddy_block, size);
 }
 
 static void kfree(void *ptr) {
-  if (((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1)) != 0)
+  if (((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1)) != 0 ||
+      !buddy_check_alloced(&buddy_block, ptr))
     slab_free(ptr);
   else
-    buddy_free(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], ptr);
+    buddy_free(&buddy_block, ptr);
 }
 
 static void pmm_init() {
@@ -27,12 +27,7 @@ static void pmm_init() {
 
   // buddy_init(&buddy_block, heap.start, heap.end);
 
-  size_t sz_pblock = pmsize / BUDDY_BLOCK_NUM;
-  void *addr = heap.start;
-  for (int i = 0; i < BUDDY_BLOCK_NUM; i++) {
-    buddy_init(&buddy_block[i], addr, addr + sz_pblock);
-    addr += sz_pblock;
-  }
+  buddy_init(&buddy_block, heap.start, heap.end);
 }
 
 MODULE_DEF(pmm) = {

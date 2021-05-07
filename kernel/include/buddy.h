@@ -28,5 +28,6 @@ typedef struct {
 void buddy_init(buddy_block_t *block, void *start, void *end);
 void *buddy_alloc(buddy_block_t *block, size_t size);
 void buddy_free(buddy_block_t *block, void *ptr);
+bool buddy_check_alloced(buddy_block_t *block, void *ptr);
 
 #endif

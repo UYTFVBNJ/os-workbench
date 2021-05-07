@@ -178,3 +178,14 @@ void buddy_free(buddy_block_t *block, void *ptr) {
 
   unlock(&block->lock);
 }
+
+bool buddy_check_alloced(buddy_block_t *block, void *ptr) {
+  lock(&block->lock);
+
+  int idx = addr2idx(ptr);
+  int sz_xft = block->ds_arr[idx].sz_xft;
+
+  unlock(&block->lock);
+
+  return (sz_xft == -1) ? false : true;
+}
