@@ -7,18 +7,18 @@ buddy_block_t buddy_block[BUDDY_BLOCK_NUM];
 
 // framework
 static void *kalloc(size_t size) {
-  // if (size <= SLAB_UNIT_MAX_SIZE) {
-  // void *ret = slab_alloc(size);
-  // if (ret != NULL) return ret;
-  // }
+  if (size <= SLAB_UNIT_MAX_SIZE) {
+    void *ret = slab_alloc(size);
+    if (ret != NULL) return ret;
+  }
   return buddy_alloc(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], size);
 }
 
 static void kfree(void *ptr) {
-  // if ((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1) != 0)
-  // slab_free(ptr);
-  // else
-  buddy_free(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], ptr);
+  if (((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1)) != 0)
+    slab_free(ptr);
+  else
+    buddy_free(&buddy_block[cpu_current() % BUDDY_BLOCK_NUM], ptr);
 }
 
 static void pmm_init() {

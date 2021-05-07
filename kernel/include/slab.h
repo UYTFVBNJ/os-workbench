@@ -18,3 +18,6 @@ typedef struct {
   void *mem;
   int cpu;
 } slab_block_t;
+
+void *slab_alloc(size_t size);
+void slab_free(void *ptr);
