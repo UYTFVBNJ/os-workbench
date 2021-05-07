@@ -116,29 +116,13 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   ((buddy_unit_ds_t *)(bl_nd->key))->belong = -1;
   list_delete(&block->bl_lst[sz_xft], bl_nd);
 
+  // accessing buddy_block
   void *ret = idx2addr(((buddy_unit_ds_t *)(bl_nd->key))->idx);
-
-  unlock(&block->lock);
-
   // check alignment
   assert(((uintptr_t)idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx) &
           ((1 << sz_xft) - 1)) == 0);
 
-#ifdef TEST
-  if (!initialing) {
-    /*
-    uint32_t *addr = idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
-    for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << (sz_xft - 2));
-         chk_ptr++) {
-      if (*(uint32_t *)chk_ptr == USED(sz_xft)) printf("%p\n", chk_ptr);
-      assert(*(uint32_t *)chk_ptr != USED(sz_xft));
-      *(uint32_t *)chk_ptr = USED(sz_xft);
-    }
-    */
-    // pmm_test_paint(ret, 1 << sz_xft, sz_xft);
-  }
-#endif
-
+  unlock(&block->lock);
   return ret;
 }
 
