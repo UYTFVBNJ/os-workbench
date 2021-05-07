@@ -10,7 +10,10 @@
 
 // #define OUTPUT
 
-int cpu_current() { return pthread_self(); }
+int cpu_current() {
+  printf("uid: %ld\n", pthread_self());
+  return pthread_self();
+}
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
