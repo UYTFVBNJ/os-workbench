@@ -1,7 +1,6 @@
 #include <common.h>
 #include <pmm_test.h>
 #include <spinlock.h>
-#include <threads.h>
 
 #define ALLOC_SIZE (1 << 12)
 // #define ALLOC_SIZE (1 << 5)
@@ -10,11 +9,6 @@
 #define SMP 4
 
 // #define OUTPUT
-
-int cpu_current() {
-  printf("uid: %lu\n", pthread_self() % SMP);
-  return pthread_self();
-}
 
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
@@ -98,11 +92,13 @@ static void stress_test() {
       case OP_FREE:
         free_check(&op);
         break;
+      case OP_NONE:
+        assert(0);
     }
   }
 }
 
-void pmm_test_paint(void *addr, size_t size, char key) {
+void pmm_test_paint(uint32_t *addr, size_t size, char key) {
   size /= sizeof(uint32_t);
   for (uint32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
     if (*(uint32_t *)chk_ptr == USED(key)) printf("%p\n", chk_ptr);
@@ -111,7 +107,7 @@ void pmm_test_paint(void *addr, size_t size, char key) {
   }
 }
 
-void pmm_test_check(void *addr, size_t size, char key) {
+void pmm_test_check(uint32_t *addr, size_t size, char key) {
   size /= sizeof(uint32_t);
   for (uint32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
     if (*(uint32_t *)chk_ptr != USED(key)) printf("%p\n", chk_ptr);
@@ -120,7 +116,7 @@ void pmm_test_check(void *addr, size_t size, char key) {
   }
 }
 
-static int pmm_test() {
+void pmm_test() {
 #ifdef TEST
   printf("PMM_TEST of cpuid %d\n", cpu_current());
 #endif

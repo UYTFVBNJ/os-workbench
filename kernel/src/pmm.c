@@ -35,22 +35,6 @@ static void pmm_init() {
   }
 }
 
-#ifdef TEST
-static void pmm_test() {
-  uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
-  printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
-
-  // buddy_init(&buddy_block, heap.start, heap.end);
-
-  size_t sz_pblock = pmsize / BUDDY_BLOCK_NUM;
-  void *addr = heap.start;
-  for (int i = 0; i < BUDDY_BLOCK_NUM; i++) {
-    buddy_init(&buddy_block[i], addr, addr + sz_pblock);
-    addr += sz_pblock;
-  }
-}
-#endif
-
 MODULE_DEF(pmm) = {
     .init = pmm_init,
     .alloc = kalloc,

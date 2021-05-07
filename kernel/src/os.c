@@ -1,7 +1,5 @@
 #include <common.h>
 
-#ifndef TEST
-
 static void os_init() { pmm->init(); }
 
 static void os_run() {
@@ -9,7 +7,9 @@ static void os_run() {
     putch(*s == '*' ? '0' + cpu_current() : *s);
   }
 
+#ifdef TEST
   pmm->test();
+#endif
 
   while (1)
     ;
@@ -19,5 +19,3 @@ MODULE_DEF(os) = {
     .init = os_init,
     .run = os_run,
 };
-
-#endif
