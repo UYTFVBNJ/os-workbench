@@ -10,6 +10,9 @@
 
 #define OUTPUT
 
+spinlock_t cnt_lk;
+int cnt;
+
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
 struct malloc_op {
@@ -115,6 +118,11 @@ static void stress_test() {
       case OP_NONE:
         assert(0);
     }
+
+    lock(&cnt_lk);
+    cnt++;
+    if (cnt % 1000000 == 0) printf("cnt: %d\n", cnt);
+    unlock(&cnt_lk);
   }
 }
 
