@@ -60,7 +60,8 @@ static void random_op(struct malloc_op *op) {
 void pmm_test_paint(uint32_t *addr, size_t size, int key) {
   size /= sizeof(uint32_t);
   for (uint32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
-    if (*(uint32_t *)chk_ptr == USED(key)) printf("%p\n", chk_ptr);
+    if (*(uint32_t *)chk_ptr == USED(key))
+      printf("double alloc at %p\n", chk_ptr);
     assert(*(uint32_t *)chk_ptr != USED(key));
     *(uint32_t *)chk_ptr = USED(key);
   }
@@ -69,7 +70,8 @@ void pmm_test_paint(uint32_t *addr, size_t size, int key) {
 void pmm_test_check(uint32_t *addr, size_t size, int key) {
   size /= sizeof(uint32_t);
   for (uint32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
-    if (*(uint32_t *)chk_ptr != USED(key)) printf("%p\n", chk_ptr);
+    if (*(uint32_t *)chk_ptr != USED(key))
+      printf("double free at %p\n", chk_ptr);
     assert(*(uint32_t *)chk_ptr == USED(key));
     *(uint32_t *)chk_ptr = 0;
   }
