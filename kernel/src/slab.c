@@ -58,7 +58,7 @@ void *slab_alloc(size_t size) {
         //  1 << sz_xft, sz_xft);
 #endif
 
-        return block->mem + (block->pos << block->UNIT_SHIFT);
+        return block->mem + ((block->pos++) << block->UNIT_SHIFT);
       }
   }
 
