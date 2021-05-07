@@ -11,7 +11,7 @@
 // #define OUTPUT
 
 int cpu_current() {
-  printf("uid: %lu\n", pthread_self());
+  printf("uid: %lu\n", pthread_self() % SMP);
   return pthread_self();
 }
 
@@ -103,8 +103,12 @@ void stress_test() {
   }
 }
 
+void show_status() { printf("qwq\n"); }
+
 int main() {
   pmm->init();
+
+  atexit(show_status);
 
 #ifdef TEST
   printf("TESTING:\nsmp = %d\n", SMP);
