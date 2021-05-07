@@ -98,8 +98,8 @@ static void free_check(struct malloc_op *op) {
   pmm->free(op->addr);
 #ifdef OUTPUT
   printf("%d bytes freed at %p\n", op->size, op->addr);
-  pmm_test_check(op->addr, op->size, op->size);
 #endif
+  pmm_test_check(op->addr, op->size, op->size);
 }
 
 static void stress_test() {
