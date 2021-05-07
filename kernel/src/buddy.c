@@ -3,7 +3,7 @@
 #define addr2idx(addr) \
   (((uintptr_t)addr - (uintptr_t)block->mem) >> block->UNIT_SHIFT)
 
-#define idx2addr(idx) ((uint8_t *)block->mem + (idx << block->UNIT_SHIFT))
+#define idx2addr(idx) (block->mem + (idx << block->UNIT_SHIFT))
 
 #define buddy_idx(idx, sz_xft) (idx ^ (1 << (sz_xft - block->UNIT_SHIFT)))
 
@@ -116,7 +116,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   ((buddy_unit_ds_t *)(bl_nd->key))->belong = -1;
   list_delete(&block->bl_lst[sz_xft], bl_nd);
 
-  void *ret = idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx);
+  void *ret = idx2addr(((buddy_unit_ds_t *)(bl_nd->key))->idx);
 
   unlock(&block->lock);
 
