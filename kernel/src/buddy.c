@@ -135,7 +135,7 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
       *(uint32_t *)chk_ptr = USED(sz_xft);
     }
     */
-    pmm_test_print(ret, 1 << sz_xft, sz_xft);
+    pmm_test_paint(ret, 1 << sz_xft, sz_xft);
   }
 #endif
 

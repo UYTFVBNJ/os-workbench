@@ -5,6 +5,8 @@
 #include <klib-macros.h>
 #include <klib.h>
 
+#define TEST
+
 #define MAX_CPU 8
 
 #endif

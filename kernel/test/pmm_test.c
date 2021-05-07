@@ -27,7 +27,7 @@ struct malloc_op {
 spinlock_t op_lk;
 struct malloc_op op_arr[N];
 
-void op_insert(enum ops type, size_t size, void *addr) {
+static void op_insert(enum ops type, size_t size, void *addr) {
   lock(&op_lk);
 
   int i;
@@ -41,7 +41,7 @@ void op_insert(enum ops type, size_t size, void *addr) {
   unlock(&op_lk);
 }
 
-void random_op(struct malloc_op *op) {
+static void random_op(struct malloc_op *op) {
   if (rand() % 3) {
     // OP_ALLOC
     *op = (struct malloc_op){.type = OP_ALLOC, .size = ALLOC_SIZE};
@@ -64,7 +64,7 @@ void random_op(struct malloc_op *op) {
   }
 }
 
-void *alloc_check(struct malloc_op *op) {
+static void *alloc_check(struct malloc_op *op) {
 #ifdef OUTPUT
   printf("acquiring %d bytes\n", op->size);
 #endif
@@ -75,7 +75,7 @@ void *alloc_check(struct malloc_op *op) {
   return addr;
 }
 
-void free_check(struct malloc_op *op) {
+static void free_check(struct malloc_op *op) {
 #ifdef OUTPUT
   printf("freeing mem of %d bytes at %p\n", op->size, op->addr);
 #endif
@@ -85,7 +85,7 @@ void free_check(struct malloc_op *op) {
 #endif
 }
 
-void stress_test() {
+static void stress_test() {
   while (1) {
     struct malloc_op op;
     random_op(&op);
@@ -120,7 +120,7 @@ void pmm_test_check(void *addr, size_t size, char key) {
   }
 }
 
-int pmm_test() {
+static int pmm_test() {
 #ifdef TEST
   printf("PMM_TEST of cpuid %d\n", cpu_current());
 #endif
