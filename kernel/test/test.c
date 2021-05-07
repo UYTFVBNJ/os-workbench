@@ -11,7 +11,7 @@
 // #define OUTPUT
 
 int cpu_current() {
-  printf("uid: %ld\n", pthread_self());
+  printf("uid: %lu\n", pthread_self());
   return pthread_self();
 }
 
