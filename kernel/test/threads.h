@@ -45,7 +45,7 @@ static inline void create(void *fn) {
 
 static inline void join(void (*fn)()) { join_fn = fn; }
 
-int cpu_current() { return pthread_self(); }
+static inline int cpu_current() { return pthread_self(); }
 
 // ========== Synchronization ==========
 #include <stdint.h>
