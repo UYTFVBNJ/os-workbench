@@ -84,7 +84,7 @@ static void *alloc_check(struct malloc_op *op) {
 #ifdef OUTPUT
   printf("got %p \n", addr);
 #endif
-  pmm_test_paint(addr, op->size, op->size);
+  if (addr != NULL) pmm_test_paint(addr, op->size, op->size);
   return addr;
 }
 
