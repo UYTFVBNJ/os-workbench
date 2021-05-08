@@ -15,6 +15,8 @@
 spinlock_t cnt_lk;
 int cnt;
 
+spinlock_t chk_lk;
+
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
 struct malloc_op {
@@ -65,20 +67,24 @@ static void random_op(struct malloc_op *op) {
 
 void pmm_test_paint(int32_t *addr, size_t size, int key) {
   size /= sizeof(int32_t);
+  lock(&chk_lk);
   for (int32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
     if (*chk_ptr == USED(key)) printf("double alloc at %p\n", chk_ptr);
     assert(*chk_ptr != USED(key));
     *chk_ptr = USED(key);
   }
+  unlock(&chk_lk);
 }
 
 void pmm_test_check(int32_t *addr, size_t size, int key) {
   size /= sizeof(int32_t);
+  lock(&chk_lk);
   for (int32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
     if (*chk_ptr != USED(key)) printf("double free at %p\n", chk_ptr);
     assert(*chk_ptr == USED(key));
     *chk_ptr = 0;
   }
+  unlock(&chk_lk);
 }
 
 static void *alloc_check(struct malloc_op *op) {
