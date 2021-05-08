@@ -98,24 +98,25 @@ void pmm_test_check(int32_t *addr, size_t size, int key) {
 
 static void *alloc_check(struct malloc_op *op) {
 #ifdef OUTPUT
-  printf("acquiring %d bytes\n", op->size);
+  printf("cpu %d acquiring %d bytes\n", cpu_current(), op->size);
 #endif
   void *addr = pmm->alloc(op->size);
   if (addr != NULL) pmm_test_paint(addr, op->size, op->size);
 #ifdef OUTPUT
-  printf("got %p \n", addr);
+  printf("cpu %d got %p \n", cpu_current(), addr);
 #endif
   return addr;
 }
 
 static void free_check(struct malloc_op *op) {
 #ifdef OUTPUT
-  printf("freeing mem of %d bytes at %p\n", op->size, op->addr);
+  printf("cpu %d freeing mem of %d bytes at %p\n", cpu_current(), op->size,
+         op->addr);
 #endif
   pmm_test_check(op->addr, op->size, op->size);
   pmm->free(op->addr);
 #ifdef OUTPUT
-  printf("%d bytes freed at %p\n", op->size, op->addr);
+  printf("cpu %d %d bytes freed at %p\n", cpu_current(), op->size, op->addr);
 #endif
 }
 
