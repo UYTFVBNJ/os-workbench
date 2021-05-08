@@ -91,6 +91,7 @@ void pmm_test_check(int32_t *addr, size_t size, int key) {
     *chk_ptr = 0;
   }
   chk--;
+
   unlock(&chk_lk);
 }
 
