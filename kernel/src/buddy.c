@@ -78,6 +78,8 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   initialing = 1;
   assert(buddy_alloc(block, block->DS_SIZE) == block->mem);
   initialing = 0;
+
+  printf("buddy initialized successfully\n area: [%p, %p)", start, end);
 }
 
 void *buddy_alloc(buddy_block_t *block, size_t size) {
