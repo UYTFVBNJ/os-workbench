@@ -30,14 +30,18 @@ slab_block_t *slab_find_available(int sz_xft) {
     slab_block_t **slab = &slabs[cpu_current()][sz_xft][i];
 
     if (*slab == NULL) {
-      printf("acuiring new SLAB[%d][%d][%d] from BUDDY\n", cpu_current(), sz_xft, i);
+      printf("acuiring new SLAB[%d][%d][%d] from BUDDY\n", cpu_current(),
+             sz_xft, i);
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
       assert(*slab != NULL);
       slab_init(*slab, sz_xft);
       return *slab;
     } else if ((*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor) {
-      if (i + 1 < SLAB_MAX_NUM && (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 && slabs[cpu_current()][sz_xft][i + 1] != NULL) {
-        printf("freeing old SLAB[%d][%d][%d] from BUDDY\n", cpu_current(), sz_xft, i + 1);
+      if (i + 1 < SLAB_MAX_NUM &&
+          (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 &&
+          slabs[cpu_current()][sz_xft][i + 1] != NULL) {
+        printf("freeing old SLAB[%d][%d][%d] from BUDDY\n", cpu_current(),
+               sz_xft, i + 1);
         buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
         slabs[cpu_current()][sz_xft][i + 1] = NULL;
       }
