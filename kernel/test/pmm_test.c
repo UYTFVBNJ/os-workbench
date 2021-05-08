@@ -101,10 +101,10 @@ static void *alloc_check(struct malloc_op *op) {
   printf("acquiring %d bytes\n", op->size);
 #endif
   void *addr = pmm->alloc(op->size);
+  if (addr != NULL) pmm_test_paint(addr, op->size, op->size);
 #ifdef OUTPUT
   printf("got %p \n", addr);
 #endif
-  if (addr != NULL) pmm_test_paint(addr, op->size, op->size);
   return addr;
 }
 
@@ -112,11 +112,11 @@ static void free_check(struct malloc_op *op) {
 #ifdef OUTPUT
   printf("freeing mem of %d bytes at %p\n", op->size, op->addr);
 #endif
+  pmm_test_check(op->addr, op->size, op->size);
   pmm->free(op->addr);
 #ifdef OUTPUT
   printf("%d bytes freed at %p\n", op->size, op->addr);
 #endif
-  pmm_test_check(op->addr, op->size, op->size);
 }
 
 static void stress_test() {
