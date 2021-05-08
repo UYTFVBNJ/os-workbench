@@ -18,6 +18,9 @@ int cnt;
 spinlock_t chk_lk;
 int chk;
 
+spinlock_t free_cnt_lk;
+int free_cnt;
+
 enum ops { OP_NONE, OP_ALLOC, OP_FREE };
 
 struct malloc_op {
@@ -115,6 +118,9 @@ static void free_check(struct malloc_op *op) {
 #endif
   pmm_test_check(op->addr, op->size, op->size);
   pmm->free(op->addr);
+  lock(&free_cnt_lk);
+  free_cnt++;
+  unlock(&free_cnt_lk);
 #ifdef OUTPUT
   printf("cpu %d %d bytes freed at %p\n", cpu_current(), op->size, op->addr);
 #endif
@@ -139,7 +145,11 @@ static void stress_test() {
 
     lock(&cnt_lk);
     cnt++;
-    if (cnt % 100000 == 0) printf("cnt: %d\n", cnt);
+    if (cnt % 100000 == 0) {
+      lock(&free_cnt_lk);
+      printf("cnt: %d\nfree: %d\n\n", cnt, free_cnt);
+      unlock(&free_cnt_lk);
+    }
     unlock(&cnt_lk);
   }
 }
