@@ -10,7 +10,7 @@
 
 #define RATE 2
 
-// #define OUTPUT
+#define OUTPUT
 
 spinlock_t cnt_lk;
 int cnt;
