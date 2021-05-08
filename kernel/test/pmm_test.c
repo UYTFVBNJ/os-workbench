@@ -72,7 +72,8 @@ void pmm_test_paint(int32_t *addr, size_t size, int key) {
   chk++;
   assert(chk == 1);
   for (int32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
-    if (*chk_ptr == USED(key)) printf("double alloc at %p\n", chk_ptr);
+    if (*chk_ptr == USED(key))
+      printf("double alloc at %p : %d\n", chk_ptr, *chk_ptr);
     assert(*chk_ptr != USED(key));
     *chk_ptr = USED(key);
   }
@@ -86,12 +87,12 @@ void pmm_test_check(int32_t *addr, size_t size, int key) {
   chk++;
   assert(chk == 1);
   for (int32_t *chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
-    if (*chk_ptr != USED(key)) printf("double free at %p\n", chk_ptr);
+    if (*chk_ptr != USED(key))
+      printf("double free at %p : %d\n", chk_ptr, *chk_ptr);
     assert(*chk_ptr == USED(key));
     *chk_ptr = 0;
   }
   chk--;
-
   unlock(&chk_lk);
 }
 
