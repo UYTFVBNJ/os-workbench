@@ -1,2 +1,0 @@
-#define USED 0x23
-#define FREE 0x66

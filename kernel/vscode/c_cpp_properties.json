@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "name": "TEST",
+      "intelliSenseMode": "clang-x64",
+      "includePath": [
+        "../abstract-machine/**",
+        "./framework",
+        "./include",
+        "./test"
+      ],
+      "defines": [
+        "__ISA__=\"x86_64\"",
+        "__ISA_X86_64__",
+        "__ARCH__=x86_64-qemu",
+        "__ARCH_X86_64_QEMU",
+        "__PLATFORM__=qemu",
+        "__PLATFORM_QEMU",
+        "ARCH_H=\"arch/x86_64-qemu.h\"",
+        "TEST"
+      ],
+      "cStandard": "c11",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

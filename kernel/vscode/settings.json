@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "spinlock.h": "c",
+    "buddy.h": "c",
+    "minilib.h": "c",
+    "common.h": "c",
+    "kernel.h": "c",
+    "pmm.h": "c",
+    "threads.h": "c",
+    "pmm_test.h": "c"
+  }
+}

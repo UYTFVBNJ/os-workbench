@@ -1,5 +1,3 @@
-.PHONY: test libco
-
 all: libco-test-64 libco-test-32
 
 test: libco all
@@ -21,3 +19,7 @@ libco-test-32: main.c
 
 clean:
 	rm -f libco-test-*
+
+gdb: main.c
+	gcc -ggdb3 -I.. -L.. -m64 main.c -o libco-test-64 -lco-64
+	
