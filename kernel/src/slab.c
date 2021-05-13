@@ -89,9 +89,9 @@ void slab_free(void *ptr) {
   assert(block->UNIT_SIZE != 0);
 
 #ifdef TEST
-  if (block->cpu != cpu_current())
-    printf("warning: cpu %d is accessing cpu %d's slab\n", cpu_current(),
-           block->cpu);
+  // if (block->cpu != cpu_current())
+  // printf("warning: cpu %d is accessing cpu %d's slab\n", cpu_current(),
+  //  block->cpu);
 #endif
 
   assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
