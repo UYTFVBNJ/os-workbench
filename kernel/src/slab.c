@@ -45,7 +45,8 @@ slab_block_t *slab_find_available(int sz_xft) {
     } else if ((*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor) {
       if (i + 1 < SLAB_MAX_NUM &&
           (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 &&
-          slabs[cpu_current()][sz_xft][i + 1] != NULL) {
+          slabs[cpu_current()][sz_xft][i + 1] != NULL &&
+          slabs[cpu_current()][sz_xft][i + 1]->invalid_num == 0) {
 #ifdef TEST
         printf("freeing old SLAB[%d][%d][%d] from BUDDY at %p\n", cpu_current(),
                sz_xft, i + 1, slabs[cpu_current()][sz_xft][i + 1]);
