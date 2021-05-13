@@ -37,7 +37,7 @@ slab_block_t *slab_find_available(int sz_xft) {
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
 #ifdef TEST
       printf("acuired new SLAB[%d][%d][%d] from BUDDY at %p\n", cpu_current(),
-             sz_xft, i, slab);
+             sz_xft, i, *slab);
 #endif
       assert(*slab != NULL);
       slab_init(*slab, sz_xft);
