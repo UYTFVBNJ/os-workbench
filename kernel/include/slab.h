@@ -3,21 +3,24 @@
 #include <minilib.h>
 #include <pmm.h>
 
-#define SLAB_MAX_NUM 10
+#define SLAB_MAX_NUM 20
 
-#define SLAB_TOTAL_SHIFT (BUDDY_UNIT_SHIFT + 2)
+#define SLAB_TOTAL_SHIFT (BUDDY_UNIT_SHIFT + 4)
 #define SLAB_TOTAL_SIZE (1 << SLAB_TOTAL_SHIFT)
 #define SLAB_UNIT_MAX_SHIFT (BUDDY_UNIT_SHIFT - 1)
 #define SLAB_UNIT_MAX_SIZE (1 << SLAB_UNIT_MAX_SHIFT)
 
-typedef struct {
+typedef struct
+{
   size_t UNIT_SHIFT, UNIT_SIZE, UNIT_NUM;
   int pos;
   int invalid_num;
-  bool *valid;
-  void *mem;
+  bool* valid;
+  void* mem;
   int cpu;
 } slab_block_t;
 
-void *slab_alloc(size_t size);
-void slab_free(void *ptr);
+void*
+slab_alloc(size_t size);
+void
+slab_free(void* ptr);
