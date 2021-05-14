@@ -5,15 +5,17 @@
 
 extern buddy_block_t buddy_block;
 
-slab_block_t *slabs[MAX_CPU][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
+slab_block_t* slabs[MAX_CPU][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
 
-void slab_init(slab_block_t *block, int unit_xft) {
+void
+slab_init(slab_block_t* block, int unit_xft)
+{
   void *start = block, *end = start + SLAB_TOTAL_SIZE;
 
   block->UNIT_SHIFT = unit_xft;
   block->UNIT_SIZE = 1 << unit_xft;
-  block->UNIT_NUM = (SLAB_TOTAL_SIZE - sizeof(slab_block_t)) /
-                    ((1 << unit_xft) + sizeof(bool));
+  block->UNIT_NUM =
+    (SLAB_TOTAL_SIZE - sizeof(slab_block_t)) / ((1 << unit_xft) + sizeof(bool));
 
   block->invalid_num = 0;
   block->pos = 0;
@@ -25,19 +27,24 @@ void slab_init(slab_block_t *block, int unit_xft) {
   memset(block->valid, 0, sizeof(bool) * block->UNIT_NUM);
 }
 
-slab_block_t *slab_find_available(int sz_xft) {
+slab_block_t*
+slab_find_available(int sz_xft)
+{
   for (int i = 0; i < SLAB_MAX_NUM; i++) {
-    slab_block_t **slab = &slabs[cpu_current()][sz_xft][i];
+    slab_block_t** slab = &slabs[cpu_current()][sz_xft][i];
 
     if (*slab == NULL) {
-#ifdef TEST
-      printf("acuiring new SLAB[%d][%d][%d] from BUDDY\n", cpu_current(),
-             sz_xft, i);
+#ifdef TEST_LOG
+      printf(
+        "acuiring new SLAB[%d][%d][%d] from BUDDY\n", cpu_current(), sz_xft, i);
 #endif
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
-#ifdef TEST
-      printf("acuired new SLAB[%d][%d][%d] from BUDDY at %p\n", cpu_current(),
-             sz_xft, i, *slab);
+#ifdef TEST_LOG
+      printf("acuired new SLAB[%d][%d][%d] from BUDDY at %p\n",
+             cpu_current(),
+             sz_xft,
+             i,
+             *slab);
 #endif
       assert(*slab != NULL);
       slab_init(*slab, sz_xft);
@@ -47,9 +54,12 @@ slab_block_t *slab_find_available(int sz_xft) {
           (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 &&
           slabs[cpu_current()][sz_xft][i + 1] != NULL &&
           slabs[cpu_current()][sz_xft][i + 1]->invalid_num == 0) {
-#ifdef TEST
-        printf("freeing old SLAB[%d][%d][%d] from BUDDY at %p\n", cpu_current(),
-               sz_xft, i + 1, slabs[cpu_current()][sz_xft][i + 1]);
+#ifdef TEST_LOG
+        printf("freeing old SLAB[%d][%d][%d] from BUDDY at %p\n",
+               cpu_current(),
+               sz_xft,
+               i + 1,
+               slabs[cpu_current()][sz_xft][i + 1]);
 #endif
         buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
         slabs[cpu_current()][sz_xft][i + 1] = NULL;
@@ -60,10 +70,12 @@ slab_block_t *slab_find_available(int sz_xft) {
   return NULL;
 }
 
-void *slab_alloc(size_t size) {
+void*
+slab_alloc(size_t size)
+{
   int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
 
-  slab_block_t *block = slab_find_available(sz_xft);
+  slab_block_t* block = slab_find_available(sz_xft);
 
   if (block != NULL) {
     for (int i = 0; i < max_probe;
@@ -72,7 +84,7 @@ void *slab_alloc(size_t size) {
         block->valid[block->pos] = true;
         block->invalid_num++;
 
-        void *ret = block->mem + ((block->pos) << block->UNIT_SHIFT);
+        void* ret = block->mem + ((block->pos) << block->UNIT_SHIFT);
         block->pos = (block->pos + 1) % block->UNIT_NUM;
 
         return ret;
@@ -82,9 +94,11 @@ void *slab_alloc(size_t size) {
   return NULL;
 }
 
-void slab_free(void *ptr) {
-  slab_block_t *block =
-      (slab_block_t *)((uintptr_t)ptr & ~(SLAB_TOTAL_SIZE - 1));
+void
+slab_free(void* ptr)
+{
+  slab_block_t* block =
+    (slab_block_t*)((uintptr_t)ptr & ~(SLAB_TOTAL_SIZE - 1));
 
   assert(block->UNIT_SIZE != 0);
 
@@ -97,7 +111,7 @@ void slab_free(void *ptr) {
   assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
 
   block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >> block->UNIT_SHIFT] =
-      false;
+    false;
 
   block->invalid_num--;
 }

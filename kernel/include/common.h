@@ -6,6 +6,7 @@
 #include <klib.h>
 
 #define TEST
+// #define TEST_LOG
 
 #define MAX_CPU 16
 
