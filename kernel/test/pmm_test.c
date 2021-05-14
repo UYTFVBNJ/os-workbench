@@ -1,4 +1,5 @@
 #include <common.h>
+#include <minilib.h>
 #include <pmm_test.h>
 #include <spinlock.h>
 
@@ -201,7 +202,12 @@ stress_test()
     cnt++;
     if (cnt % 100000 == 0) {
       lock(&free_cnt_lk);
-      printf("cnt: %d\nfree: %d\n\n", cnt, free_cnt);
+      uint64_t time = uptime();
+      printf("cnt: %d\nfree: %d\ntime: %ds\nspeed: %fM op/s\n",
+             cnt,
+             free_cnt,
+             time,
+             0.000001 * cnt / time);
       unlock(&free_cnt_lk);
     }
     unlock(&cnt_lk);
