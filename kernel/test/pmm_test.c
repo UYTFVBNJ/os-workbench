@@ -202,7 +202,7 @@ stress_test()
     cnt++;
     if (cnt % 100000 == 0) {
       lock(&free_cnt_lk);
-      uint64_t time = uptime();
+      uint64_t time = uptime() / 1000000;
       printf("cnt: %d\nfree: %d\ntime: %ds\nspeed: %fM op/s\n",
              cnt,
              free_cnt,
