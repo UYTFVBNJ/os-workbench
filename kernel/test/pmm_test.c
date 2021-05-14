@@ -4,7 +4,7 @@
 
 struct workload
 {
-  int pr[16], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
+  int pr[12], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
                    // roll(0, sum-1) => allocation size
 };
 
@@ -23,11 +23,11 @@ int
 roll()
 {
   int i, tmp = rand() % workload->sum;
-  for (i = 0; i < 16 && tmp >= 0; i++) {
+  for (i = 0; i < 12 && tmp >= 0; i++) {
     tmp -= workload->pr[i];
   }
-  printf("size: %d\n", (12 - (i - 1)));
-  return 1 << (12 - (i - 1));
+  assert(1 <= 13 - (i - 1) && 13 - (i - 1) <= 12);
+  return 1 << (13 - (i - 1));
 }
 
 #define ALLOC_SIZE (roll())
