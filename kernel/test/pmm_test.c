@@ -9,11 +9,14 @@ struct workload
 };
 
 static struct workload wl_typical __attribute__((
-  used)) = { .pr = { 10, 0, 0, 40, 50, 40, 30, 20, 10, 4, 2, 1 } },
+  used)) = { .pr = { 10, 0, 0, 40, 50, 40, 30, 20, 10, 4, 2, 1 },
+             .sum = 10 + 0 + 0 + 40 + 50 + 40 + 30 + 20 + 10 + 4 + 2 + 1 },
   wl_stress __attribute__((
-    used)) = { .pr = { 1, 0, 0, 400, 200, 100, 1, 1, 1, 1, 1, 1 } },
-  wl_page
-  __attribute__((used)) = { .pr = { 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+    used)) = { .pr = { 1, 0, 0, 400, 200, 100, 1, 1, 1, 1, 1, 1 },
+               .sum = 1 + 0 + 0 + 400 + 200 + 100 + 1 + 1 + 1 + 1 + 1 + 1 },
+  wl_page __attribute__((
+    used)) = { .pr = { 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+               .sum = 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 };
 static struct workload* workload = &wl_page;
 
 int
