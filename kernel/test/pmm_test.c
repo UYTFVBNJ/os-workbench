@@ -2,23 +2,37 @@
 #include <pmm_test.h>
 #include <spinlock.h>
 
+struct workload
+{
+  int pr[16], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
+                   // roll(0, sum-1) => allocation size
+};
+
+static struct workload wl_typical __attribute__((
+  used)) = { .pr = { 10, 0, 0, 40, 50, 40, 30, 20, 10, 4, 2, 1 } },
+  wl_stress __attribute__((
+    used)) = { .pr = { 1, 0, 0, 400, 200, 100, 1, 1, 1, 1, 1, 1 } },
+  wl_page
+  __attribute__((used)) = { .pr = { 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+static struct workload* workload = &wl_page;
+
+int
+roll()
+{
+  int i, tmp = rand() % workload->sum;
+  for (i = 0; i < 16 && tmp > 0; i++) {
+    tmp -= workload->pr[i];
+  }
+  printf("size: %d\n", (12 - (i - 1)));
+  return 1 << (12 - (i - 1));
+}
+
+#define ALLOC_SIZE (roll())
 // #define ALLOC_SIZE (1 << 14)
-#define ALLOC_SIZE (1 << 12)
+// #define ALLOC_SIZE (1 << 12)
 // #define ALLOC_SIZE (1 << 5)
 #define N ((1 << (HEAP_XFT - 12)) - 100)
 // #define N 100
-
-// struct workload
-// {
-//   int pr[16], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
-//                    // roll(0, sum-1) => allocation size
-// };
-
-// static struct workload
-//   wl_typical = { .pr = { 10, 0, 0, 40, 50, 40, 30, 20, 10, 4, 2, 1 } },
-//   wl_stress = { .pr = { 1, 0, 0, 400, 200, 100, 1, 1, 1, 1, 1, 1 } },
-//   wl_page = { .pr = { 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
-// static struct workload* workload = &wl_typical;
 
 #define RATE 2
 
