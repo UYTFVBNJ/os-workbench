@@ -23,7 +23,7 @@ int
 roll()
 {
   int i, tmp = rand() % workload->sum;
-  for (i = 0; i < 16 && tmp > 0; i++) {
+  for (i = 0; i < 16 && tmp >= 0; i++) {
     tmp -= workload->pr[i];
   }
   printf("size: %d\n", (12 - (i - 1)));
