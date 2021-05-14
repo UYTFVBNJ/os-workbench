@@ -26,8 +26,8 @@ roll()
   for (i = 0; i < 12 && tmp >= 0; i++) {
     tmp -= workload->pr[i];
   }
-  assert(1 <= 13 - (i - 1) && 13 - (i - 1) <= 12);
-  return 1 << (13 - (i - 1));
+  assert(1 <= 12 - (i - 1) && 12 - (i - 1) <= 12);
+  return 1 << (12 - (i - 1));
 }
 
 #define ALLOC_SIZE (roll())
