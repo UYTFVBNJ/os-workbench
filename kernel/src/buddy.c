@@ -1,6 +1,6 @@
 #include <buddy.h>
 
-#define addr2idx(addr) \
+#define addr2idx(addr)                                                         \
   (((uintptr_t)addr - (uintptr_t)block->mem) >> block->UNIT_SHIFT)
 
 #define idx2addr(idx) (block->mem + (idx << block->UNIT_SHIFT))
@@ -9,37 +9,39 @@
 
 static bool initialing;
 
-void buddy_init(buddy_block_t *block, void *start, void *end) {
+void
+buddy_init(buddy_block_t* block, void* start, void* end)
+{
   if (((uintptr_t)start & 0xffffff) != 0) {
-    start = (void *)((uintptr_t)start & ~0xffffff) +
-            0x1000000;  // should align to 16MiB
+    start = (void*)((uintptr_t)start & ~0xffffff) +
+            0x1000000; // should align to 16MiB
     printf("change buddy->mem to %p", start);
   }
 
   // assign parameters
 
   block->TOTAL_SIZE =
-      ((uintptr_t)end - (uintptr_t)start);  // TODO cal nearest 2^24
+    ((uintptr_t)end - (uintptr_t)start); // TODO cal nearest 2^24
   assert(is_2_power(block->TOTAL_SIZE));
   // assert(block->TOTAL_SIZE >= 1 << 24);
   block->TOTAL_SHIFT = num2shift(block->TOTAL_SIZE);
 
-  block->UNIT_SHIFT = BUDDY_UNIT_SHIFT;         // 4 KiB
-  block->UNIT_SIZE = (1 << block->UNIT_SHIFT);  // 4 KiB
+  block->UNIT_SHIFT = BUDDY_UNIT_SHIFT;        // 4 KiB
+  block->UNIT_SIZE = (1 << block->UNIT_SHIFT); // 4 KiB
   block->UNIT_NUM = (block->TOTAL_SIZE / block->UNIT_SIZE);
 
   block->DS_NUM = block->UNIT_NUM;
   block->DS_SIZE =
-      block->DS_NUM *
-      (sizeof(node_t) + sizeof(buddy_unit_ds_t));  // at least 4K * sizeof
-  block->DS_UNIT_NUM = ((block->DS_SIZE - 1) / block->UNIT_SIZE) + 1;  // ceil
+    block->DS_NUM *
+    (sizeof(node_t) + sizeof(buddy_unit_ds_t)); // at least 4K * sizeof
+  block->DS_UNIT_NUM = ((block->DS_SIZE - 1) / block->UNIT_SIZE) + 1; // ceil
 
   // assign initial values
   block->lock.locked = 0;
   block->mem = start;
   block->bl_arr = start;
   block->ds_arr = start + block->DS_NUM * sizeof(node_t);
-  assert(((uintptr_t)block->mem & 0xffffff) == 0);  // should align to 16MiB
+  assert(((uintptr_t)block->mem & 0xffffff) == 0); // should align to 16MiB
 
 #ifdef TEST
   printf("buddy: \n");
@@ -60,7 +62,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
 
   for (int i = 0; i < block->DS_NUM; i++) {
     block->bl_arr[i] =
-        (node_t){.key = block->ds_arr + i, .pre = NULL, .nxt = NULL};
+      (node_t){ .key = block->ds_arr + i, .pre = NULL, .nxt = NULL };
     block->ds_arr[i].sz_xft = -1;
     block->ds_arr[i].belong = -1;
     block->ds_arr[i].idx = i;
@@ -70,7 +72,7 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
     block->bl_lst[i].nil.nxt = block->bl_lst[i].nil.pre = &block->bl_lst[i].nil;
 
   list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
-  ((buddy_unit_ds_t *)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
+  ((buddy_unit_ds_t*)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
 
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
@@ -82,10 +84,13 @@ void buddy_init(buddy_block_t *block, void *start, void *end) {
   printf("buddy initialized successfully\n area: [%p, %p)", start, end);
 }
 
-void *buddy_alloc(buddy_block_t *block, size_t size) {
+void*
+buddy_alloc(buddy_block_t* block, size_t size)
+{
   int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
   // TODO
-  if (sz_xft < block->UNIT_SHIFT) sz_xft = block->UNIT_SHIFT;
+  if (sz_xft < block->UNIT_SHIFT)
+    sz_xft = block->UNIT_SHIFT;
   // assert(sz_xft >= block->UNIT_SHIFT);
 
   lock(&block->lock);
@@ -104,10 +109,9 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
   }
 
   for (; i > sz_xft; i--) {
-    node_t *bl_nd = block->bl_lst[i].nil.nxt;
-    node_t *bl_nd_buddy =
-        &block
-             ->bl_arr[buddy_idx(((buddy_unit_ds_t *)(bl_nd->key))->idx, i - 1)];
+    node_t* bl_nd = block->bl_lst[i].nil.nxt;
+    node_t* bl_nd_buddy =
+      &block->bl_arr[buddy_idx(((buddy_unit_ds_t*)(bl_nd->key))->idx, i - 1)];
 
     list_delete(&block->bl_lst[i], bl_nd);
 
@@ -116,42 +120,31 @@ void *buddy_alloc(buddy_block_t *block, size_t size) {
     list_insert(&block->bl_lst[i - 1], bl_nd);
 
     // (buddy_unit_ds_t *)(bl_nd->key)->belong = i - 1;
-    ((buddy_unit_ds_t *)(bl_nd_buddy->key))->belong = i - 1;
+    ((buddy_unit_ds_t*)(bl_nd_buddy->key))->belong = i - 1;
   }
 
-  node_t *bl_nd = block->bl_lst[sz_xft].nil.nxt;
-  ((buddy_unit_ds_t *)(bl_nd->key))->sz_xft = sz_xft;
-  ((buddy_unit_ds_t *)(bl_nd->key))->belong = -1;
+  node_t* bl_nd = block->bl_lst[sz_xft].nil.nxt;
+  ((buddy_unit_ds_t*)(bl_nd->key))->sz_xft = sz_xft;
+  ((buddy_unit_ds_t*)(bl_nd->key))->belong = -1;
   list_delete(&block->bl_lst[sz_xft], bl_nd);
 
   // accessing buddy_block
-  void *ret = idx2addr(((buddy_unit_ds_t *)(bl_nd->key))->idx);
+  void* ret = idx2addr(((buddy_unit_ds_t*)(bl_nd->key))->idx);
   // check alignment
-  assert(((uintptr_t)idx2addr(((buddy_unit_ds_t *)bl_nd->key)->idx) &
+  assert(((uintptr_t)idx2addr(((buddy_unit_ds_t*)bl_nd->key)->idx) &
           ((1 << sz_xft) - 1)) == 0);
 
   unlock(&block->lock);
   return ret;
 }
 
-void buddy_free(buddy_block_t *block, void *ptr) {
+void
+buddy_free(buddy_block_t* block, void* ptr)
+{
   lock(&block->lock);
 
   int idx = addr2idx(ptr);
   int sz_xft = block->ds_arr[idx].sz_xft;
-
-#ifdef TEST
-  /*
-    uint32_t *addr = ptr;
-    for (uint32_t *chk_ptr = addr; chk_ptr < addr + (1 << (sz_xft - 2));
-         chk_ptr++) {
-      if (*(uint32_t *)chk_ptr != USED(sz_xft)) printf("%p\n", chk_ptr);
-      assert(*(uint32_t *)chk_ptr == USED(sz_xft));
-      *(uint32_t *)chk_ptr = 0;
-    }
-  */
-  // pmm_test_check(ptr, 1 << sz_xft, sz_xft);
-#endif
 
   block->ds_arr[idx].sz_xft = -1;
 
@@ -171,7 +164,9 @@ void buddy_free(buddy_block_t *block, void *ptr) {
   unlock(&block->lock);
 }
 
-bool buddy_check_alloced(buddy_block_t *block, void *ptr) {
+bool
+buddy_check_alloced(buddy_block_t* block, void* ptr)
+{
   lock(&block->lock);
 
   int idx = addr2idx(ptr);

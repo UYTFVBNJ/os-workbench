@@ -113,5 +113,8 @@ slab_free(void* ptr)
   block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >> block->UNIT_SHIFT] =
     false;
 
+  printf("SLAB[%d][%d] false\n",
+         cpu_current(),
+         ((uintptr_t)ptr - (uintptr_t)block->mem) >> block->UNIT_SHIFT);
   block->invalid_num--;
 }
