@@ -1,8 +1,8 @@
 #include <slab.h>
 
 #define max_load_factor 0.8
-// #define max_probe 2 * (1.0 / (1.0 - max_load_factor))
-#define max_probe (block->UNIT_NUM)
+#define max_probe 2 * (1.0 / (1.0 - max_load_factor))
+// #define max_probe (block->UNIT_NUM)
 
 extern buddy_block_t buddy_block;
 
