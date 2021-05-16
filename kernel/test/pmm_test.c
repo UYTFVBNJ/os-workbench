@@ -186,7 +186,8 @@ free_check(struct malloc_op* op)
 static void
 stress_test()
 {
-  while (1) {
+  for (int i = 0; i < 20; i++) {
+    // while (1) {
     struct malloc_op op;
     random_op(&op);
 

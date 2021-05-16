@@ -82,6 +82,7 @@ slab_alloc(size_t size)
          i++, block->pos = (block->pos + 1) % block->UNIT_NUM)
       if (!block->valid[block->pos]) {
         block->valid[block->pos] = true;
+        printf("SLAB[%d][%d] true\n", cpu_current(), block->pos);
         block->invalid_num++;
 
         void* ret = block->mem + ((block->pos) << block->UNIT_SHIFT);
