@@ -35,7 +35,7 @@ roll()
 // #define ALLOC_SIZE (1 << 14)
 // #define ALLOC_SIZE (1 << 12)
 // #define ALLOC_SIZE (1 << 5)
-#define N ((1 << (HEAP_XFT - 12)) - 100)
+#define N ((1 << (HEAP_XFT - 12 - 2)))
 // #define N 100
 
 #define RATE 2
@@ -67,7 +67,7 @@ struct malloc_op
 };
 
 spinlock_t op_lk;
-struct malloc_op op_arr[N];
+struct malloc_op op_arr[4][N];
 
 static void
 op_insert(enum ops type, size_t size, void* addr)
@@ -75,12 +75,13 @@ op_insert(enum ops type, size_t size, void* addr)
   // lock(&op_lk);
 
   int i;
-  for (i = 0; i < N && op_arr[i].type != OP_NONE; i++)
+  for (i = 0; i < N && op_arr[cpu_current()][i].type != OP_NONE; i++)
     ;
 
   assert(i < N);
 
-  op_arr[i] = (struct malloc_op){ .type = type, .size = size, .addr = addr };
+  op_arr[cpu_current()][i] =
+    (struct malloc_op){ .type = type, .size = size, .addr = addr };
 
   // unlock(&op_lk);
 }
@@ -96,12 +97,12 @@ random_op(struct malloc_op* op)
     // lock(&op_lk);
 
     int i;
-    for (i = 0; i < N && op_arr[i].type != OP_FREE; i++)
+    for (i = 0; i < N && op_arr[cpu_current()][i].type != OP_FREE; i++)
       ;
 
     if (i < N) {
-      *op = op_arr[i];
-      op_arr[i] = (struct malloc_op){ .type = OP_NONE };
+      *op = op_arr[cpu_current()][i];
+      op_arr[cpu_current()][i] = (struct malloc_op){ .type = OP_NONE };
     }
 
     // unlock(&op_lk);
