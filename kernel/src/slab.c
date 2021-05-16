@@ -90,7 +90,7 @@ slab_alloc(size_t size)
         return ret;
       }
   }
-
+  printf("SLAB[%d][%d] failed\n", cpu_current(), sz_xft);
   return NULL;
 }
 

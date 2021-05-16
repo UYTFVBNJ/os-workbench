@@ -38,7 +38,7 @@ roll()
 #define N ((1 << (HEAP_XFT - 12)) - 100)
 // #define N 100
 
-#define RATE 1
+#define RATE 2
 
 // #define OUTPUT
 // #define CHECK
