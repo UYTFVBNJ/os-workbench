@@ -112,7 +112,7 @@ slab_free(void* ptr)
 
   assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
   assert(block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >>
-                      block->UNIT_SHIFT] == false);
+                      block->UNIT_SHIFT] == true);
 
   block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >> block->UNIT_SHIFT] =
     false;
