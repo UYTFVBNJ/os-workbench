@@ -61,8 +61,8 @@ slab_find_available(int sz_xft)
                i + 1,
                slabs[cpu_current()][sz_xft][i + 1]);
 #endif
-        buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
-        slabs[cpu_current()][sz_xft][i + 1] = NULL;
+        // buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
+        // slabs[cpu_current()][sz_xft][i + 1] = NULL;
       }
       return *slab;
     }
