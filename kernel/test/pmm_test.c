@@ -41,6 +41,7 @@ roll()
 #define RATE 2
 
 // #define OUTPUT
+// #define CHECK
 
 spinlock_t cnt_lk;
 int cnt;
@@ -151,8 +152,10 @@ alloc_check(struct malloc_op* op)
   printf("cpu %d acquiring %d bytes\n", cpu_current(), op->size);
 #endif
   void* addr = pmm->alloc(op->size);
+#ifdef CHECK
   if (addr != NULL)
     pmm_test_paint(addr, op->size, op->size);
+#endif
 #ifdef OUTPUT
   printf("cpu %d got %p \n", cpu_current(), addr);
 #endif
@@ -168,7 +171,9 @@ free_check(struct malloc_op* op)
          op->size,
          op->addr);
 #endif
+#ifdef CHECK
   pmm_test_check(op->addr, op->size, op->size);
+#endif
   pmm->free(op->addr);
   lock(&free_cnt_lk);
   free_cnt++;
