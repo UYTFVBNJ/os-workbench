@@ -72,7 +72,7 @@ struct malloc_op op_arr[N];
 static void
 op_insert(enum ops type, size_t size, void* addr)
 {
-  lock(&op_lk);
+  // lock(&op_lk);
 
   int i;
   for (i = 0; i < N && op_arr[i].type != OP_NONE; i++)
@@ -82,7 +82,7 @@ op_insert(enum ops type, size_t size, void* addr)
 
   op_arr[i] = (struct malloc_op){ .type = type, .size = size, .addr = addr };
 
-  unlock(&op_lk);
+  // unlock(&op_lk);
 }
 
 static void
@@ -93,7 +93,7 @@ random_op(struct malloc_op* op)
     *op = (struct malloc_op){ .type = OP_ALLOC, .size = ALLOC_SIZE };
   } else {
     // OP_FREE
-    lock(&op_lk);
+    // lock(&op_lk);
 
     int i;
     for (i = 0; i < N && op_arr[i].type != OP_FREE; i++)
@@ -104,7 +104,7 @@ random_op(struct malloc_op* op)
       op_arr[i] = (struct malloc_op){ .type = OP_NONE };
     }
 
-    unlock(&op_lk);
+    // unlock(&op_lk);
 
     if (i == N)
       random_op(op);
