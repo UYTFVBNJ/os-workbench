@@ -3,7 +3,7 @@
 #include <minilib.h>
 #include <pmm.h>
 
-#define SLAB_MAX_NUM 200
+#define SLAB_MAX_NUM 10
 
 #define SLAB_TOTAL_SHIFT (BUDDY_UNIT_SHIFT + 6)
 #define SLAB_TOTAL_SIZE (1 << SLAB_TOTAL_SHIFT)

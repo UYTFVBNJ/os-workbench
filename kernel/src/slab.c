@@ -1,9 +1,5 @@
 #include <slab.h>
 
-#define max_load_factor 0.8
-// #define max_probe 2 * (1.0 / (1.0 - max_load_factor))
-#define max_probe (block->UNIT_NUM)
-
 extern buddy_block_t buddy_block;
 
 slab_block_t* slabs[MAX_CPU][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
@@ -62,7 +58,7 @@ slab_find_available(int sz_xft)
         // buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
         // slabs[cpu_current()][sz_xft][i + 1] = NULL;
         */
-      printf("SLAB[%d][%d] available at %d\n", cpu_current(), sz_xft, i);
+      // printf("SLAB[%d][%d] available at %d\n", cpu_current(), sz_xft, i);
       return *slab;
     }
   }
