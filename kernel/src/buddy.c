@@ -88,10 +88,8 @@ void*
 buddy_alloc(buddy_block_t* block, size_t size)
 {
   int sz_xft = ceil_shift(size);
-  // TODO
   if (sz_xft < block->UNIT_SHIFT)
     sz_xft = block->UNIT_SHIFT;
-  // assert(sz_xft >= block->UNIT_SHIFT);
 
   lock(&block->lock);
 
@@ -131,9 +129,10 @@ buddy_alloc(buddy_block_t* block, size_t size)
   // accessing buddy_block
   void* ret = idx2addr(((buddy_unit_ds_t*)(bl_nd->key))->idx);
   // check alignment
-  assert(((uintptr_t)idx2addr(((buddy_unit_ds_t*)bl_nd->key)->idx) &
-          ((1 << sz_xft) - 1)) == 0);
-
+#ifdef TEST
+  // assert(((uintptr_t)idx2addr(((buddy_unit_ds_t*)bl_nd->key)->idx) &
+  // ((1 << sz_xft) - 1)) == 0);
+#endif
   unlock(&block->lock);
   return ret;
 }
