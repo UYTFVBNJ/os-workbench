@@ -208,7 +208,7 @@ stress_test()
     cnt[cpu]++;
     unlock(&cnt_lk[cpu]);
 
-    if (time != uptime() / 1000000) {
+    if (cpu == 0 && time != uptime() / 1000000) {
       time = uptime() / 1000000;
       int tot = 0;
       for (int i = 0; i < 4; i++) {
