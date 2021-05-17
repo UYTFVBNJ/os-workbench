@@ -16,16 +16,16 @@ slab_init(slab_block_t* block, int unit_xft)
   block->UNIT_SHIFT = unit_xft;
   block->UNIT_SIZE = 1 << unit_xft;
   block->UNIT_NUM =
-    (SLAB_TOTAL_SIZE - sizeof(slab_block_t)) / (block->UNIT_SIZE + sizeof(int));
+    (SLAB_TOTAL_SIZE - sizeof(slab_block_t)) / ((1 << unit_xft) + sizeof(bool));
 
-  block->num = block->UNIT_NUM;
+  block->invalid_num = 0;
+  block->pos = 0;
   block->cpu = cpu_current();
 
   block->mem = end - (block->UNIT_NUM << block->UNIT_SHIFT);
-  block->stack = start + sizeof(slab_block_t);
+  block->valid = start + sizeof(slab_block_t);
 
-  for (int i = 0; i < block->UNIT_NUM; i++)
-    block->stack[i] = i * block->UNIT_SIZE;
+  memset(block->valid, 0, sizeof(bool) * block->UNIT_NUM);
 }
 
 slab_block_t*
@@ -35,6 +35,10 @@ slab_find_available(int sz_xft)
     slab_block_t** slab = &slabs[cpu_current()][sz_xft][i];
 
     if (*slab == NULL) {
+#ifdef TEST_LOG
+      printf(
+        "acuiring new SLAB[%d][%d][%d] from BUDDY\n", cpu_current(), sz_xft, i);
+#endif
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
 #ifdef TEST_LOG
       printf("acuired new SLAB[%d][%d][%d] from BUDDY at %p\n",
@@ -46,8 +50,7 @@ slab_find_available(int sz_xft)
       assert(*slab != NULL);
       slab_init(*slab, sz_xft);
       return *slab;
-    } else if ((*slab)->num > 0) {
-      /*
+    } else if ((*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor) {
       if (i + 1 < SLAB_MAX_NUM &&
           (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 &&
           slabs[cpu_current()][sz_xft][i + 1] != NULL &&
@@ -61,7 +64,7 @@ slab_find_available(int sz_xft)
 #endif
         // buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
         // slabs[cpu_current()][sz_xft][i + 1] = NULL;
-        */
+      }
       return *slab;
     }
   }
@@ -76,7 +79,17 @@ slab_alloc(size_t size)
   slab_block_t* block = slab_find_available(sz_xft);
 
   if (block != NULL) {
-    return block->mem + block->stack[--block->num];
+    for (int i = 0; i < max_probe;
+         i++, block->pos = (block->pos + 1) % block->UNIT_NUM)
+      if (!block->valid[block->pos]) {
+        block->valid[block->pos] = true;
+        block->invalid_num++;
+
+        void* ret = block->mem + ((block->pos) << block->UNIT_SHIFT);
+        block->pos = (block->pos + 1) % block->UNIT_NUM;
+
+        return ret;
+      }
   }
   // printf("SLAB[%d][%d] failed\n", cpu_current(), sz_xft);
   return NULL;
@@ -97,6 +110,11 @@ slab_free(void* ptr)
 #endif
 
   assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
+  assert(block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >>
+                      block->UNIT_SHIFT] == true);
 
-  block->stack[block->num++] = (uintptr_t)ptr - (uintptr_t)block->mem;
+  block->valid[((uintptr_t)ptr - (uintptr_t)block->mem) >> block->UNIT_SHIFT] =
+    false;
+
+  block->invalid_num--;
 }

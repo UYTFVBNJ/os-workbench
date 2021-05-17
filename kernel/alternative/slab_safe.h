@@ -13,8 +13,9 @@
 typedef struct
 {
   size_t UNIT_SHIFT, UNIT_SIZE, UNIT_NUM;
-  int num;
-  int* stack;
+  int pos;
+  int invalid_num;
+  bool* valid;
   void* mem;
   int cpu;
 } slab_block_t;
