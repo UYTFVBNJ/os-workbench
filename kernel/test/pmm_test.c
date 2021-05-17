@@ -40,8 +40,8 @@ roll()
 
 #define RATE 2
 
-// #define OUTPUT
-// #define CHECK
+#define OUTPUT
+#define CHECK
 
 spinlock_t cnt_lk;
 int cnt;
