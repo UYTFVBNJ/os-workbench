@@ -4,7 +4,7 @@ extern buddy_block_t buddy_block;
 
 slab_block_t* slabs[MAX_CPU][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
 
-void
+inline void
 slab_init(slab_block_t* block, int unit_xft)
 {
   void *start = block, *end = start + SLAB_TOTAL_SIZE;
@@ -24,7 +24,7 @@ slab_init(slab_block_t* block, int unit_xft)
     block->stack[i] = i * block->UNIT_SIZE;
 }
 
-slab_block_t*
+inline slab_block_t*
 slab_find_available(int sz_xft)
 {
   int cpu = cpu_current();
@@ -86,15 +86,15 @@ slab_free(void* ptr)
   slab_block_t* block =
     (slab_block_t*)((uintptr_t)ptr & ~(SLAB_TOTAL_SIZE - 1));
 
-  assert(block->UNIT_SIZE != 0);
-
 #ifdef TEST
+  // assert(block->UNIT_SIZE != 0);
+
   // if (block->cpu != cpu_current())
   // printf("warning: cpu %d is accessing cpu %d's slab\n", cpu_current(),
   //  block->cpu);
-#endif
 
-  assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
+  // assert(((uintptr_t)ptr - (uintptr_t)block->mem) % block->UNIT_SIZE == 0);
+#endif
 
   block->stack[block->num++] = (uintptr_t)ptr - (uintptr_t)block->mem;
 }
