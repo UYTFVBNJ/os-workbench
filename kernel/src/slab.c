@@ -65,6 +65,7 @@ slab_find_available(int sz_xft)
       return *slab;
     }
   }
+  printf("SLAB[%d][%d] no available\n", cpu_current(), sz_xft);
   return NULL;
 }
 
@@ -78,7 +79,6 @@ slab_alloc(size_t size)
   if (block != NULL) {
     return block->mem + block->stack[--block->num];
   }
-  // printf("SLAB[%d][%d] failed\n", cpu_current(), sz_xft);
   return NULL;
 }
 
