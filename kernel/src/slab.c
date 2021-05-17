@@ -27,14 +27,15 @@ slab_init(slab_block_t* block, int unit_xft)
 slab_block_t*
 slab_find_available(int sz_xft)
 {
+  int cpu = cpu_current();
   for (int i = 0; i < SLAB_MAX_NUM; i++) {
-    slab_block_t** slab = &slabs[cpu_current()][sz_xft][i];
+    slab_block_t** slab = &slabs[cpu][sz_xft][i];
 
     if (*slab == NULL) {
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
 #ifdef TEST_LOG
       printf("acuired new SLAB[%d][%d][%d] from BUDDY at %p\n",
-             cpu_current(),
+             cpu,
              sz_xft,
              i,
              *slab);
@@ -46,30 +47,30 @@ slab_find_available(int sz_xft)
       /*
       if (i + 1 < SLAB_MAX_NUM &&
           (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 &&
-          slabs[cpu_current()][sz_xft][i + 1] != NULL &&
-          slabs[cpu_current()][sz_xft][i + 1]->invalid_num == 0) {
+          slabs[cpu][sz_xft][i + 1] != NULL &&
+          slabs[cpu][sz_xft][i + 1]->invalid_num == 0) {
 #ifdef TEST_LOG
         printf("freeing old SLAB[%d][%d][%d] from BUDDY at %p\n",
-               cpu_current(),
+               cpu,
                sz_xft,
                i + 1,
-               slabs[cpu_current()][sz_xft][i + 1]);
+               slabs[cpu][sz_xft][i + 1]);
 #endif
-        // buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
-        // slabs[cpu_current()][sz_xft][i + 1] = NULL;
+        // buddy_free(&buddy_block, slabs[cpu][sz_xft][i + 1]);
+        // slabs[cpu][sz_xft][i + 1] = NULL;
         */
-      // printf("SLAB[%d][%d] available at %d\n", cpu_current(), sz_xft, i);
+      // printf("SLAB[%d][%d] available at %d\n", cpu, sz_xft, i);
       return *slab;
     }
   }
-  // printf("SLAB[%d][%d] no available\n", cpu_current(), sz_xft);
+  // printf("SLAB[%d][%d] no available\n", cpu, sz_xft);
   return NULL;
 }
 
 void*
 slab_alloc(size_t size)
 {
-  int sz_xft = is_2_power(size) ? num2shift(size) : num2shift(size) + 1;
+  int sz_xft = ceil_shift(size);
 
   slab_block_t* block = slab_find_available(sz_xft);
 
