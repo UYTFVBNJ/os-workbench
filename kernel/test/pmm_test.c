@@ -203,21 +203,21 @@ stress_test()
       case OP_NONE:
         assert(0);
     }
-    /*
-        lock(&cnt_lk);
-        cnt++;
-        if (cnt % 100000 == 0) {
-          lock(&free_cnt_lk);
-          uint64_t time = uptime() / 1000000;
-          printf("cnt: %d\nfree: %d\ntime: %ds\nspeed: %fM op/s\n",
-                 cnt,
-                 free_cnt,
-                 time,
-                 0.000001 * cnt / time);
-          unlock(&free_cnt_lk);
-        }
-        unlock(&cnt_lk);
-    */
+    // /*
+    lock(&cnt_lk);
+    cnt++;
+    if (cnt % 100000 == 0) {
+      lock(&free_cnt_lk);
+      uint64_t time = uptime() / 1000000;
+      printf("cnt: %d\nfree: %d\ntime: %ds\nspeed: %fM op/s\n",
+             cnt,
+             free_cnt,
+             time,
+             0.000001 * cnt / time);
+      unlock(&free_cnt_lk);
+    }
+    unlock(&cnt_lk);
+    // */
   }
 }
 
