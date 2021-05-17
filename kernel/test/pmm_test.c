@@ -43,14 +43,14 @@ roll()
 // #define OUTPUT
 // #define CHECK
 
-spinlock_t cnt_lk;
-int cnt;
+spinlock_t cnt_lk[MAX_CPU];
+int cnt[MAX_CPU];
 
 spinlock_t chk_lk;
 int chk;
 
-spinlock_t free_cnt_lk;
-int free_cnt;
+spinlock_t free_cnt_lk[MAX_CPU];
+int free_cnt[MAX_CPU];
 
 enum ops
 {
@@ -176,9 +176,7 @@ free_check(struct malloc_op* op)
   pmm_test_check(op->addr, op->size, op->size);
 #endif
   pmm->free(op->addr);
-  lock(&free_cnt_lk);
-  free_cnt++;
-  unlock(&free_cnt_lk);
+  free_cnt[cpu_current()]++;
 #ifdef OUTPUT
   printf("cpu %d %d bytes freed at %p\n", cpu_current(), op->size, op->addr);
 #endif
@@ -187,6 +185,8 @@ free_check(struct malloc_op* op)
 static void
 stress_test()
 {
+  int cpu = cpu_current();
+  uint64_t time = 0;
   while (1) {
     struct malloc_op op;
     random_op(&op);
@@ -204,19 +204,23 @@ stress_test()
         assert(0);
     }
     // /*
-    lock(&cnt_lk);
-    cnt++;
-    if (cnt % 1000000 == 0) {
-      lock(&free_cnt_lk);
-      uint64_t time = uptime() / 1000000;
-      printf("cnt: %d\nfree: %d\ntime: %ds\nspeed: %fM op/s\n",
-             cnt,
-             free_cnt,
+    lock(&cnt_lk[cpu]);
+    cnt[cpu]++;
+    unlock(&cnt_lk[cpu]);
+
+    if (time != uptime() / 1000000) {
+      time = uptime() / 1000000;
+      int tot = 0;
+      for (int i = 0; i < 4; i++) {
+        lock(&cnt_lk[i]);
+        tot += cnt[i];
+        unlock(&cnt_lk[i]);
+      }
+      printf("cnt: %d\ntime: %ds\nspeed: %fM op/s\n",
+             tot,
              time,
-             0.000001 * cnt / time);
-      unlock(&free_cnt_lk);
+             0.000001 * tot / time);
     }
-    unlock(&cnt_lk);
     // */
   }
 }
