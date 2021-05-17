@@ -226,6 +226,11 @@ pmm_test()
 {
 #ifdef TEST
   printf("PMM_TEST of cpuid %d\n", cpu_current());
+  printf("PMM_TEST of cpuid %d\n", ceil_shift(1));
+  printf("PMM_TEST of cpuid %d\n", ceil_shift(2));
+  printf("PMM_TEST of cpuid %d\n", ceil_shift(3));
+  printf("PMM_TEST of cpuid %d\n", ceil_shift(4));
+  printf("PMM_TEST of cpuid %d\n", ceil_shift(5));
 #endif
   stress_test();
 }

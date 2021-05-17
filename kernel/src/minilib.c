@@ -48,6 +48,16 @@ num2shift(int64_t n)
   return cnt;
 }
 
+int
+ceil_shift(int64_t n)
+{
+  int64_t m = 1;
+  for (int i = 0; m <= INT64_MAX; m <<= 1, i++)
+    if (m >= n)
+      return i;
+  return -1;
+}
+
 uint64_t
 uptime()
 {

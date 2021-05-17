@@ -34,6 +34,9 @@ bool
 is_2_power(int64_t n);
 
 int
+ceil_shift(int64_t n);
+
+int
 num2shift(int64_t n);
 
 uint64_t
