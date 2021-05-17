@@ -62,6 +62,7 @@ slab_find_available(int sz_xft)
         // buddy_free(&buddy_block, slabs[cpu_current()][sz_xft][i + 1]);
         // slabs[cpu_current()][sz_xft][i + 1] = NULL;
         */
+      printf("SLAB[%d][%d] available at %d\n", cpu_current(), sz_xft, i);
       return *slab;
     }
   }
