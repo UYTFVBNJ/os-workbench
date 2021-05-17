@@ -8,21 +8,22 @@ buddy_block_t buddy_block;
 static void*
 kalloc(size_t size)
 {
-  // if (size <= SLAB_UNIT_MAX_SIZE) {
-  // void *ret = slab_alloc(size);
-  // if (ret != NULL) return ret;
-  // }
+  if (size <= SLAB_UNIT_MAX_SIZE) {
+    void* ret = slab_alloc(size);
+    if (ret != NULL)
+      return ret;
+  }
   return buddy_alloc(&buddy_block, size);
 }
 
 static void
 kfree(void* ptr)
 {
-  // if (((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1)) != 0 ||
-  // !buddy_check_alloced(&buddy_block, ptr))
-  // slab_free(ptr);
-  // else
-  buddy_free(&buddy_block, ptr);
+  if (((uintptr_t)ptr & (BUDDY_UNIT_SIZE - 1)) != 0 ||
+      !buddy_check_alloced(&buddy_block, ptr))
+    slab_free(ptr);
+  else
+    buddy_free(&buddy_block, ptr);
 }
 
 static void
