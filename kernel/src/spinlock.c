@@ -6,10 +6,10 @@ void
 lock(spinlock_t* lk)
 {
   //   iset(false); // TODO
-  int cnt = 0;
+  // int cnt = 0;
   while (atomic_xchg(&lk->locked, 1)) {
 #ifdef TEST
-    assert(cnt++ < 100000000);
+    // assert(cnt++ < 100000000);
 #endif
   };
 }
