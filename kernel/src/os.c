@@ -17,8 +17,8 @@ os_run()
   pmm->test();
 #endif
 
-  // while (1)
-  // ;
+  while (1)
+    ;
 }
 
 MODULE_DEF(os) = {
