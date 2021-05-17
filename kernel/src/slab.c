@@ -62,7 +62,7 @@ slab_find_available(int sz_xft)
       return *slab;
     }
   }
-  printf("SLAB[%d][%d] no available\n", cpu_current(), sz_xft);
+  // printf("SLAB[%d][%d] no available\n", cpu_current(), sz_xft);
   return NULL;
 }
 
