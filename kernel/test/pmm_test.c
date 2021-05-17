@@ -231,6 +231,7 @@ pmm_test()
   printf("PMM_TEST of cpuid %d\n", ceil_shift(3));
   printf("PMM_TEST of cpuid %d\n", ceil_shift(4));
   printf("PMM_TEST of cpuid %d\n", ceil_shift(5));
+  return;
 #endif
   stress_test();
 }
