@@ -73,14 +73,14 @@ static void
 op_insert(enum ops type, size_t size, void* addr)
 {
   // lock(&op_lk);
-
+  int cpu = cpu_current();
   int i;
-  for (i = 0; i < N && op_arr[cpu_current()][i].type != OP_NONE; i++)
+  for (i = 0; i < N && op_arr[cpu][i].type != OP_NONE; i++)
     ;
 
   assert(i < N);
 
-  op_arr[cpu_current()][i] =
+  op_arr[cpu][i] =
     (struct malloc_op){ .type = type, .size = size, .addr = addr };
 
   // unlock(&op_lk);
@@ -95,14 +95,14 @@ random_op(struct malloc_op* op)
   } else {
     // OP_FREE
     // lock(&op_lk);
-
+    int cpu = cpu_current();
     int i;
-    for (i = 0; i < N && op_arr[cpu_current()][i].type != OP_FREE; i++)
+    for (i = 0; i < N && op_arr[cpu][i].type != OP_FREE; i++)
       ;
 
     if (i < N) {
-      *op = op_arr[cpu_current()][i];
-      op_arr[cpu_current()][i] = (struct malloc_op){ .type = OP_NONE };
+      *op = op_arr[cpu][i];
+      op_arr[cpu][i] = (struct malloc_op){ .type = OP_NONE };
     }
 
     // unlock(&op_lk);
