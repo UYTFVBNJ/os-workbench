@@ -18,7 +18,7 @@ static struct workload wl_typical __attribute__((
   wl_page __attribute__((
     used)) = { .pr = { 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
                .sum = 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 };
-static struct workload* workload = &wl_typical;
+static struct workload* workload = &wl_stress;
 
 int
 roll()
