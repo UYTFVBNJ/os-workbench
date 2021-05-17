@@ -41,7 +41,7 @@ roll()
 #define RATE 2
 
 // #define OUTPUT
-// #define CHECK
+#define CHECK
 
 spinlock_t cnt_lk;
 int cnt;
@@ -176,11 +176,9 @@ free_check(struct malloc_op* op)
   pmm_test_check(op->addr, op->size, op->size);
 #endif
   pmm->free(op->addr);
-  /*
   lock(&free_cnt_lk);
   free_cnt++;
   unlock(&free_cnt_lk);
-  */
 #ifdef OUTPUT
   printf("cpu %d %d bytes freed at %p\n", cpu_current(), op->size, op->addr);
 #endif
@@ -206,7 +204,6 @@ stress_test()
         assert(0);
     }
 
-    /*
     lock(&cnt_lk);
     cnt++;
     if (cnt % 100000 == 0) {
@@ -220,7 +217,6 @@ stress_test()
       unlock(&free_cnt_lk);
     }
     unlock(&cnt_lk);
-    */
   }
 }
 
