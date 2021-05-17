@@ -187,7 +187,7 @@ stress_test()
 {
   int cpu = cpu_current();
   uint64_t time = 0;
-  for (int t = 0; t < 2500000; t++) {
+  for (int t = 0; t < 25000000; t++) {
     struct malloc_op op;
     random_op(&op);
 
