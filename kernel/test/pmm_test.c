@@ -191,6 +191,14 @@ static void
 stress_test()
 {
   int cpu = cpu_current();
+  {
+
+    struct malloc_op op =
+      (struct malloc_op){ .type = OP_ALLOC, .size = 1 << 24 };
+    void* addr = alloc_check(&op);
+    assert(addr != NULL);
+    op_insert(OP_FREE, op.size, addr);
+  }
   uint64_t time = 0;
   for (int t = 0; t < LOOP; t++) {
     struct malloc_op op;
