@@ -34,7 +34,6 @@ pmm_init()
 
   // buddy_init(&buddy_block, heap.start, heap.end);
 
-  assert(0);
   buddy_init(&buddy_block, heap.start, heap.end);
 }
 
