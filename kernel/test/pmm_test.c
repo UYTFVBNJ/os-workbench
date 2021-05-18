@@ -60,7 +60,7 @@ static struct workload wl_typical
     .sum =
       0 + 0 + 0 + 1 + 1 + 1 + 1 + 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
   };
-static struct workload* workload = &wl_stress;
+static struct workload* workload = &wl_typical;
 
 int
 roll()
