@@ -22,7 +22,7 @@ static struct workload wl_typical __attribute__((
     .sum =
       0 + 0 + 0 + 0 + 0 + 1 + 1 + 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
   };
-static struct workload* workload = &wl_page;
+static struct workload* workload = &wl_stress;
 
 int
 roll()

@@ -5,7 +5,7 @@
 #include <klib-macros.h>
 #include <klib.h>
 
-// #define TEST
+#define TEST
 // #define TEST_LOG
 
 #define MAX_CPU 16
