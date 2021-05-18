@@ -28,7 +28,7 @@ inline slab_block_t*
 slab_find_available(int sz_xft)
 {
   int cpu = cpu_current();
-  for (int i = 0; i < SLAB_MAX_NUM; i++) {
+  for (int i = 0; i < SLAB_MAX_NUM; i++) { // TODO
     slab_block_t** slab = &slabs[cpu][sz_xft][i];
 
     if (*slab == NULL) {
@@ -40,7 +40,9 @@ slab_find_available(int sz_xft)
              i,
              *slab);
 #endif
-      assert(*slab != NULL);
+      // assert(*slab != NULL);
+      if (*slab == NULL)
+        return NULL;
       slab_init(*slab, sz_xft);
       return *slab;
     } else if ((*slab)->num > 0) {
