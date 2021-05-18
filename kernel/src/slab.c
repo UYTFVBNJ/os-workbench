@@ -40,7 +40,7 @@ slab_find_available(int sz_xft)
              i,
              *slab);
 #endif
-      // assert(*slab != NULL);
+      assert(*slab != NULL);
       slab_init(*slab, sz_xft);
       return *slab;
     } else if ((*slab)->num > 0) {
