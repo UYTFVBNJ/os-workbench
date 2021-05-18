@@ -3,10 +3,12 @@
 #include <pmm_test.h>
 #include <spinlock.h>
 
+#define PRN 20
+
 struct workload
 {
-  int pr[20], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
-                   // roll(0, sum-1) => allocation size
+  int pr[PRN], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
+                    // roll(0, sum-1) => allocation size
 };
 
 static struct workload wl_typical __attribute__((
@@ -26,11 +28,11 @@ int
 roll()
 {
   int i, tmp = rand() % workload->sum;
-  for (i = 0; i < 20 && tmp >= 0; i++) {
+  for (i = 0; i < PRN && tmp >= 0; i++) {
     tmp -= workload->pr[i];
   }
-  assert(1 <= 12 - (i - 1) && 12 - (i - 1) <= 12);
-  return 1 << (12 - (i - 1));
+  assert(1 <= PRN - (i - 1) && PRN - (i - 1) <= PRN);
+  return 1 << (PRN - (i - 1));
 }
 
 #define ALLOC_SIZE (roll())
