@@ -46,7 +46,8 @@ buddy_init(buddy_block_t* block, void* start, void* end)
     ((uintptr_t)end - (uintptr_t)start); // TODO cal nearest 2^24
   assert(is_2_power(block->TOTAL_SIZE));
   assert(block->TOTAL_SIZE >= 1 << 24);
-  assert(block->TOTAL_SIZE == 1 << 29);
+  assert(block->TOTAL_SIZE == (1 << 29));
+  assert(0);
   block->TOTAL_SHIFT = num2shift(block->TOTAL_SIZE);
 
   block->UNIT_SHIFT = BUDDY_UNIT_SHIFT;        // 4 KiB
