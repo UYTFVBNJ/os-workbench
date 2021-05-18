@@ -9,6 +9,28 @@
 
 static bool initialing;
 
+inline bool
+buddy_list_empty(list_t* list)
+{
+  return list->nil.nxt == &list->nil;
+}
+
+inline void
+buddy_list_insert(list_t* list, node_t* node)
+{
+  node->nxt = list->nil.nxt;
+  list->nil.nxt->pre = node;
+  list->nil.nxt = node;
+  node->pre = &list->nil;
+}
+
+inline void
+buddy_list_delete(list_t* list, node_t* node)
+{
+  node->pre->nxt = node->nxt;
+  node->nxt->pre = node->pre;
+}
+
 void
 buddy_init(buddy_block_t* block, void* start, void* end)
 {
@@ -71,7 +93,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   for (int i = 0; i <= block->TOTAL_SHIFT; i++)
     block->bl_lst[i].nil.nxt = block->bl_lst[i].nil.pre = &block->bl_lst[i].nil;
 
-  list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
+  buddy_list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
   ((buddy_unit_ds_t*)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
 
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
@@ -95,7 +117,7 @@ buddy_alloc(buddy_block_t* block, size_t size)
 
   int i;
   for (i = sz_xft; i <= block->TOTAL_SHIFT; i++) {
-    if (!list_empty(&block->bl_lst[i])) {
+    if (!buddy_list_empty(&block->bl_lst[i])) {
       break;
     }
   }
@@ -111,11 +133,11 @@ buddy_alloc(buddy_block_t* block, size_t size)
     node_t* bl_nd_buddy =
       &block->bl_arr[buddy_idx(((buddy_unit_ds_t*)(bl_nd->key))->idx, i - 1)];
 
-    list_delete(&block->bl_lst[i], bl_nd);
+    buddy_list_delete(&block->bl_lst[i], bl_nd);
 
-    list_insert(&block->bl_lst[i - 1], bl_nd_buddy);
+    buddy_list_insert(&block->bl_lst[i - 1], bl_nd_buddy);
 
-    list_insert(&block->bl_lst[i - 1], bl_nd);
+    buddy_list_insert(&block->bl_lst[i - 1], bl_nd);
 
     // (buddy_unit_ds_t *)(bl_nd->key)->belong = i - 1;
     ((buddy_unit_ds_t*)(bl_nd_buddy->key))->belong = i - 1;
@@ -124,7 +146,7 @@ buddy_alloc(buddy_block_t* block, size_t size)
   node_t* bl_nd = block->bl_lst[sz_xft].nil.nxt;
   ((buddy_unit_ds_t*)(bl_nd->key))->sz_xft = sz_xft;
   ((buddy_unit_ds_t*)(bl_nd->key))->belong = -1;
-  list_delete(&block->bl_lst[sz_xft], bl_nd);
+  buddy_list_delete(&block->bl_lst[sz_xft], bl_nd);
 
   // accessing buddy_block
   void* ret = idx2addr(((buddy_unit_ds_t*)(bl_nd->key))->idx);
@@ -151,13 +173,13 @@ buddy_free(buddy_block_t* block, void* ptr)
   for (i = sz_xft;
        i < block->TOTAL_SHIFT && block->ds_arr[buddy_idx(idx, i)].belong == i;
        i++) {
-    list_delete(&block->bl_lst[i], &block->bl_arr[buddy_idx(idx, i)]);
+    buddy_list_delete(&block->bl_lst[i], &block->bl_arr[buddy_idx(idx, i)]);
     block->ds_arr[buddy_idx(idx, i)].belong = -1;
 
     idx = idx & buddy_idx(idx, i);
   }
 
-  list_insert(&block->bl_lst[i], &block->bl_arr[idx]);
+  buddy_list_insert(&block->bl_lst[i], &block->bl_arr[idx]);
   block->ds_arr[idx].belong = i;
 
   unlock(&block->lock);

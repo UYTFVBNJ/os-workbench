@@ -11,8 +11,8 @@
 
 typedef struct node
 {
-  void* key;
   struct node *pre, *nxt;
+  void* key;
 } node_t;
 
 typedef struct list
