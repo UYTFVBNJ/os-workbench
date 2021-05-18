@@ -5,7 +5,7 @@
 
 struct workload
 {
-  int pr[12], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
+  int pr[20], sum; // sum = pr[0] + pr[1] + ... pr[N-1]
                    // roll(0, sum-1) => allocation size
 };
 
@@ -15,16 +15,18 @@ static struct workload wl_typical __attribute__((
   wl_stress __attribute__((
     used)) = { .pr = { 1, 0, 0, 400, 200, 100, 1, 1, 1, 1, 1, 1 },
                .sum = 1 + 0 + 0 + 400 + 200 + 100 + 1 + 1 + 1 + 1 + 1 + 1 },
-  wl_page __attribute__((
-    used)) = { .pr = { 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-               .sum = 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 };
+  wl_page __attribute__((used)) = {
+    .pr = { 1, 1, 1, 1, 1, 1, 1, 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+    .sum =
+      1 + 1 + 1 + 1 + 1 + 1 + 1 + 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+  };
 static struct workload* workload = &wl_page;
 
 int
 roll()
 {
   int i, tmp = rand() % workload->sum;
-  for (i = 0; i < 12 && tmp >= 0; i++) {
+  for (i = 0; i < 20 && tmp >= 0; i++) {
     tmp -= workload->pr[i];
   }
   assert(1 <= 12 - (i - 1) && 12 - (i - 1) <= 12);
