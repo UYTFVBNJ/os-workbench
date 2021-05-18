@@ -20,7 +20,7 @@ static struct workload wl_typical __attribute__((
   wl_page __attribute__((used)) = {
     .pr = { 0, 0, 0, 1, 1, 1, 1, 10, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
     .sum =
-      0 + 0 + 0 + 1 + 1 + 1 + 1 + 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
+      0 + 0 + 0 + 0 + 0 + 1 + 1 + 10 + 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1
   };
 static struct workload* workload = &wl_page;
 
