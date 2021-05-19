@@ -34,6 +34,7 @@ buddy_list_delete(list_t* list, node_t* node)
 void
 buddy_init(buddy_block_t* block, void* start, void* end)
 {
+  end--;
   if (((uintptr_t)start & 0xffffff) != 0) {
     start = (void*)((uintptr_t)start & ~0xffffff) +
             0x1000000; // should align to 16MiB

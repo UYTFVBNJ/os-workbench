@@ -9,8 +9,6 @@ slab_init(slab_block_t* block, int unit_xft)
 {
   void *start = block, *end = start + SLAB_TOTAL_SIZE;
 
-  end--;
-
   block->UNIT_SHIFT = unit_xft;
   block->UNIT_SIZE = 1 << unit_xft;
   block->UNIT_NUM =
