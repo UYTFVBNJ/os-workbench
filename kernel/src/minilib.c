@@ -33,7 +33,7 @@ list_delete(list_t* list, node_t* node)
 bool
 is_2_power(int64_t n)
 {
-  for (int64_t i = 1; i <= INT64_MAX >> 1; i <<= 1)
+  for (int64_t i = 1; i <= INT64_MAX; i <<= 1)
     if (i == n)
       return true;
   return false;
