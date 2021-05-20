@@ -41,7 +41,6 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   void* buddy_end =
     (void*)((uintptr_t)start +
             (1 << ceil_shift((uintptr_t)end - (uintptr_t)start)));
-  printf("set buddy_end to %p", buddy_end);
   // assign parameters
 
   block->TOTAL_SIZE = ((uintptr_t)buddy_end - (uintptr_t)start);
@@ -102,13 +101,31 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
 
-  if (((uintptr_t)end - (uintptr_t)buddy_end) > 0) {
-    printf("buddy initialized successfully\n area: [%p, %p)", buddy_end);
-    assert(buddy_alloc(block, (uintptr_t)end - (uintptr_t)start) == block->mem);
-    void* ptr;
-    ptr = buddy_alloc(block, (uintptr_t)end - (uintptr_t)buddy_end);
-    printf("buddy initialized successfully\n area: [%p, %p)", ptr, buddy_end);
-    buddy_free(block, block->mem);
+  if (((uintptr_t)buddy_end - (uintptr_t)end) > 0) {
+    size_t size;
+
+    size = (uintptr_t)end - (uintptr_t)start;
+    while (size > 0) {
+      assert(buddy_alloc(block, 1 << num2shift(size)));
+      size >>= 1;
+    }
+
+    size = (uintptr_t)buddy_end - (uintptr_t)end;
+    while (size > 0) {
+      int i;
+      for (i = 1; (size & i) == 0; i <<= 1)
+        ;
+      assert(buddy_alloc(block, i));
+      size ^= i;
+    }
+
+    size = (uintptr_t)end - (uintptr_t)start;
+    void* ptr = block->mem;
+    while (size > 0) {
+      buddy_free(block, ptr);
+      ptr += 1 << num2shift(size);
+      size >>= 1;
+    }
   }
   assert(buddy_alloc(block, block->DS_SIZE) == block->mem);
 
