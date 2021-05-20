@@ -107,7 +107,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
     size = (uintptr_t)end - (uintptr_t)start;
     while (size > 0) {
       assert(buddy_alloc(block, 1 << num2shift(size)));
-      size >>= 1;
+      size ^= 1 << num2shift(size);
     }
 
     size = (uintptr_t)buddy_end - (uintptr_t)end;
