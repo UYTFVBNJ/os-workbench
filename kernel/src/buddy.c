@@ -45,9 +45,9 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   // assign parameters
 
   block->TOTAL_SIZE = (1 << ceil_shift((uintptr_t)end - (uintptr_t)start));
-  assert(is_2_power(block->TOTAL_SIZE));
-  assert(block->TOTAL_SIZE >= 1 << 24);
-  assert(block->TOTAL_SIZE == (1 << 29));
+  // assert(is_2_power(block->TOTAL_SIZE));
+  // assert(block->TOTAL_SIZE >= 1 << 24);
+  // assert(block->TOTAL_SIZE == (1 << 29));
   // assert(0);
   block->TOTAL_SHIFT = num2shift(block->TOTAL_SIZE);
 
