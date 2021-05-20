@@ -109,6 +109,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
     size = (size & ~(BUDDY_UNIT_SIZE - 1)) + BUDDY_UNIT_SIZE;
   }
   printf("size: %p\n", size);
+  printf("start: %p\n", block->start);
 
   while (size > 0) {
     // assert(buddy_alloc(block, 1 << num2shift(size)));
