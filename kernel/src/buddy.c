@@ -104,9 +104,6 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   buddy_list_insert(&block->bl_lst[block->TOTAL_SHIFT], &block->bl_arr[0]);
   ((buddy_unit_ds_t*)(block->bl_arr[0].key))->belong = block->TOTAL_SHIFT;
 
-  // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
-  // block->UNIT_SHIFT;
-
   assert(buddy_alloc(
            block, block->DS_SIZE + (uintptr_t)start - (uintptr_t)buddy_start) ==
          buddy_start);
