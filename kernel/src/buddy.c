@@ -106,7 +106,10 @@ buddy_init(buddy_block_t* block, void* start, void* end)
 
     size = (uintptr_t)end - (uintptr_t)start;
     while (size > 0) {
-      assert(buddy_alloc(block, 1 << num2shift(size)));
+      // assert(buddy_alloc(block, 1 << num2shift(size)));
+      printf("1ptr: %p, %p\n",
+             1 << num2shift(size),
+             buddy_alloc(block, 1 << num2shift(size)));
       size ^= 1 << num2shift(size);
     }
 
@@ -115,7 +118,8 @@ buddy_init(buddy_block_t* block, void* start, void* end)
       int i;
       for (i = 1; (size & i) == 0; i <<= 1)
         ;
-      assert(buddy_alloc(block, i));
+      // assert(buddy_alloc(block, i));
+      printf("2ptr: %p, %p\n", i, buddy_alloc(block, i));
       size ^= i;
     }
 
@@ -123,10 +127,12 @@ buddy_init(buddy_block_t* block, void* start, void* end)
     void* ptr = block->mem;
     while (size > 0) {
       buddy_free(block, ptr);
+      // printf("3ptr: %p, %p\n", , buddy_alloc(block, i));
       ptr += 1 << num2shift(size);
-      size >>= 1;
+      size ^= 1 << num2shift(size);
     }
   }
+
   printf("ptr: %p\n", buddy_alloc(block, block->DS_SIZE));
   // assert(buddy_alloc(block, block->DS_SIZE) == block->mem);
 
