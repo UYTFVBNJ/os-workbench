@@ -7,8 +7,6 @@
 
 #define buddy_idx(idx, sz_xft) (idx ^ (1 << (sz_xft - block->UNIT_SHIFT)))
 
-static bool initialing;
-
 inline bool
 buddy_list_empty(list_t* list)
 {
@@ -34,20 +32,27 @@ buddy_list_delete(list_t* list, node_t* node)
 void
 buddy_init(buddy_block_t* block, void* start, void* end)
 {
-  end--;
-  if (((uintptr_t)start & 0xffffff) != 0) {
-    start = (void*)((uintptr_t)start & ~0xffffff) +
-            0x1000000; // should align to 16MiB
-    printf("change buddy->mem to %p", start);
+  if (((uintptr_t)end & 0xffffff) != 0) {
+    end = (void*)((uintptr_t)end & ~0xffffff); // should align to 16MiB
+    printf("change end to %p", end);
   }
+
+  if (((uintptr_t)start & (BUDDY_UNIT_SIZE - 1)) != 0) {
+    start = (void*)(((uintptr_t)start & ~(BUDDY_UNIT_SIZE - 1)) +
+                    BUDDY_UNIT_SIZE); // should align to 4KiB
+    printf("change start to %p", start);
+  }
+
+  void* buddy_start =
+    (void*)((uintptr_t)end -
+            (1 << ceil_shift((uintptr_t)end - (uintptr_t)start)));
 
   // assign parameters
 
-  block->TOTAL_SIZE =
-    ((uintptr_t)end - (uintptr_t)start); // TODO cal nearest 2^24
+  block->TOTAL_SIZE = ((uintptr_t)end - (uintptr_t)buddy_start);
   assert(is_2_power(block->TOTAL_SIZE));
-  // assert(block->TOTAL_SIZE >= 1 << 24);
-  // assert(block->TOTAL_SIZE == (1 << 29));
+  assert(block->TOTAL_SIZE >= 1 << 24);
+  assert(block->TOTAL_SIZE == (1 << 29));
   // assert(0);
   block->TOTAL_SHIFT = num2shift(block->TOTAL_SIZE);
 
@@ -102,9 +107,9 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
 
-  initialing = 1;
-  assert(buddy_alloc(block, block->DS_SIZE) == block->mem);
-  initialing = 0;
+  assert(buddy_alloc(
+           block, block->DS_SIZE + (uintptr_t)start - (uintptr_t)buddy_start) ==
+         block->mem);
 
   printf("buddy initialized successfully\n area: [%p, %p)", start, end);
 }
