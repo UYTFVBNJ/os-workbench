@@ -111,7 +111,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
            block, block->DS_SIZE + (uintptr_t)start - (uintptr_t)buddy_start) ==
          buddy_start);
 
-  printf("buddy initialized successfully\n area: [%p, %p)\n", start, end);
+  printf("buddy initialized successfully\n area: [%p, %p)\n", buddy_start, end);
 }
 
 void*
