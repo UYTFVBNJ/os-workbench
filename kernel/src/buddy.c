@@ -41,6 +41,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   void* buddy_end =
     (void*)((uintptr_t)start +
             (1 << ceil_shift((uintptr_t)end - (uintptr_t)start)));
+  printf("set buddy_end to %p", buddy_end);
   // assign parameters
 
   block->TOTAL_SIZE = ((uintptr_t)buddy_end - (uintptr_t)start);
@@ -102,9 +103,10 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   // block->UNIT_SHIFT;
 
   if (((uintptr_t)end - (uintptr_t)buddy_end) > 0) {
+    printf("buddy initialized successfully\n area: [%p, %p)", buddy_end);
     assert(buddy_alloc(block, (uintptr_t)end - (uintptr_t)start) == block->mem);
     void* ptr;
-    ptr = buddy_alloc(block, (uintptr_t)buddy_end - (uintptr_t)end);
+    ptr = buddy_alloc(block, (uintptr_t)end - (uintptr_t)buddy_end);
     printf("buddy initialized successfully\n area: [%p, %p)", ptr, buddy_end);
     buddy_free(block, block->mem);
   }
