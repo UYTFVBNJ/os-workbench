@@ -17,6 +17,7 @@ typedef struct
   spinlock_t lock;
 
   uint8_t* mem;
+  intptr_t start;
   list_t bl_lst[32];
 
   node_t* bl_arr;
