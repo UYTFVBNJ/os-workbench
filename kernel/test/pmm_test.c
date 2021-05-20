@@ -84,7 +84,7 @@ roll()
 #define LOOP 1 << 30
 
 // #define OUTPUT
-// #define CHECK
+#define CHECK
 
 spinlock_t cnt_lk[MAX_CPU];
 int cnt[MAX_CPU];
