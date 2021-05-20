@@ -103,10 +103,12 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   // assign ds mem
 
   size_t size = block->DS_SIZE + (intptr_t)block->mem - block->start;
+  printf("size: %p\n", size);
 
   if ((size & (BUDDY_UNIT_SIZE - 1)) != 0) {
     size = (size & ~(BUDDY_UNIT_SIZE - 1)) + BUDDY_UNIT_SIZE;
   }
+  printf("size: %p\n", size);
 
   while (size > 0) {
     // assert(buddy_alloc(block, 1 << num2shift(size)));
