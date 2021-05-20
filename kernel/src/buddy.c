@@ -69,7 +69,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
 
   // assign initial values
   block->lock.locked = 0;
-  block->mem = start;
+  block->mem = buddy_start;
   block->bl_arr = start;
   block->ds_arr = start + block->DS_NUM * sizeof(node_t);
 
