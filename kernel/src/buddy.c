@@ -43,6 +43,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
     printf("change start to %p", start);
   }
 
+  assert(((uintptr_t)end & 0xffffff) == 0); // should align to 16MiB
   void* buddy_start =
     (void*)((uintptr_t)end -
             (1 << ceil_shift((uintptr_t)end - (uintptr_t)start)));
@@ -71,7 +72,6 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   block->mem = start;
   block->bl_arr = start;
   block->ds_arr = start + block->DS_NUM * sizeof(node_t);
-  assert(((uintptr_t)block->mem & 0xffffff) == 0); // should align to 16MiB
 
 #ifdef TEST
   printf("buddy: \n");
