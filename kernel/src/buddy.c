@@ -109,7 +109,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
 
   assert(buddy_alloc(
            block, block->DS_SIZE + (uintptr_t)start - (uintptr_t)buddy_start) ==
-         block->mem);
+         buddy_start);
 
   printf("buddy initialized successfully\n area: [%p, %p)", start, end);
 }
