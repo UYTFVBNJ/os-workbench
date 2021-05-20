@@ -52,7 +52,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   block->TOTAL_SIZE = ((uintptr_t)end - (uintptr_t)buddy_start);
   assert(is_2_power(block->TOTAL_SIZE));
   assert(block->TOTAL_SIZE >= 1 << 24);
-  assert(block->TOTAL_SIZE == (1 << 29));
+  // assert(block->TOTAL_SIZE == (1 << 29));
   // assert(0);
   block->TOTAL_SHIFT = num2shift(block->TOTAL_SIZE);
 
