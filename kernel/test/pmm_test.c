@@ -73,8 +73,8 @@ roll()
   return 1 << (PRN - (i - 1));
 }
 
-#define ALLOC_SIZE (roll())
-// #define ALLOC_SIZE (1 << 14)
+// #define ALLOC_SIZE (roll())
+#define ALLOC_SIZE (1 << 14)
 // #define ALLOC_SIZE (1 << 12)
 // #define ALLOC_SIZE (1 << 5)
 #define N ((1 << (HEAP_XFT - 12 - 2)))

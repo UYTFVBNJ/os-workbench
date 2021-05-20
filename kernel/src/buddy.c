@@ -44,6 +44,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   }
 
   assert(((uintptr_t)end & 0xffffff) == 0); // should align to 16MiB
+
   void* buddy_start =
     (void*)((uintptr_t)end -
             (1 << ceil_shift((uintptr_t)end - (uintptr_t)start)));
