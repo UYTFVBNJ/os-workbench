@@ -101,7 +101,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   // for (int i = 0; i < block->DS_NUM; i++) block->fr_arr[i] =
   // block->UNIT_SHIFT;
 
-  if (((uintptr_t)buddy_end - (uintptr_t)end) > 0) {
+  if (((uintptr_t)end - (uintptr_t)buddy_end) > 0) {
     assert(buddy_alloc(block, (uintptr_t)end - (uintptr_t)start) == block->mem);
     void* ptr;
     ptr = buddy_alloc(block, (uintptr_t)buddy_end - (uintptr_t)end);
