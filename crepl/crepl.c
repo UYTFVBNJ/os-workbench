@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <sys/types.h>
+#include <sys/.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <dlfcn.h>
 
