@@ -68,8 +68,8 @@ void* load(char *func_name, char *c_src) {
 
   if (pid == 0) {
     // child 
-    pritnf("file_path: %s\n", file_path);
-    pritnf("so_path: %s\n", so_path);
+    printf("file_path: %s\n", file_path);
+    printf("so_path: %s\n", so_path);
     execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
   } else {
     // parent
