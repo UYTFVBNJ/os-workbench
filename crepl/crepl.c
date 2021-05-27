@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include <dlfcn.h>
 
 #define SZ_BUF 128
