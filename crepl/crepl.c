@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <dlfcn.h>
 
-#define SZ_BUF SZ_BUF
+#define SZ_BUF 128
 int line_num = 0;
 
 void* load(char *func_name, char *c_src);
