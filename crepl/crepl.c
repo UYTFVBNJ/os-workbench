@@ -70,7 +70,8 @@ void* load(char *func_name, char *c_src) {
     // child 
     printf("file_path: %s\n", file_path);
     printf("so_path: %s\n", so_path);
-    execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
+    // execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
+    execlp("echo", "$PATH", NULL);
   } else {
     // parent
     wait(NULL);
