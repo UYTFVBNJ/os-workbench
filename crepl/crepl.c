@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <unistd.h>
+#include <sys/types.h>
 #include <dlfcn.h>
 
+#define SZ_BUF SZ_BUF
 int line_num = 0;
 
 void* load(char *func_name, char *c_src);
@@ -29,13 +30,13 @@ int main(int argc, char *argv[]) {
 }
 
 // void func_hdl(char *s) {
-  // char filename[128];
+  // char filename[SZ_BUF];
   // sprintf(filename, "expr_%d_XXXXXX", line_num);
   // int fd = mkstemp(filename);
 // }
 
 void expr_hdl(char *s) {
-  char func_name[128];
+  char func_name[SZ_BUF];
   sprintf(func_name, "expr_%d", line_num);
 
   char c_src[256];
@@ -49,10 +50,10 @@ void expr_hdl(char *s) {
 }
 
 void* load(char *func_name, char *c_src) {
-  char file_path[128];
+  char file_path[SZ_BUF];
   sprintf(file_path, "/tmp/%s_XXXXXX", func_name);
 
-  char so_path[128];
+  char so_path[SZ_BUF + 3];
   sprintf(so_path, "%s.so", file_path);
 
   int fd = mkstemp(file_path);
@@ -66,7 +67,7 @@ void* load(char *func_name, char *c_src) {
 
   if (pid == 0) {
     // child 
-    execlp("gcc", "-shared", file_path, "-o", so_path);
+    execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
   } else {
     // parent
     wait(-1);
