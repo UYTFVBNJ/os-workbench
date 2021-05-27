@@ -74,4 +74,5 @@ void* load(char *func_name, char *c_src) {
     wait(NULL);
     return dlopen(so_path, RTLD_LAZY);
   }
+  return NULL;
 }
