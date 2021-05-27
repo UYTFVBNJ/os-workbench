@@ -71,7 +71,7 @@ void* load(char *func_name, char *c_src) {
     execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
   } else {
     // parent
-    wait(-1);
+    wait(NULL);
     return dlopen(so_path, RTLD_LAZY);
   }
 }
