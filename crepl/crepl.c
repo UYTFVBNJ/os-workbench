@@ -1,9 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+#include <unistd.h>
 #include <dlfcn.h>
 
 int line_num = 0;
+
+void* load(char *func_name, char *c_src);
+void func_hdl(char *s);
+void expr_hdl(char *s);
 
 int main(int argc, char *argv[]) {
   static char line[4096];
