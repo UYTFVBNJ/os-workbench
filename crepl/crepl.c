@@ -14,7 +14,7 @@ void func_hdl(char *s);
 void expr_hdl(char *s);
 
 int main(int argc, char *argv[]) {
-  execlp("strace", "yes", NULL);
+  execlp("ls", "-l", NULL);
   static char line[4096];
   while (1) {
     line_num ++;
