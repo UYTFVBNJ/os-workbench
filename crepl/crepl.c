@@ -70,8 +70,8 @@ void* load(char *func_name, char *c_src, char* envp[]) {
     // child 
     printf("file_path: %s\n", file_path);
     printf("so_path: %s\n", so_path);
-    // execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
-    execle("/bin/gcc", "-shared", file_path, "-o", so_path, NULL, envp);
+    execlp("gcc", "-fPIC", "-shared", file_path, "-o", so_path, NULL);
+    // execle("/bin/gcc", "-shared", file_path, "-o", so_path, NULL, envp);
     // execlp("strace", "yes", NULL);
   } else {
     // parent
