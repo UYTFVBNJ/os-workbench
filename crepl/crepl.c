@@ -25,7 +25,7 @@ int main(int argc, char *argv[], char *envp[]) {
     printf("line: %s\n", line);
     // if (strstr(line, "int") == line) func_ld(line);
     // else 
-    expr_hdl(line);
+    expr_hdl(line, envp);
     printf("Got %zu chars.\n", strlen(line)); // ??
   }
 }
