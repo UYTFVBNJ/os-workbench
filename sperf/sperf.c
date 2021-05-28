@@ -90,8 +90,8 @@ void child(int argc, char* argv[], char* envp[]) {
   // for (int i = 0; i < 10; i ++) printf("%d %s\n", i, exec_argv[i]);
   // for (int i = 0; envp[i] != NULL; i ++) printf("%d %s\n", i, envp[i]);
 
-  // int fd = open("./sperf.out", O_CREAT | O_WRONLY, S_IRUSR);
-  int fd = open("/dev/null", 0);
+  int fd = open("./sperf.out", O_CREAT | O_WRONLY, S_IRUSR);
+  // int fd = open("/dev/null", 0);
   assert(fd != -1);
 
   dup2(fd, STDOUT_FILENO);
