@@ -9,12 +9,11 @@
 #define SZ_BUF 128
 int line_num = 0;
 
-void* load(char *func_name, char *c_src);
+void* load(char *func_name, char *c_src, char *envp[]);
 void func_hdl(char *s);
 void expr_hdl(char *s);
 
-int main(int argc, char *argv[]) {
-  execlp("ls", "-la", NULL);
+int main(int argc, char *argv[], char *envp[]) {
   static char line[4096];
   while (1) {
     line_num ++;
@@ -51,7 +50,7 @@ void expr_hdl(char *s) {
   printf("= %d\n", expr());
 }
 
-void* load(char *func_name, char *c_src) {
+void* load(char *func_name, char *c_src, char* envp[]) {
   char file_path[SZ_BUF];
   sprintf(file_path, "/tmp/%s_XXXXXX", func_name);
 
