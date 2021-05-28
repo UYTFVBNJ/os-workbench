@@ -11,7 +11,7 @@ int line_num = 0;
 
 void* load(char *func_name, char *c_src, char *envp[]);
 void func_hdl(char *s);
-void expr_hdl(char *s);
+void expr_hdl(char *s, char *envp[]);
 
 int main(int argc, char *argv[], char *envp[]) {
   static char line[4096];
@@ -36,14 +36,14 @@ int main(int argc, char *argv[], char *envp[]) {
   // int fd = mkstemp(filename);
 // }
 
-void expr_hdl(char *s) {
+void expr_hdl(char *s, char *envp[]) {
   char func_name[SZ_BUF];
   sprintf(func_name, "expr_%d", line_num);
 
   char c_src[256];
   sprintf(c_src, "int %s() { return %s; }", func_name, s);
 
-  void *handle = load(func_name, c_src);
+  void *handle = load(func_name, c_src, envp);
   assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
@@ -71,7 +71,8 @@ void* load(char *func_name, char *c_src, char* envp[]) {
     printf("file_path: %s\n", file_path);
     printf("so_path: %s\n", so_path);
     // execlp("gcc", "-shared", file_path, "-o", so_path, NULL);
-    execlp("strace", "yes", NULL);
+    execle("/bin/gcc", "-shared", file_path, "-o", so_path, NULL, envp);
+    // execlp("strace", "yes", NULL);
   } else {
     // parent
     wait(NULL);
