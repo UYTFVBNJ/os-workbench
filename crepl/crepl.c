@@ -95,7 +95,7 @@ puts("m32");
     execlp("gcc", "gcc", "-fPIC", "-shared", "-w", "-m32", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
 #else
 puts("m64");
-printf("%x", UINTPTR_MAX);
+printf("%lx", UINTPTR_MAX);
     execlp("gcc", "gcc", "-fPIC", "-shared", "-w", "-m64", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
 #endif
 
