@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <dlfcn.h>
 
-#define SZ_BUF 256
+#define SZ_BUF 1024
 int line_num = 0;
 
 void* load(char *func_name, char *c_src);
@@ -57,7 +57,7 @@ void expr_hdl(char *s) {
   sprintf(func_name, "expr_%d", line_num);
 
   char c_src[2 * SZ_BUF];
-  sprintf(c_src, "int %s() { return %s; }", func_name, s);
+  sprintf(c_src, "int %s() { return %s; }", func_name, s);  
 
   void *handle = load(func_name, c_src);
   assert(handle != NULL);
