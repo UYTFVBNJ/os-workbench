@@ -39,9 +39,15 @@ void func_hdl(char *s) {
 
   char c_src[256];
   sprintf(c_src, "%s", s);
+  printf("%s", s);
 
   void *handle = load(func_name, c_src);
   assert(handle != NULL);
+
+  int (* expr)() = dlsym(handle, "a");
+  assert(expr != NULL);
+
+  printf("= %d\n", expr());
 
   printf("OK\n");
 }
