@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <dlfcn.h>
 
-#define SZ_BUF 128
+#define SZ_BUF 256
 int line_num = 0;
 
 void* load(char *func_name, char *c_src);
@@ -39,7 +39,6 @@ void func_hdl(char *s) {
 
   char c_src[256];
   sprintf(c_src, "%s", s);
-  printf("%s", s);
 
   void *handle = load(func_name, c_src);
   assert(handle != NULL);
