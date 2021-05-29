@@ -52,12 +52,12 @@ void expr_hdl(char *s, char *envp[]) {
 
 void* load(char *func_name, char *c_src, char* envp[]) {
   char file_path[SZ_BUF];
-  sprintf(file_path, "/tmp/%s_XXXXXX", func_name);
+  sprintf(file_path, "/tmp/%s_XXXXXX.c", func_name);
 
   char so_path[SZ_BUF + 3];
   sprintf(so_path, "%s.so", file_path);
 
-  int fd = mkstemp(file_path);
+  int fd = mkstemps(file_path, strlen(".c"));
   assert(fd != -1);
 
   write(fd, file_path, strlen(file_path));
@@ -68,11 +68,7 @@ void* load(char *func_name, char *c_src, char* envp[]) {
 
   if (pid == 0) {
     // child 
-    printf("file_path: %s\n", file_path);
-    printf("so_path: %s\n", so_path);
-    execlp("gcc", "gcc", "-fPIC", "-shared", file_path, "-o", so_path, NULL);
-    // execle("/bin/gcc", "-shared", file_path, "-o", so_path, NULL, envp);
-    // execlp("strace", "yes", NULL);
+    execlp("gcc", "gcc", "-fPIC", "-shared", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
   } else {
     // parent
     wait(NULL);
