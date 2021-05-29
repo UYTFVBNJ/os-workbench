@@ -9,11 +9,11 @@
 #define SZ_BUF 128
 int line_num = 0;
 
-void* load(char *func_name, char *c_src, char *envp[]);
+void* load(char *func_name, char *c_src);
 void func_hdl(char *s);
-void expr_hdl(char *s, char *envp[]);
+void expr_hdl(char *s);
 
-int main(int argc, char *argv[], char *envp[]) {
+int main(int argc, char *argv[]) {
   static char line[4096];
   while (1) {
     line_num ++;
@@ -30,27 +30,34 @@ int main(int argc, char *argv[], char *envp[]) {
   }
 }
 
-// void func_hdl(char *s) {
-  // char filename[SZ_BUF];
-  // sprintf(filename, "expr_%d_XXXXXX", line_num);
-  // int fd = mkstemp(filename);
-// }
+void func_hdl(char *s) {
+  char func_name[SZ_BUF];
+  sprintf(func_name, "func_%d", line_num);
 
-void expr_hdl(char *s, char *envp[]) {
+  char c_src[256];
+  sprintf(c_src, "%s", s);
+
+  void *handle = load(func_name, c_src);
+  assert(handle != NULL);
+
+  printf("OK\n");
+}
+
+void expr_hdl(char *s) {
   char func_name[SZ_BUF];
   sprintf(func_name, "expr_%d", line_num);
 
   char c_src[256];
   sprintf(c_src, "int %s() { return %s; }", func_name, s);
 
-  void *handle = load(func_name, c_src, envp);
+  void *handle = load(func_name, c_src);
   assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
   printf("= %d\n", expr());
 }
 
-void* load(char *func_name, char *c_src, char* envp[]) {
+void* load(char *func_name, char *c_src) {
   char file_path[SZ_BUF];
   sprintf(file_path, "/tmp/%s_XXXXXX.c", func_name);
 
