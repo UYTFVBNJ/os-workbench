@@ -90,7 +90,7 @@ void* load(char *func_name, char *c_src) {
   } else {
     // parent
     wait(NULL);
-    return dlopen(so_path, RTLD_NOW);
+    return dlopen(so_path, RTLD_NOW | RTLD_GLOBAL);
   }
   return NULL;
 }
