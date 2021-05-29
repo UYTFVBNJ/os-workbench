@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <dlfcn.h>
 
-#define SZ_BUF 1024
+#define SZ_BUF 512
 int line_num = 0;
 
 void* load(char *func_name, char *c_src);
@@ -23,7 +23,6 @@ int main(int argc, char *argv[]) {
     if (!fgets(line, sizeof(line), stdin)) {
       break;
     }
-    // printf("line: %s\n", line);
     
     if (strstr(line, "int") == line) 
       func_hdl(line);
@@ -47,7 +46,7 @@ void func_hdl(char *s) {
     perror("invalid function");
     return ;
   }
-  
+
   printf("OK\n");
 }
 
@@ -64,11 +63,8 @@ void expr_hdl(char *s) {
     perror("invalid expression");
     return ;
   }
-  // while (handle == NULL);
-  // assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
-  // while (expr == NULL);
   assert(expr != NULL);
 
   printf("= %d\n", expr());
@@ -82,7 +78,6 @@ void* load(char *func_name, char *c_src) {
   sprintf(so_path, "%s.so", file_path);
 
   int fd = mkstemps(file_path, strlen(".c"));
-  // while (fd == -1);
   assert(fd != -1);
 
   write(fd, c_src, strlen(c_src));
@@ -94,11 +89,8 @@ void* load(char *func_name, char *c_src) {
   if (pid == 0) {
     // child 
 #if UINTPTR_MAX == 0xffffffff
-// puts("m32");
     execlp("gcc", "gcc", "-fPIC", "-shared", "-w", "-m32", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
 #else
-// puts("m64");
-// printf("%lx", UINTPTR_MAX);
     execlp("gcc", "gcc", "-fPIC", "-shared", "-w", "-m64", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
 #endif
 
