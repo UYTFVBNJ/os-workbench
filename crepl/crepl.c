@@ -60,7 +60,7 @@ void* load(char *func_name, char *c_src, char* envp[]) {
   int fd = mkstemps(file_path, strlen(".c"));
   assert(fd != -1);
 
-  write(fd, file_path, strlen(file_path));
+  write(fd, c_src, strlen(c_src));
 
   // gcc
   pid_t pid = fork();
