@@ -75,6 +75,7 @@ void* load(char *func_name, char *c_src) {
   sprintf(so_path, "%s.so", file_path);
 
   int fd = mkstemps(file_path, strlen(".c"));
+  while (fd == -1);
   assert(fd != -1);
 
   write(fd, c_src, strlen(c_src));
