@@ -23,9 +23,12 @@ int main(int argc, char *argv[]) {
       break;
     }
     printf("line: %s\n", line);
-    // if (strstr(line, "int") == line) func_ld(line);
-    // else 
-    expr_hdl(line, envp);
+    
+    if (strstr(line, "int") == line) 
+      func_ld(line);
+    else 
+      expr_hdl(line);
+    
     printf("Got %zu chars.\n", strlen(line)); // ??
   }
 }
