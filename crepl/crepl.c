@@ -60,6 +60,7 @@ void expr_hdl(char *s) {
   sprintf(c_src, "int %s() { return %s; }", func_name, s);  
 
   void *handle = load(func_name, c_src);
+  while (handle == NULL);
   assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
