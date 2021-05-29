@@ -22,14 +22,14 @@ int main(int argc, char *argv[]) {
     if (!fgets(line, sizeof(line), stdin)) {
       break;
     }
-    printf("line: %s\n", line);
+    // printf("line: %s\n", line);
     
     if (strstr(line, "int") == line) 
       func_hdl(line);
     else 
       expr_hdl(line);
     
-    printf("Got %zu chars.\n", strlen(line)); // ??
+    // printf("Got %zu chars.\n", strlen(line)); // ??
   }
 }
 
@@ -86,7 +86,7 @@ void* load(char *func_name, char *c_src) {
 
   if (pid == 0) {
     // child 
-    execlp("gcc", "gcc", "-fPIC", "-shared", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
+    execlp("gcc", "gcc", "-fPIC", "-shared", "-w", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
   } else {
     // parent
     wait(NULL);
