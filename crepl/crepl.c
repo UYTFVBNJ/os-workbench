@@ -57,6 +57,8 @@ void expr_hdl(char *s) {
   assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
+  assert(expr != NULL);
+
   printf("= %d\n", expr());
 }
 
@@ -82,7 +84,7 @@ void* load(char *func_name, char *c_src) {
   } else {
     // parent
     wait(NULL);
-    return dlopen(so_path, RTLD_LAZY);
+    return dlopen(so_path, RTLD_NOW);
   }
   return NULL;
 }
