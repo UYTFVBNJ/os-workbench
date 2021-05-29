@@ -55,7 +55,7 @@ void expr_hdl(char *s) {
   char func_name[SZ_BUF];
   sprintf(func_name, "expr_%d", line_num);
 
-  char c_src[SZ_BUF + 10];
+  char c_src[2 * SZ_BUF];
   sprintf(c_src, "int %s() { return %s; }", func_name, s);
 
   void *handle = load(func_name, c_src);
