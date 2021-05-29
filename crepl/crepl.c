@@ -93,6 +93,7 @@ void* load(char *func_name, char *c_src) {
 #else
     execlp("gcc", "gcc", "-fPIC", "-shared", "-w", "-m32", file_path, "-o", so_path, NULL); // Note: arg[0] must be the name of the bin
 #endif
+
     exit(EXIT_FAILURE);
   } else {
     // parent
