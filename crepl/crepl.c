@@ -42,14 +42,12 @@ void func_hdl(char *s) {
   sprintf(c_src, "%s", s);
 
   void *handle = load(func_name, c_src);
-  // while (handle == NULL);
-  assert(handle != NULL);
-
-  // int (* expr)() = dlsym(handle, "a");
-  // assert(expr != NULL);
-// 
-  // printf("= %d\n", expr());
-
+  
+  if (handle == NULL) {
+    perror("invalid function");
+    return ;
+  }
+  
   printf("OK\n");
 }
 
@@ -61,8 +59,13 @@ void expr_hdl(char *s) {
   sprintf(c_src, "int %s() { return %s; }", func_name, s);  
 
   void *handle = load(func_name, c_src);
+
+  if (handle == NULL) {
+    perror("invalid expression");
+    return ;
+  }
   // while (handle == NULL);
-  assert(handle != NULL);
+  // assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
   // while (expr == NULL);
