@@ -62,6 +62,7 @@ void expr_hdl(char *s) {
   assert(handle != NULL);
 
   int (* expr)() = dlsym(handle, func_name);
+  while (expr == NULL);
   assert(expr != NULL);
 
   printf("= %d\n", expr());
@@ -75,7 +76,7 @@ void* load(char *func_name, char *c_src) {
   sprintf(so_path, "%s.so", file_path);
 
   int fd = mkstemps(file_path, strlen(".c"));
-  while (fd == -1);
+  // while (fd == -1);
   assert(fd != -1);
 
   write(fd, c_src, strlen(c_src));
