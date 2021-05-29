@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     printf("line: %s\n", line);
     
     if (strstr(line, "int") == line) 
-      func_ld(line);
+      func_hdl(line);
     else 
       expr_hdl(line);
     
