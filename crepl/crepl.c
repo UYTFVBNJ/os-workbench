@@ -41,6 +41,7 @@ void func_hdl(char *s) {
   sprintf(c_src, "%s", s);
 
   void *handle = load(func_name, c_src);
+  while (handle == NULL);
   assert(handle != NULL);
 
   // int (* expr)() = dlsym(handle, "a");
