@@ -44,10 +44,10 @@ void func_hdl(char *s) {
   void *handle = load(func_name, c_src);
   assert(handle != NULL);
 
-  int (* expr)() = dlsym(handle, "a");
-  assert(expr != NULL);
-
-  printf("= %d\n", expr());
+  // int (* expr)() = dlsym(handle, "a");
+  // assert(expr != NULL);
+// 
+  // printf("= %d\n", expr());
 
   printf("OK\n");
 }
