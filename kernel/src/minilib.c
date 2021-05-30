@@ -20,6 +20,7 @@ list_insert(list_t* list, node_t* node)
 void
 list_insert_at(list_t* list, node_t* node1, node_t* node2)
 {
+  assert(0);
   // TODO
 }
 

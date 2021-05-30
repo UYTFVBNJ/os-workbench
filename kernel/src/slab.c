@@ -34,7 +34,7 @@ slab_find_available(int sz_xft)
 
     if (*slab == NULL) {
       *slab = buddy_alloc(&buddy_block, SLAB_TOTAL_SIZE);
-#ifdef L1_TEST_LOG
+#ifdef TEST_LOG
       printf("acuired new SLAB[%d][%d][%d] from BUDDY at %p\n",
              cpu,
              sz_xft,
@@ -52,7 +52,7 @@ slab_find_available(int sz_xft)
           (*slab)->invalid_num <= (*slab)->UNIT_NUM * max_load_factor / 2 &&
           slabs[cpu][sz_xft][i + 1] != NULL &&
           slabs[cpu][sz_xft][i + 1]->invalid_num == 0) {
-#ifdef L1_TEST_LOG
+#ifdef TEST_LOG
         printf("freeing old SLAB[%d][%d][%d] from BUDDY at %p\n",
                cpu,
                sz_xft,
@@ -95,7 +95,7 @@ slab_free(void* ptr)
   int cpu = block->cpu;
   lock(&slab_lock[cpu]);
 
-#ifdef L1_TEST
+#ifdef TEST
   // assert(block->UNIT_SIZE != 0);
 
   // if (block->cpu != cpu_current())

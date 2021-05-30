@@ -41,7 +41,7 @@ MODULE_DEF(pmm) = {
   .init = pmm_init,
   .alloc = kalloc,
   .free = kfree,
-#ifdef TEST
+#ifdef L1_TEST
   .test = pmm_test,
 #endif
 };

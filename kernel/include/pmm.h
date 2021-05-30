@@ -1,6 +1,7 @@
+#include <common.h>
 #include <spinlock.h>
 
-#ifdef TEST
+#ifdef L1_TEST
 #include <pmm_test.h>
 #endif
 
