@@ -69,7 +69,7 @@ buddy_init(buddy_block_t* block, void* start, void* end)
   block->ds_arr = start + block->DS_NUM * sizeof(node_t);
   assert(((uintptr_t)block->mem & 0xffffff) == 0); // should align to 16MiB
 
-#ifdef TEST
+#ifdef L1_TEST
   printf("buddy: \n");
   printf("[%p, %p]: \n", start, end);
   Log(block->TOTAL_SIZE);
@@ -169,7 +169,7 @@ buddy_alloc(buddy_block_t* block, size_t size)
   // accessing buddy_block
   void* ret = idx2addr(((buddy_unit_ds_t*)(bl_nd->key))->idx);
   // check alignment
-#ifdef TEST
+#ifdef L1_TEST
   // assert(((uintptr_t)idx2addr(((buddy_unit_ds_t*)bl_nd->key)->idx) &
   // ((1 << sz_xft) - 1)) == 0);
 #endif

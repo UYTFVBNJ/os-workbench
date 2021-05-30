@@ -279,8 +279,8 @@ stress_test()
 void
 pmm_test()
 {
-#ifdef TEST
-  printf("PMM_TEST of cpuid %d\n", cpu_current());
+#ifdef L1_TEST
+  printf("PMM_L1_TEST of cpuid %d\n", cpu_current());
 #endif
   stress_test();
 }
