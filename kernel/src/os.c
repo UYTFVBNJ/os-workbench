@@ -14,10 +14,20 @@ static void os_run() {
   pmm->test();
 #endif
 
+  iset(true);
   while (1);
+}
+
+static Context *os_trap(Event ev, Context *context) {
+  assert(0);
+}
+
+static void *os_on_irq(int seq, Event ev, handler_t *handler) {
+
 }
 
 MODULE_DEF(os) = {
   .init = os_init,
   .run = os_run,
+  .trap = os_trap,
 };
