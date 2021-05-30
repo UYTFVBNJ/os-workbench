@@ -3,7 +3,7 @@
 extern buddy_block_t buddy_block;
 
 slab_block_t* slabs[MAX_CPU][SLAB_UNIT_MAX_SHIFT][SLAB_MAX_NUM];
-spinlock_t slab_lock[MAX_CPU];
+nv_spinlock_t slab_lock[MAX_CPU];
 
 inline void
 slab_init(slab_block_t* block, int unit_xft)
@@ -79,10 +79,10 @@ slab_alloc(size_t size)
   if (block == NULL) return NULL;
 
   int cpu = block->cpu;
-  lock(&slab_lock[cpu]);
+  nv_lock(&slab_lock[cpu]);
 
   void *ret = block->mem + block->stack[--block->num];
-  unlock(&slab_lock[cpu]);
+  nv_unlock(&slab_lock[cpu]);
   return ret;
 }
 
@@ -93,7 +93,7 @@ slab_free(void* ptr)
     (slab_block_t*)((uintptr_t)ptr & ~(SLAB_TOTAL_SIZE - 1));
 
   int cpu = block->cpu;
-  lock(&slab_lock[cpu]);
+  nv_lock(&slab_lock[cpu]);
 
 #ifdef TEST
   // assert(block->UNIT_SIZE != 0);
@@ -107,5 +107,5 @@ slab_free(void* ptr)
 
   block->stack[block->num++] = (uintptr_t)ptr - (uintptr_t)block->mem;
   
-  unlock(&slab_lock[cpu]);
+  nv_unlock(&slab_lock[cpu]);
 }

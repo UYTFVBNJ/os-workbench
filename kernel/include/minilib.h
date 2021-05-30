@@ -17,7 +17,7 @@ typedef struct node
 
 typedef struct list
 {
-  spinlock_t lock;
+  nv_spinlock_t lock;
   node_t nil;
 } list_t;
 

@@ -86,13 +86,13 @@ roll()
 #define OUTPUT
 #define CHECK
 
-spinlock_t cnt_lk[MAX_CPU];
+nv_spinlock_t cnt_lk[MAX_CPU];
 int cnt[MAX_CPU];
 
-spinlock_t chk_lk;
+nv_spinlock_t chk_lk;
 int chk;
 
-spinlock_t free_cnt_lk[MAX_CPU];
+nv_spinlock_t free_cnt_lk[MAX_CPU];
 int free_cnt[MAX_CPU];
 
 enum ops
@@ -109,7 +109,7 @@ struct malloc_op
   void* addr;
 };
 
-spinlock_t op_lk;
+nv_spinlock_t op_lk;
 struct malloc_op op_arr[4][N];
 
 static void
@@ -159,7 +159,7 @@ void
 pmm_test_paint(int32_t* addr, size_t size, int key)
 {
   size /= sizeof(int32_t);
-  lock(&chk_lk);
+  nv_lock(&chk_lk);
   chk++;
   assert(chk == 1);
   for (int32_t* chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
@@ -169,14 +169,14 @@ pmm_test_paint(int32_t* addr, size_t size, int key)
     *chk_ptr = USED(key);
   }
   chk--;
-  unlock(&chk_lk);
+  nv_unlock(&chk_lk);
 }
 
 void
 pmm_test_check(int32_t* addr, size_t size, int key)
 {
   size /= sizeof(int32_t);
-  lock(&chk_lk);
+  nv_lock(&chk_lk);
   chk++;
   assert(chk == 1);
   for (int32_t* chk_ptr = addr; chk_ptr < addr + size; chk_ptr++) {
@@ -186,7 +186,7 @@ pmm_test_check(int32_t* addr, size_t size, int key)
     *chk_ptr = 0;
   }
   chk--;
-  unlock(&chk_lk);
+  nv_unlock(&chk_lk);
 }
 
 static void*
@@ -255,17 +255,17 @@ stress_test()
         assert(0);
     }
     // /*
-    lock(&cnt_lk[cpu]);
+    nv_lock(&cnt_lk[cpu]);
     cnt[cpu]++;
-    unlock(&cnt_lk[cpu]);
+    nv_unlock(&cnt_lk[cpu]);
 
     if (cpu == 0 && time != uptime() / 1000000) {
       time = uptime() / 1000000;
       int tot = 0;
       for (int i = 0; i < 4; i++) {
-        lock(&cnt_lk[i]);
+        nv_lock(&cnt_lk[i]);
         tot += cnt[i];
-        unlock(&cnt_lk[i]);
+        nv_unlock(&cnt_lk[i]);
       }
       printf("cnt: %d\ntime: %ds\nspeed: %fM op/s\n",
              tot,

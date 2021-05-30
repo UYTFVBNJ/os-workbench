@@ -131,7 +131,7 @@ buddy_alloc(buddy_block_t* block, size_t size)
   if (sz_xft < block->UNIT_SHIFT)
     sz_xft = block->UNIT_SHIFT;
 
-  lock(&block->lock);
+  nv_lock(&block->lock);
 
   int i;
   for (i = sz_xft; i <= block->TOTAL_SHIFT; i++) {
@@ -142,7 +142,7 @@ buddy_alloc(buddy_block_t* block, size_t size)
 
   // no enough space
   if (i > block->TOTAL_SHIFT) {
-    unlock(&block->lock);
+    nv_unlock(&block->lock);
     return NULL;
   }
 
@@ -173,14 +173,14 @@ buddy_alloc(buddy_block_t* block, size_t size)
   // assert(((uintptr_t)idx2addr(((buddy_unit_ds_t*)bl_nd->key)->idx) &
   // ((1 << sz_xft) - 1)) == 0);
 #endif
-  unlock(&block->lock);
+  nv_unlock(&block->lock);
   return ret;
 }
 
 void
 buddy_free(buddy_block_t* block, void* ptr)
 {
-  lock(&block->lock);
+  nv_lock(&block->lock);
 
   int idx = addr2idx(ptr);
   int sz_xft = block->ds_arr[idx].sz_xft;
@@ -200,18 +200,18 @@ buddy_free(buddy_block_t* block, void* ptr)
   buddy_list_insert(&block->bl_lst[i], &block->bl_arr[idx]);
   block->ds_arr[idx].belong = i;
 
-  unlock(&block->lock);
+  nv_unlock(&block->lock);
 }
 
 bool
 buddy_check_alloced(buddy_block_t* block, void* ptr)
 {
-  lock(&block->lock);
+  nv_lock(&block->lock);
 
   int idx = addr2idx(ptr);
   int sz_xft = block->ds_arr[idx].sz_xft;
 
-  unlock(&block->lock);
+  nv_unlock(&block->lock);
 
   return (sz_xft == -1) ? false : true;
 }

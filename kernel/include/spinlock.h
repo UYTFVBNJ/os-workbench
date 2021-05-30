@@ -1,18 +1,14 @@
 #ifndef SPINLOCK
 #define SPINLOCK
 
-struct spinlock {
+typedef struct {
   int locked;
-
-  // For debugging:
-  char *name;
-  int cpu;
-};
+} nv_spinlock_t;
 
 #define LOCK_INIT(name, cpu) \
   ((spinlock){.locked = 0, .name = name, .cpu = cpu})
 
-void lock(spinlock_t *lk);
-void unlock(spinlock_t *lk);
+void nv_lock(nv_spinlock_t *lk);
+void nv_unlock(nv_spinlock_t *lk);
 
 #endif

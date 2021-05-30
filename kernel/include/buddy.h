@@ -14,7 +14,7 @@ typedef struct
 
 typedef struct
 {
-  spinlock_t lock;
+  nv_spinlock_t lock;
 
   uint8_t* mem;
   intptr_t start;
