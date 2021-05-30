@@ -25,7 +25,7 @@ MODULE(pmm) {
   void (*test)();
 };
 
-typedef struct task task_t;
+typedef union  task task_t;
 typedef struct spinlock spinlock_t;
 typedef struct semaphore sem_t;
 MODULE(kmt) {

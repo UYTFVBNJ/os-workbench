@@ -5,7 +5,7 @@
 #include <klib-macros.h>
 #include <klib.h>
 
-#define L1_TEST
+// #define L1_TEST
 // #define L2_TEST
 // #define TEST_LOG
 
