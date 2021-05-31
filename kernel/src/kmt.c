@@ -5,8 +5,10 @@ void kmt_init() {
 }
 
 int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
+  TRACE_ENTRY;
   task->stack = pmm->alloc(STACK_SIZE); // 动态分配内核栈
-  return 0;
+
+  TRACE_EXIT_with(0);
 }
 
 void kmt_teardown(task_t *task) {}

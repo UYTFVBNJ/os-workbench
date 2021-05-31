@@ -26,6 +26,7 @@ static void os_run() {
   while (1);
 }
 
+// Parallel
 static Context *os_trap(Event ev, Context *context) {
   Context *ret = NULL;
   for (int i = 0; i < cnt_handlers; i ++) {
@@ -42,8 +43,19 @@ static Context *os_trap(Event ev, Context *context) {
 }
 
 static void os_on_irq(int seq, int event, handler_t handler) {
+  TRACE_ENTRY;
   // sort
-  assert(0);
+  int pos;
+  for (pos = 0; pos < cnt_handlers && seq >= handlers[pos].seq; pos ++);
+
+  for (int i = cnt_handlers ++; i > pos; i --) handlers[i] = handlers[i - 1];
+  handlers[pos].seq     = seq;
+  handlers[pos].event   = event;
+  handlers[pos].handler = handler;
+
+  for (int i = 0; i < cnt_handlers; i ++) printf("%d ", handlers[i].seq);
+  printf("\n");
+  TRACE_EXIT;
 }
 
 MODULE_DEF(os) = {
