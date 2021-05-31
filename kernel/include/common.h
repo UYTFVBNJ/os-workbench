@@ -21,7 +21,7 @@
 #else
   #define TRACE_ENTRY ((void)0)
   #define TRACE_EXIT  ((void)0)
-  #define TRACE_EXIT(ret) return ret
+  #define TRACE_EXIT_with(ret) return ret
 #endif
 
 #endif

@@ -4,14 +4,21 @@ void kmt_init() {
   assert(0);
 }
 
+// Parallel
 int kmt_create(task_t *task, const char *name, void (*entry)(void *arg), void *arg) {
   TRACE_ENTRY;
-  task->stack = pmm->alloc(STACK_SIZE); // 动态分配内核栈
+  task->stack = pmm->alloc(STACK_SIZE); 
 
   TRACE_EXIT_with(0);
 }
 
-void kmt_teardown(task_t *task) {}
+// Parallel
+void kmt_teardown(task_t *task) {
+  TRACE_ENTRY;
+  pmm->free(task->stack); 
+
+  TRACE_EXIT;
+}
 
 MODULE_DEF(kmt) = {
   .init = kmt_init,

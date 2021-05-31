@@ -10,7 +10,8 @@ int cnt_handlers = 0;
 
 static void os_init() {
   pmm->init();
-  // kmt->init(); // TODO
+  kmt->init(); 
+  // dev->init();
 }
 
 static void os_run() {
@@ -27,6 +28,8 @@ static void os_run() {
 }
 
 // Parallel
+// Interrupt
+// TODO
 static Context *os_trap(Event ev, Context *context) {
   Context *ret = NULL;
   for (int i = 0; i < cnt_handlers; i ++) {
@@ -42,6 +45,7 @@ static Context *os_trap(Event ev, Context *context) {
   return ret;
 }
 
+// irq: interrupt request
 static void os_on_irq(int seq, int event, handler_t handler) {
   TRACE_ENTRY;
   // sort
@@ -59,8 +63,8 @@ static void os_on_irq(int seq, int event, handler_t handler) {
 }
 
 MODULE_DEF(os) = {
-  .init = os_init,
-  .run = os_run,
-  .trap = os_trap,
+  .init   = os_init,
+  .run    = os_run,
+  .trap   = os_trap,
   .on_irq = os_on_irq
 };
