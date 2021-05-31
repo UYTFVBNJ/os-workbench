@@ -1,5 +1,6 @@
 NAME           := kernel
-SRCS           := framework/main.c $(shell find -L ./src/ -name "*.c") test/pmm_test.c
+SRCS           := framework/main.c $(shell find -L ./src/ -name "*.c" -not -path "./src/dev/*") test/pmm_test.c
+#SRCS           := thread-os.c
 INC_PATH       := include/ framework/ test/
 
 export AM_HOME := $(PWD)/../abstract-machine

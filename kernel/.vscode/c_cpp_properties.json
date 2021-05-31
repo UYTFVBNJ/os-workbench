@@ -16,8 +16,7 @@
         "__ARCH_X86_64_QEMU",
         "__PLATFORM__=qemu",
         "__PLATFORM_QEMU",
-        "ARCH_H=\"arch/x86_64-qemu.h\"",
-        "TEST"
+        "ARCH_H=\"arch/x86_64-qemu.h\""
       ],
       "cStandard": "c11",
       "cppStandard": "c++17"
