@@ -1,14 +1,18 @@
 #ifndef SPINLOCK
 #define SPINLOCK
 
-typedef struct {
+#include <common.h>
+#include <kmt.h>
+
+struct spinlock {
   int locked;
-} nv_spinlock_t;
+  
+  char *name;
+  cpu_t *cpu;
+};
 
-#define LOCK_INIT(name, cpu) \
-  ((spinlock){.locked = 0, .name = name, .cpu = cpu})
-
-void nv_lock(nv_spinlock_t *lk);
-void nv_unlock(nv_spinlock_t *lk);
+void spin_init(spinlock_t *lk, const char *name);
+void spin_lock(spinlock_t *lk);
+void spin_unlock(spinlock_t *lk);
 
 #endif

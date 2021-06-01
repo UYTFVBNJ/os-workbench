@@ -1,5 +1,5 @@
 #include <common.h>
-#include <spinlock.h>
+#include <nv_spinlock.h>
 
 #ifdef L1_TEST
 #include <pmm_test.h>

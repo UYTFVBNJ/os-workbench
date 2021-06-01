@@ -3,7 +3,7 @@
 
 #include <minilib.h>
 #include <pmm.h>
-#include <spinlock.h>
+#include <nv_spinlock.h>
 
 typedef struct
 {
